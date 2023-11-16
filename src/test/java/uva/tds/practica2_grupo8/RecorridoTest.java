@@ -26,8 +26,8 @@ class RecorridoTest {
 		assertEquals("destino",recorrido.getDestino());
 		assertEquals("autobus",recorrido.getMedioTransporte());
 		assertEquals(0,recorrido.getPrecio());
-		assertEquals(LocalDate.now(),recorrido.getFecha());
-		assertEquals(LocalTime.now(),recorrido.getHora());
+		assertEquals(fecha,recorrido.getFecha());
+		assertEquals(hora,recorrido.getHora());
 		assertEquals(1,recorrido.getPlazasDisponibles());
 		assertEquals(1,recorrido.getPlazasTotales());
 		assertEquals(1,recorrido.getDuracion());
@@ -40,8 +40,8 @@ class RecorridoTest {
 		assertEquals("destino",recorrido.getDestino());
 		assertEquals("autobus",recorrido.getMedioTransporte());
 		assertEquals(0,recorrido.getPrecio());
-		assertEquals(LocalDate.now(),recorrido.getFecha());
-		assertEquals(LocalTime.now(),recorrido.getHora());
+		assertEquals(fecha,recorrido.getFecha());
+		assertEquals(hora,recorrido.getHora());
 		assertEquals(1,recorrido.getPlazasDisponibles());
 		assertEquals(50,recorrido.getPlazasTotales());
 		assertEquals(1,recorrido.getDuracion());
@@ -54,8 +54,8 @@ class RecorridoTest {
 		assertEquals("destino",recorrido.getDestino());
 		assertEquals("tren",recorrido.getMedioTransporte());
 		assertEquals(0,recorrido.getPrecio());
-		assertEquals(LocalDate.now(),recorrido.getFecha());
-		assertEquals(LocalTime.now(),recorrido.getHora());
+		assertEquals(fecha,recorrido.getFecha());
+		assertEquals(hora,recorrido.getHora());
 		assertEquals(1,recorrido.getPlazasDisponibles());
 		assertEquals(1,recorrido.getPlazasTotales());
 		assertEquals(1,recorrido.getDuracion());
@@ -68,8 +68,8 @@ class RecorridoTest {
 		assertEquals("destino",recorrido.getDestino());
 		assertEquals("tren",recorrido.getMedioTransporte());
 		assertEquals(0,recorrido.getPrecio());
-		assertEquals(LocalDate.now(),recorrido.getFecha());
-		assertEquals(LocalTime.now(),recorrido.getHora());
+		assertEquals(fecha,recorrido.getFecha());
+		assertEquals(hora,recorrido.getHora());
 		assertEquals(1,recorrido.getPlazasDisponibles());
 		assertEquals(250,recorrido.getPlazasTotales());
 		assertEquals(1,recorrido.getDuracion());
@@ -190,7 +190,7 @@ class RecorridoTest {
 	@Test
 	void testConstructorRecorridoNoValidoMinutosMenorQueLimiteInferior() {
 		assertThrows(IllegalArgumentException.class, () ->{
-			new Recorrido("1","origen","destino","tren",0,fecha,hora,1,1,0);
+			new Recorrido("1","origen","destino","tren",0,fecha,hora,1,1,-1);
 		});
 	}
 	@Test
