@@ -2,6 +2,7 @@ package uva.tds.practica2_grupo8;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -197,7 +198,7 @@ class RecorridoTest {
 	void testRecorridoIgualAOtroPorMismoIdentificador() {
 		Recorrido recorrido1 = new Recorrido("1","origen","destino","tren",0,fecha,hora,1,1,1);
 		Recorrido recorrido2 = new Recorrido("1","origen","destino","tren",0,fecha,hora,1,1,1);
-		assertEquals(recorrido1,recorrido2);
+		assertTrue(recorrido1.equals(recorrido2));
 	}
 	
 	

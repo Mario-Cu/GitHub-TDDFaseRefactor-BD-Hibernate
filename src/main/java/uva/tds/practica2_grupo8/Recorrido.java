@@ -40,26 +40,45 @@ public class Recorrido {
 	int minutos;
 	
 	public Recorrido (String id, String origen, String destino, String medioTransporte, float precio,LocalDate fecha,LocalTime hora,int plazasDisponibles, int plazasTotales, int minutos) throws IllegalArgumentException  {
-		if(id.length()<1 || (id==null)) {
+		if(id == null) {
+			throw new IllegalArgumentException("El id no puede ser nulo");
+		}
+		
+		if(id.length()<1) {
 			throw new IllegalArgumentException("El id tiene menos de un caracter");
 		}else {
 			this.id = id;
 		}
+		
+		if(origen == null) {
+			throw new IllegalArgumentException("El origen no puede ser nulo");
+		}
+		
 		if(origen.length()<1) {
 			throw new IllegalArgumentException("El origen tiene menos de un caracter");
 		}else {
 			this.origen = origen;
 		}
+		
+		if(destino == null) {
+			throw new IllegalArgumentException("El destino no puede ser nulo");
+		}
+		
 		if(destino.length()<1) {
 			throw new IllegalArgumentException("El destino tiene menos de un caracter");
 		}else {
 			this.destino = destino;
 		}
-		if((medioTransporte.equals("autobus") || (medioTransporte.equals("tren")))){
-			this.medioTransporte = medioTransporte;
-		}else{
-			throw new IllegalArgumentException("El medio transporte no es autobus o tren");
+		
+		if(medioTransporte == null) {
+			throw new IllegalArgumentException("El medio de transporte no puede ser nulo");
 		}
+		if(medioTransporte.equals("autobus") || medioTransporte.equals("tren")) {
+			this.medioTransporte = medioTransporte;
+		}else {
+			throw new IllegalArgumentException("El medio de transporte debe ser autobus o tren");
+		}
+		
 		if(precio < 0) {
 			throw new IllegalArgumentException("El precio es menor que 0");
 		}else {
@@ -176,5 +195,45 @@ public class Recorrido {
 	 */
 	public int getDuracion() {
 		return minutos;
+	}
+	/*
+	 * Override de equals() para comparar dos recorridos
+	 * @return boolean que puede ser true o false
+	 */
+	@Override
+	public boolean equals(Object o) {
+		
+		if(o == this)
+			return true;
+		if(o == null)
+			return false;
+		
+		if(!(o instanceof Recorrido))
+			return false;
+		
+		Recorrido r = (Recorrido) o;
+		
+		if(!this.id.equals(r.id)) 
+			return false;
+		if(!this.destino.equals(r.destino)) 
+			return false;
+		if(!this.origen.equals(r.origen)) 
+			return false;
+		if(!this.medioTransporte.equals(r.medioTransporte))
+			return false;
+		if(this.precio != r.precio)
+			return false;
+		if(!this.fecha.equals(r.fecha))
+			return false;
+		if(!this.hora.equals(r.hora))
+			return false;
+		if(this.plazasDisponibles != r.plazasDisponibles)
+			return false;
+		if(this.plazasTotales != r.plazasTotales)
+			return false;
+		if(this.minutos != r.minutos)
+			return false;
+		
+		return true;
 	}
 }
