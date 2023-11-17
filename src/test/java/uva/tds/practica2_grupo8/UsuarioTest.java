@@ -2,6 +2,7 @@ package uva.tds.practica2_grupo8;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,6 +17,14 @@ class UsuarioTest {
 	void setUp() {
 		this.usrNormal = new Usuario("33036946E","UsuarioNormal");
 	}
+	
+	@Test
+	void testConstructorNIFNoValidoLetraDiferenteALaAsociada() {
+		assertThrows(IllegalArgumentException.class,()->{
+			new Usuario("33036946R","UsuarioU");
+		});	
+	}
+	
 	@Test
 	void testConstructorUsuarioNombreLimiteInferior() {
 		Usuario usr = new Usuario("33036946E","A");
@@ -53,10 +62,15 @@ class UsuarioTest {
 	
 	@Test
 	void testConstructorUsuarioIgualaOtroPorNIF() {
-		Usuario usr2 = new Usuario("3303694E","UsuarioNormal");
+		Usuario usr2 = new Usuario("33036946E","UsuarioNormal");
 		assertTrue(usrNormal.equals(usr2));
 	}
 
+	@Test
+	void testConstructorUsuarioNoIgualaOtroPorNIF() {
+		Usuario usr2 = new Usuario("56508732D","UsuarioNormal");
+		assertFalse(usrNormal.equals(usr2));
+	}
 
 	@Test
 	void testConstructorUsuarioNoValidoNIFNulo() {
@@ -107,5 +121,7 @@ class UsuarioTest {
 			new Usuario("330369461U","UsuarioU");
 		});	
 	}
+	
+
 	
 }
