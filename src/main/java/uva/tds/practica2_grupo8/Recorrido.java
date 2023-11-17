@@ -46,18 +46,13 @@ public class Recorrido {
 		
 		if(id.length()<1) {
 			throw new IllegalArgumentException("El id tiene menos de un caracter");
-		}else {
-			this.id = id;
 		}
-		
 		if(origen == null) {
 			throw new IllegalArgumentException("El origen no puede ser nulo");
 		}
 		
 		if(origen.length()<1) {
 			throw new IllegalArgumentException("El origen tiene menos de un caracter");
-		}else {
-			this.origen = origen;
 		}
 		
 		if(destino == null) {
@@ -66,65 +61,57 @@ public class Recorrido {
 		
 		if(destino.length()<1) {
 			throw new IllegalArgumentException("El destino tiene menos de un caracter");
-		}else {
-			this.destino = destino;
 		}
 		
 		if(medioTransporte == null) {
 			throw new IllegalArgumentException("El medio de transporte no puede ser nulo");
 		}
-		if(medioTransporte.equals("autobus") || medioTransporte.equals("tren")) {
-			this.medioTransporte = medioTransporte;
-		}else {
+		if(!medioTransporte.equals("autobus") && !medioTransporte.equals("tren")) {
 			throw new IllegalArgumentException("El medio de transporte debe ser autobus o tren");
 		}
 		
 		if(precio < 0) {
 			throw new IllegalArgumentException("El precio es menor que 0");
-		}else {
-			this.precio = precio;
 		}
 		if(fecha == null) {
 			throw new IllegalArgumentException("La fecha es nula");
-		}else {	
-			this.fecha = fecha;
 		}
 		if(hora == null) {
 			throw new IllegalArgumentException("La hora es nula");
-		}else {	
-			this.hora = hora;
 		}
+		
 		if(medioTransporte.equals("autobus")) {
 			if((plazasDisponibles<0)||(plazasDisponibles>plazasTotales)) {
 				throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
-			}else {
-				this.plazasDisponibles = plazasDisponibles;
 			}
 		}else if(medioTransporte.equals("tren")) {
 			if((plazasDisponibles<0)||(plazasDisponibles>plazasTotales)) {
 				throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
-			}else {
-				this.plazasDisponibles = plazasDisponibles;
 			}
 		}
 		if(medioTransporte.equals("autobus")) {
 			if((plazasTotales<1)||(plazasTotales>50)) {
 				throw new IllegalArgumentException("El numero de plazas totales es erroneo");
-			}else {
-				this.plazasTotales = plazasTotales;
 			}
 		}else if(medioTransporte.equals("tren")) {
 			if((plazasTotales<1)||(plazasTotales>250)) {
 				throw new IllegalArgumentException("El numero de plazas totales es erroneo");
-			}else {
-				this.plazasTotales = plazasTotales;
 			}
 		}
 		if(minutos<0) {
 			throw new IllegalArgumentException("La duracion del trayecto es erronea");
-		}else {
-			this.minutos = minutos;
 		}
+		this.id = id;
+		this.destino = destino;
+		this.origen = origen;
+		this.medioTransporte = medioTransporte;
+		this.precio = precio;
+		this.fecha = fecha;
+		this.hora = hora;
+		this.plazasDisponibles = plazasDisponibles;
+		this.plazasTotales = plazasTotales;
+		this.minutos = minutos;
+		
 	}
 	/**
 	 * Devuelve el identificador del recorrido 
