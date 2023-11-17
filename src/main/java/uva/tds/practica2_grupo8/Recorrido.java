@@ -95,13 +95,13 @@ public class Recorrido {
 			this.hora = hora;
 		}
 		if(medioTransporte.equals("autobus")) {
-			if((plazasDisponibles<0)||(plazasDisponibles>50)) {
+			if((plazasDisponibles<0)||(plazasDisponibles>plazasTotales)) {
 				throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
 			}else {
 				this.plazasDisponibles = plazasDisponibles;
 			}
 		}else if(medioTransporte.equals("tren")) {
-			if((plazasDisponibles<0)||(plazasDisponibles>250)) {
+			if((plazasDisponibles<0)||(plazasDisponibles>plazasTotales)) {
 				throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
 			}else {
 				this.plazasDisponibles = plazasDisponibles;
@@ -198,7 +198,7 @@ public class Recorrido {
 	}
 	/*
 	 * Override de equals() para comparar dos recorridos
-	 * @return boolean que puede ser true o false
+	 * @return boolean que puede ser true o false 
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -226,8 +226,6 @@ public class Recorrido {
 		if(!this.fecha.equals(r.fecha))
 			return false;
 		if(!this.hora.equals(r.hora))
-			return false;
-		if(this.plazasDisponibles != r.plazasDisponibles)
 			return false;
 		if(this.plazasTotales != r.plazasTotales)
 			return false;
