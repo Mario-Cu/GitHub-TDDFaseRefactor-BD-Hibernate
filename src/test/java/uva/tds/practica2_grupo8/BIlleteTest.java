@@ -40,6 +40,8 @@ class BIlleteTest {
 		assertEquals("1",recorridoNormal.getId());
 		assertEquals("UsuarioNormal",usrNormal.getNombre());
 	}
+	
+	
 
 	@Test
 	void testConstructorBilleteNoValidoLocalizadorMenorLimiteInferior() {
@@ -76,5 +78,12 @@ class BIlleteTest {
 		});
 	}
 
-
+	//tag(Cobertura)?
+	@Test
+	void testConstructorBilleteGettersSinCobertura() {
+		Billete billete = new Billete("Loc8cara",recorridoNormal,usrNormal);
+		assertEquals("Loc8cara",billete.getLocalizador());
+		assertEquals(billete.getRecorrido().getId(),recorridoNormal.getId());
+		assertEquals(billete.getUsuario().getNombre(),usrNormal.getNombre());
+	}
 }
