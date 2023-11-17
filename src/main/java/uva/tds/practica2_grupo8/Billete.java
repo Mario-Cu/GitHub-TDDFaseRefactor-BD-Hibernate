@@ -4,7 +4,9 @@ package uva.tds.practica2_grupo8;
  * Clase que representa un billete.
  */
 public class Billete {
-
+	String localizador;
+	Recorrido recorrido;
+	Usuario usuario;
 	/**
 	 * Creacion de un billete
 	 * @author marcobr (Mario Cobreros del Caz)
@@ -18,20 +20,49 @@ public class Billete {
 	 * @throws IllegalArgumentException si usuario es nulo
 	 */
 	public Billete(String localizador, Recorrido recorrido, Usuario usuario) {
+		if(localizador == null) {
+			throw new IllegalArgumentException("El localizador no puede ser nulo");
+		}
+		if(recorrido == null ) {
+			throw new IllegalArgumentException("El recorrido  no puede ser nulo");
+		}
+		if(usuario == null) {
+			throw new IllegalArgumentException("El usuario no puede ser nulo");
+		}
+		if(localizador.length()<1) {
+			throw new IllegalArgumentException("El localizador tiene al menos 1 caracter");
+		}
+		if(localizador.length()>8) {
+			throw new IllegalArgumentException("El localizador no puede tener mas de 8 caracteres");
+		}
+		this.localizador = localizador;
+		this.recorrido = recorrido;
+		this.usuario = usuario;
 		
 	}
 	
-	
+	/**
+	 * Metodo que devuelve el localizador del billete
+	 * @return nombre del usuario
+	 */
 	public String getLocalizador() {
-		return null;
+		return this.localizador;
 	}
 
+	/**
+	 * Metodo que devuelve el recorrido del billete
+	 * @return nombre del usuario
+	 */
 	public Recorrido getRecorrido() {
-		return null;
+		return this.recorrido;
 	}
 
+	/**
+	 * Metodo que devuelve el usuario del billete
+	 * @return nombre del usuario
+	 */
 	public Usuario getUsuario() {
-		return null;
+		return this.usuario;
 	}
 
 }
