@@ -155,6 +155,7 @@ public class Recorrido {
 	public LocalDate getFecha() {
 		return fecha;
 	}
+	
 	/**
 	 * Devuelve la hora del recorrido
 	 * @return hora del recorrido
@@ -170,6 +171,7 @@ public class Recorrido {
 	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
+	
 	/**
 	 * Actualiza la hora del recorrido
 	 * @return hora del recorrido
@@ -177,13 +179,17 @@ public class Recorrido {
 	public void setHora(LocalTime hora) {
 		this.hora = hora;
 	}
-	
+
 	/**
 	 * Devuelve las plazas dispnibles del recorrido
 	 * @return plazas disponibles del recorrido
 	 */
 	public int getPlazasDisponibles() {
 		return plazasDisponibles;
+	}
+	
+	public void setPlazasDisponibles(int plazasDisponiblesNuevas) {
+		this.plazasDisponibles = plazasDisponiblesNuevas;
 	}
 	/**
 	 * Devuelve las plazas totales del recorrido

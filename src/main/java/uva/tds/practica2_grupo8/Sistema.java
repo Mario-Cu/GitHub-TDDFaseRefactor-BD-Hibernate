@@ -6,6 +6,8 @@ import java.util.ArrayList;
 public class Sistema {
 	ArrayList<Recorrido> recorridos;
 	ArrayList<Billete> billetes;
+	ArrayList<Billete> billetesReservados;
+	
 	/**
 	 * @author marcobr (Mario Cobreros del Caz)
 	 * @author mardano (Mario Danov Ivanov)
@@ -15,6 +17,8 @@ public class Sistema {
 	public Sistema() {
 		this.recorridos = new ArrayList<Recorrido>();
 		this.billetes  = new ArrayList<Billete>();
+		this.billetesReservados = new ArrayList<Billete>();
+		
 	}
 	/**
 	 * Devuelve el arraylist que guardara los recorridos
@@ -25,12 +29,13 @@ public class Sistema {
 	}
 	
 	/**
-	 * Devuelve el arraylist que guardara los billetes
+	 * Devuelve el arraylist que guardara los billetes normales
 	 * @return arraylist que guardara los billetes
 	 */
 	public ArrayList<Billete> getBilletes(){
 		return billetes;
 	}
+	
 	
 	/**
 	 * Metodo para la compra de billetes en un sistema
@@ -46,7 +51,26 @@ public class Sistema {
 	 * @throws IllegalStateException cuando el recorrido no existe en el sistema
 	 */
 	public void comprarBilletes(String loc, Usuario usr, Recorrido rec, int numBilletes) {
+		if(loc == null)
+			throw new IllegalArgumentException("El localizador no puede ser nulo"); 
+		if(usr == null) 
+			throw new IllegalArgumentException("El usuario no puede ser nulo");
+		if(rec == null)
+			throw new IllegalArgumentException("El recorrido no puede ser nulo");
+		if(numBilletes < 1)
+			throw new IllegalArgumentException("Tiene que comprarse al menos un billete");
+		if(numBilletes > rec.getPlazasDisponibles())
+			throw new IllegalArgumentException("No se pueden comprar mas billetes de los disponibles");
+		if(getRecorridoPorId(rec.getId()) == null)
+			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		
+		Billete billeteComprado;
+		for(int i=0; i < numBilletes; i++) {
+			billeteComprado = new Billete(loc,rec,usr);
+			billetes.add(billeteComprado);
+		}
+		int indexRecorridoEnArrayList = getIndexRecorridoPorId(rec.getId());
+		recorridos.get(indexRecorridoEnArrayList).setPlazasDisponibles(rec.getPlazasDisponibles()-numBilletes);
 	}
 	
 	
@@ -67,6 +91,7 @@ public class Sistema {
 		}
 		
 		recorridos.add(recorrido);
+
 	}
 	
 	
@@ -115,7 +140,46 @@ public class Sistema {
 		}
 		return solucion;
 	}
-	
+	/**
+	 * Metodo privado que obtiene el indice donde se encuentra el recorrido a traves de su id
+	 * 
+	 */
+	private int getIndexRecorridoPorId(String id) {
+		int indice = -1;
+		for(Recorrido item : recorridos) {
+			if(item.getId() == id) {
+				indice = recorridos.indexOf(item);
+			}
+		}
+		return indice;
+	}
+	/**
+	 * Metodo privado que obtiene el recorrido a traves de su id
+	 * 
+	 */
+	private Recorrido getRecorridoPorId(String id) {
+		Recorrido solucion = null;
+		for(Recorrido item : recorridos) {
+			if(item.getId() == id) {
+				solucion = item;
+			}
+		}
+		return solucion;
+	}
+	/**
+	 * Metodo privado que obtiene el billete a traves de su localizador
+	 */
+	private Billete getBilletePorLocalizador(String loc) {
+		Billete solucion = null;
+		for(Billete item : billetes) {
+			if(item.getLocalizador() == loc) {
+				solucion = item;
+				
+			}
+		}
+		return solucion;
+	}
+
 	
 	/**
 	 * Actualiza la fecha de un recorrido
@@ -133,6 +197,7 @@ public class Sistema {
 		}
 		Recorrido recorrido = getRecorridoPorId(id);
 		recorrido.setFecha(fecha);
+
 	}
 	
 	
@@ -152,6 +217,7 @@ public class Sistema {
 		}
 		Recorrido recorrido = getRecorridoPorId(id);
 		recorrido.setHora(hora);
+
 	}
 
 	/**
@@ -160,7 +226,15 @@ public class Sistema {
 	 * @throws IllegalArgumentException cuando localizador es nulo
 	 */
 	public void comprarBilletesReservados(String loc) {
-
+		
+		if(loc == null)
+			throw new IllegalArgumentException("El localizador no puede ser nulo");
+		for(Billete item : billetesReservados) {
+			if(item.getLocalizador() == loc) {
+				billetes.add(item);
+				billetesReservados.remove(item);
+			}
+		}
 	}
 	
 	/**
@@ -169,7 +243,7 @@ public class Sistema {
 	 */
 	public ArrayList<Billete> getBilletesReservados() {
 
-		return null;
+		return billetesReservados;
 	}
 	
 	/**
@@ -178,11 +252,29 @@ public class Sistema {
 	 * @param numBilletes Cantidad de billetes a devolver
 	 * @throws IllegalArgumentException cuando localizador es nulo
 	 * @throws IllegalArgumentException cuando numBilletes es menor que 1
-	 * @throws IllegalArgumentException cuando localizador es nulo
 	 * @throws IllegalStateException cuando localizador no coincide con un billete previamente comprado
 	 */
 	public void devolverBilletes(String loc, int numBilletes) {
-	
+		if(loc == null)
+			throw new IllegalArgumentException("El localizador no puede ser nulo");
+		if(numBilletes < 1)
+			throw new IllegalArgumentException("El numero de billetes no puede ser menor que 1");
+		Billete billete = getBilletePorLocalizador(loc);
+		if(billete == null) 
+			throw new IllegalStateException("El localizador no coincide con el de un billete comprado");
+		Recorrido recorrido = billete.getRecorrido();
+		int indexRecorridoEnArrayList = getIndexRecorridoPorId(recorrido.getId());
+		recorridos.get(indexRecorridoEnArrayList).setPlazasDisponibles(recorrido.getPlazasDisponibles()+numBilletes);
+		
+		int j = numBilletes;
+		for(Billete item: billetes) {
+			if(item.getLocalizador() == loc) {
+				billetes.remove(item);
+				j--;
+				if(j == 0)
+					break;
+			}
+		}
 	}
 
 	

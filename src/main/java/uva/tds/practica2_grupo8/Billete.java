@@ -64,5 +64,32 @@ public class Billete {
 	public Usuario getUsuario() {
 		return this.usuario;
 	}
-
+	
+	/*
+	 * Override de equals() para comparar dos billetes
+	 * @return boolean que puede ser true o false 
+	 */
+	@Override
+	public boolean equals(Object o) {
+		
+		if(o == this)
+			return true;
+		if(o == null)
+			return false;
+		
+		if(!(o instanceof Billete))
+			return false;
+		
+		Billete b = (Billete) o;
+		
+		if(!this.localizador.equals(b.localizador)) 
+			return false;
+		if(!this.recorrido.equals(b.recorrido)) 
+			return false;
+		if(!this.usuario.equals(b.usuario)) 
+			return false;
+		
+		
+		return true;
+	}
 }
