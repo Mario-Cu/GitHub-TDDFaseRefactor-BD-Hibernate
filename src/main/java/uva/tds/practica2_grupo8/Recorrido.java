@@ -162,6 +162,22 @@ public class Recorrido {
 	public LocalTime getHora() {
 		return hora;
 	}
+	
+	/**
+	 * Actualiza la fecha del recorrido 
+	 * @return fecha del recorrido
+	 */
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
+	}
+	/**
+	 * Actualiza la hora del recorrido
+	 * @return hora del recorrido
+	 */
+	public void setHora(LocalTime hora) {
+		this.hora = hora;
+	}
+	
 	/**
 	 * Devuelve las plazas dispnibles del recorrido
 	 * @return plazas disponibles del recorrido
