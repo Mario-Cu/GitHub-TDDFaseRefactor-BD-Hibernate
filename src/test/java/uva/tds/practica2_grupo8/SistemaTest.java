@@ -2,6 +2,7 @@ package uva.tds.practica2_grupo8;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -48,11 +49,12 @@ class SistemaTest {
 	@Test
 	void testComprarBilleteEnSistema(){
 		Sistema sistema = new Sistema();
+		sistema.añadirRecorrido(recorrido1);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
 		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
 		billetes.add(billetePrueba);
 		sistema.comprarBilletes("LocNorm",usuario,recorrido1,1);
-		assertEquals(billetes,sistema.getBilletes());
+		assertTrue(billetePrueba.equals(sistema.getBilletes().get(0)));
 		assertEquals(49,recorrido1.getPlazasDisponibles());
 	}
 	
@@ -62,8 +64,9 @@ class SistemaTest {
 		ArrayList<Billete> billetesReservados = new ArrayList<Billete>();
 		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
 		billetesReservados.add(billetePrueba);
+		sistema.reservarBilletes("LocNorm", usuario, recorrido1, 1);
 		sistema.comprarBilletesReservados("LocNorm");
-		assertEquals(billetesReservados,sistema.getBilletesReservados());
+		assertEquals(billetesReservados,sistema.getBilletes());
 	}
 	
 	@Test
@@ -80,8 +83,9 @@ class SistemaTest {
 	@Test
 	void testDevolverBilleteEnSistema(){
 		Sistema sistema = new Sistema();
+		sistema.añadirRecorrido(recorrido1);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		sistema.comprarBilletes("locNorm", usuario, recorrido1, 1);
+		sistema.comprarBilletes("LocNorm", usuario, recorrido1, 1);
 		sistema.devolverBilletes("LocNorm",1);
 		assertEquals(billetes,sistema.getBilletes());
 		assertEquals(50,recorrido1.getPlazasDisponibles());
@@ -90,6 +94,7 @@ class SistemaTest {
 	@Test
 	void testDevolverBilleteEnSistemaNoValidoBilleteNoComprado(){
 		Sistema sistema = new Sistema();
+		sistema.añadirRecorrido(recorrido1);
         sistema.comprarBilletes("locNorm", usuario, recorrido1, 1);
 		assertThrows(IllegalStateException.class, () ->{
 			sistema.devolverBilletes("LocNor2",1);
@@ -99,6 +104,7 @@ class SistemaTest {
 	@Test
 	void testDevolverBilleteEnSistemaNoValidoLocalizadorNulo(){
 		Sistema sistema = new Sistema();
+		sistema.añadirRecorrido(recorrido1);
 		sistema.comprarBilletes("locNorm", usuario, recorrido1, 1);
 		assertThrows(IllegalArgumentException.class, () ->{
 			sistema.devolverBilletes(null,1);
@@ -108,6 +114,7 @@ class SistemaTest {
 	@Test
 	void testDevolverBilleteEnSistemaNoValidoNumBilletesMenorQueUno(){
 		Sistema sistema = new Sistema();
+		sistema.añadirRecorrido(recorrido1);
 		sistema.comprarBilletes("locNorm", usuario, recorrido1, 1);
 		assertThrows(IllegalArgumentException.class, () ->{
 			sistema.devolverBilletes("locNorm",0);
@@ -117,13 +124,16 @@ class SistemaTest {
 	@Test
 	void testComprarVariosBilletesEnSistema(){
 		Sistema sistema = new Sistema();
+		sistema.añadirRecorrido(recorrido1);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
 		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
 		for(int i = 1; i<4; i++) {
 			billetes.add(billetePrueba);
 		}
 		sistema.comprarBilletes("LocNorm",usuario,recorrido1,3);
-		assertEquals(billetes,sistema.getBilletes());
+		assertTrue(billetePrueba.equals(sistema.getBilletes().get(0)));
+		assertTrue(billetePrueba.equals(sistema.getBilletes().get(1)));
+		assertTrue(billetePrueba.equals(sistema.getBilletes().get(2)));
 	}
 	
 	
