@@ -265,6 +265,8 @@ class SistemaTest {
 		sistema.actualizarHoraRecorrido(recorrido1.getId(),horaNueva);
 		assertEquals(horaNueva,recorrido1.getHora());
 	}
+	
+	@Test
 	void testActualizarRecorridoHoraNoValidaHoraNula() {
 		Sistema sistema = new Sistema();
 		sistema.añadirRecorrido(recorrido1);

@@ -98,7 +98,7 @@ public class Sistema {
 	/**
 	 * Elimina un recorrido del arraylist de recorridos	 
 	 * @throws IllegalStateException cuando se elimina un recorrido con billetes asociados
-	 * @throws IllegalArgumentException cuando se intenta eliminar un recorrido con localizador nulo
+	 * @throws IllegalArgumentException cuando se intenta eliminar un recorrido con identificador nulo
 	 */
 	public void eliminarRecorrido(String id) {
 		if(id == null) {
@@ -111,7 +111,34 @@ public class Sistema {
 		}
 		int indiceRecorrido = getIndexRecorridoPorId(id);
 		recorridos.remove(indiceRecorrido);
-
+	}
+	
+	/**
+	 * Metodo privado que obtiene el indice donde se encuentra el recorrido a traves de su id
+	 * 
+	 */
+	private int getIndexRecorridoPorId(String id) {
+		int indice = -1;
+		for(Recorrido item : recorridos) {
+			if(item.getId() == id) {
+				indice = recorridos.indexOf(item);
+			}
+		}
+		return indice;
+	}
+	
+	/**
+	 * Metodo privado que obtiene el recorrido a traves de su id
+	 * 
+	 */
+	private Recorrido getRecorridoPorId(String id) {
+		Recorrido solucion = null;
+		for(Recorrido item : recorridos) {
+			if(item.getId() == id) {
+				solucion = item;
+			}
+		}
+		return solucion;
 	}
 	/**
 	 * Metodo privado que obtiene el indice donde se encuentra el recorrido a traves de su id
@@ -158,8 +185,8 @@ public class Sistema {
 	 * Actualiza la fecha de un recorrido
 	 * @param id identificador del recorrido
 	 * @param fecha fecha nueva del reocorrido
-	 * @throws IllegalArgumentException cuando localizador es nulo
-	 * @throws IllegalArgumentException cuando fecha es nula
+	 * @throws IllegalStateException cuando localizador es nulo
+	 * @throws IllegalStateException cuando fecha es nula
 	 */
 	public void actualizarFechaRecorrido(String id,LocalDate fecha) {
 		if(id == null) {
@@ -178,8 +205,8 @@ public class Sistema {
 	 * Actualiza la hora de un recorrido 
 	 * @param id identificador del recorrido
 	 * @param hora hora nueva del recorrido
-	 * @throws IllegalArgumentException cuando localizador es nulo
-	 * @throws IllegalArgumentException cuando hora es nula
+	 * @throws IllegalStateException cuando identificador es nulo
+	 * @throws IllegalStateException cuando hora es nula
 	 */
 	public void actualizarHoraRecorrido(String id,LocalTime hora) {
 		if(id == null) {
@@ -279,10 +306,14 @@ public class Sistema {
 	/**
 	 * Añade un billete al arraylist de billetes
 	 * @param billete billete a añadir al arraylists
-	 *@throws IllegalArgumentException si el billete es nulo
+	 * @throws IllegalArgumentException si el billete es nulo
 	 */
 	public void añadirBillete(Billete billete) {	
-
+		if(billete == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		billetes.add(billete);
 	}
 
 
