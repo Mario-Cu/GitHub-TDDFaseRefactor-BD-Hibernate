@@ -126,33 +126,6 @@ public class Sistema {
 		}
 		return indice;
 	}
-	
-	/**
-	 * Metodo privado que obtiene el recorrido a traves de su id
-	 * 
-	 */
-	private Recorrido getRecorridoPorId(String id) {
-		Recorrido solucion = null;
-		for(Recorrido item : recorridos) {
-			if(item.getId() == id) {
-				solucion = item;
-			}
-		}
-		return solucion;
-	}
-	/**
-	 * Metodo privado que obtiene el indice donde se encuentra el recorrido a traves de su id
-	 * 
-	 */
-	private int getIndexRecorridoPorId(String id) {
-		int indice = -1;
-		for(Recorrido item : recorridos) {
-			if(item.getId() == id) {
-				indice = recorridos.indexOf(item);
-			}
-		}
-		return indice;
-	}
 	/**
 	 * Metodo privado que obtiene el recorrido a traves de su id
 	 * 
@@ -282,13 +255,25 @@ public class Sistema {
 	* Metodo que devuelve el precio total de los billetes de un usuario
 	 * (Recordar que el precio de un billete de tren, tiene un 10% de descuento con respecto al precio del recorrido)
 	 * @param locUsr localizador del usuario
-	 * @throws IllegalStateException si el descuento del 10% en los billetes de tren no es aplicado
 	 * @throws IllegalArgumentException si el localizador de usuario es nulo
 	 * @return precio total de los billetes en forma de float
 	 */
 	public float obtenerPrecioTotal(String locUsr) {
-		
-		return 0;
+		if(locUsr == null) {
+			throw new IllegalArgumentException("El localizador del usuario no puede ser nulo");
+		}
+		float precioTotal = 0;
+		for(Billete item: billetes) {
+			if(item.getUsuario().getNif() == locUsr) {
+				if(item.getRecorrido().getMedioTransporte() == "tren") {
+					precioTotal = (float) (precioTotal + (0.9*item.getRecorrido().getPrecio()));
+				}else {
+					precioTotal = precioTotal + item.getRecorrido().getPrecio();
+				}
+				
+			}
+		}
+		return precioTotal;
 	}
 	
 	/**
@@ -299,8 +284,16 @@ public class Sistema {
 	 * 
 	 */
 	public ArrayList<Recorrido> getRecorridosPorFecha(LocalDate fecha) {
-		
-		return null;
+		if(fecha == null) {
+			throw new IllegalArgumentException("La fecha no puede ser nula");
+		}
+		ArrayList<Recorrido> recorridosEnFecha = new ArrayList<Recorrido>();
+		for(Recorrido item: recorridos) {
+			if(item.getFecha() == fecha) {
+				recorridosEnFecha.add(item);
+			}
+		}
+		return recorridosEnFecha;
 	}
 
 	/**

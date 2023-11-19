@@ -313,19 +313,6 @@ class SistemaTest {
 		});
 	}
 	
-	@Test	
-	void testObtenerPrecioTotalNoValidoDescuentoTrenNoAplicado() {
-		Sistema sistema = new Sistema();
-		Recorrido recorridoTren = new Recorrido("3","origen","destino","tren",5,fecha,hora,250,250,1);
-		sistema.añadirRecorrido(recorridoTren);
-		Billete billete = new Billete("LocNor1",recorridoTren,usuario);
-		sistema.comprarBilletes("LocNor1", usuario, recorridoTren, 1);
-		float precioTotal =sistema.obtenerPrecioTotal(usuario.getNif());
-		assertThrows(IllegalStateException.class, () ->{
-			assertEquals(5,precioTotal);
-			
-		});
-	}
 
 	@Test	
 	void testObtenerPrecioTotaDescuentoTrenAplicado() {
