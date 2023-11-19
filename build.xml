@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="practica2-grupo8" default="all" basedir=".">
+
+    <!-- Define properties -->
+    <property name="src.dir" value="src/main/java"/>
+    <property name="build.dir" value="target"/>
+    <property name="doc.dir" value="target/docs"/>
+    <property name="test.dir" value="src/test/java"/>
+
+    <!-- Define dependencies -->
+    <path id="classpath">
+        <!-- Add your dependencies here -->
+        <!-- Example: <pathelement path="path/to/dependency.jar"/> -->
+    </path>
+
+    <!-- Clean task -->
+    <target name="limpiar" description="Clean the project">
+        <delete dir="${build.dir}"/>
+        <delete dir="${doc.dir}"/>
+    </target>
+
+    <!-- Compile task -->
+    <target name="compilar" depends="limpiar" description="Compile the project">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath"/>
+    </target>
+
+    <!-- Documentation task -->
+    <target name="documentar" depends="compilar" description="Generate project documentation with Javadoc">
+        <mkdir dir="${doc.dir}"/>
+        <javadoc sourcepath="${src.dir}" destdir="${doc.dir}" classpathref="classpath"/>
+    </target>
+
+    <!-- Test tasks -->
+    <target name="ejecutarTestCobertura" depends="compilar" description="Run white-box tests for coverage">
+        <!-- Add your specific test execution commands here -->
+    </target>
+
+    <target name="ejecutarTestSinAislamiento" depends="compilar" description="Run tests without isolation">
+        <!-- Add your specific test execution commands here -->
+    </target>
+
+    <target name="ejecutarTestEnAislamiento" depends="compilar" description="Run tests with isolation">
+        <!-- Add your specific test execution commands here -->
+    </target>
+
+    <target name="ejecutarTest" depends="compilar" description="Run all tests">
+        <!-- Add your specific test execution commands here -->
+    </target>
+
+    <!-- Code coverage report task -->
+    <target name="obtenerInformeCobertura" depends="compilar" description="Generate code coverage reports">
+        <!-- Use the Jacoco Maven plugin to generate coverage reports -->
+        <!-- Example: <exec executable="mvn" dir="${basedir}">
+                     <arg value="clean test jacoco:report"/>
+                 </exec> -->
+    </target>
+
+    <!-- All task -->
+    <target name="all" depends="limpiar, compilar, documentar, ejecutarTestCobertura, ejecutarTestSinAislamiento, ejecutarTestEnAislamiento, ejecutarTest, obtenerInformeCobertura" description="Run all tasks"/>
+
+</project>

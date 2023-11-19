@@ -9,7 +9,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>2023-2024 practica 2 de TDS del grupo 8</name>
   <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://gitlab.inf.uva.es/marcobr/tds_practica2_grupo8/</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
