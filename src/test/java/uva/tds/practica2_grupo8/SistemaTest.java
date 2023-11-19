@@ -61,12 +61,11 @@ class SistemaTest {
 	@Test
 	void testComprarBilletesReservados(){
 		Sistema sistema = new Sistema();
-		ArrayList<Billete> billetesReservados = new ArrayList<Billete>();
+		sistema.añadirRecorrido(recorrido1);
 		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
-		billetesReservados.add(billetePrueba);
 		sistema.reservarBilletes("LocNorm", usuario, recorrido1, 1);
 		sistema.comprarBilletesReservados("LocNorm");
-		assertEquals(billetesReservados,sistema.getBilletes());
+		assertTrue(billetePrueba.equals(sistema.getBilletes().get(0)));
 	}
 	
 	@Test
@@ -286,12 +285,12 @@ class SistemaTest {
 	@Test
 	void testReservarBilletes() {
 		Sistema sistema = new Sistema();
+		sistema.añadirRecorrido(recorrido1);
 		sistema.reservarBilletes("LocNorm",usuario,recorrido1,1);
-		ArrayList<Billete> reservaBillete = new ArrayList<Billete>();
 		Billete billeteReservado = new Billete("LocNorm",recorrido1,usuario);
-		reservaBillete.add(billeteReservado);  
 		assertEquals(49,recorrido1.getPlazasDisponibles());
-		assertEquals(billeteReservado,sistema.getReservaBilletes("LocNorm"));
+		assertTrue(billeteReservado.equals(sistema.getBilletesReservados().get(0)));
+
 	}
 	
 	@Test
@@ -359,13 +358,13 @@ class SistemaTest {
 	@Test
 	void testReservarVariosBilletes() {
 		Sistema sistema = new Sistema();
-		ArrayList<Billete> reservaBilleteMultiple = new ArrayList<Billete>();
+		sistema.añadirRecorrido(recorrido1);
 		Billete reservaBillete = new Billete("LocNorm", recorrido1, usuario);
-		for(int i = 1; i<4; i++) {
-			reservaBilleteMultiple.add(reservaBillete);
-		}
 		sistema.reservarBilletes("LocNorm",usuario,recorrido1,3);
-		assertEquals(reservaBilleteMultiple,sistema.getReservaBilletes("LocNorm"));
+		assertTrue(reservaBillete.equals(sistema.getBilletesReservados().get(0)));
+		assertTrue(reservaBillete.equals(sistema.getBilletesReservados().get(1)));
+		assertTrue(reservaBillete.equals(sistema.getBilletesReservados().get(2)));
+
 	}
 	@Test
 	void testReservaBilletesNoValidaNumeroPlazasDisponiblesMenorQueMitadNumeroTotalPlazasAutobus() {
@@ -437,13 +436,13 @@ class SistemaTest {
 	@Test
 	void testAnularReserva() {
 		Sistema sistema = new Sistema();
-		ArrayList<Billete> reservaBilletes = new ArrayList<Billete>();
-		Billete billeteReservado = new Billete("LocNorm", recorrido1, usuario);
-		reservaBilletes.add(billeteReservado);
+		sistema.añadirRecorrido(recorrido1);
+		Billete billete = new Billete("LocNorm", recorrido1, usuario);
 		sistema.reservarBilletes("LocNorm",usuario,recorrido1,2);
 		sistema.anularReservaBilletes("LocNorm",1);
-		assertEquals(billeteReservado,sistema.getReservaBilletes("LocNorm"));
+		assertTrue(billete.equals(sistema.getBilletesReservados().get(0)));
 		assertEquals(49,recorrido1.getPlazasDisponibles());
+
 	}
 	@Test
 	void testAnularReservaNoValidaBilleteNoPreviamenteReservados() {
