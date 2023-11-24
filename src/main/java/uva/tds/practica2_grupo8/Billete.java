@@ -1,7 +1,10 @@
 package uva.tds.practica2_grupo8;
 
 /**
- * Clase que representa un billete.
+ * Clase que representa un Billete.
+ * @author marcobr (Mario Cobreros del Caz)
+ * @author mardano (Mario Danov Ivanov)
+ * 
  */
 public class Billete {
 	String localizador;

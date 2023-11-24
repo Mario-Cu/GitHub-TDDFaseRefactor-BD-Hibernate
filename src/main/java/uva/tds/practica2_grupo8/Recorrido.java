@@ -3,9 +3,24 @@ package uva.tds.practica2_grupo8;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
+/**
+ * Clase que representa un Recorrido.
+ * @author marcobr (Mario Cobreros del Caz)
+ * @author mardano (Mario Danov Ivanov)
+ */
 public class Recorrido {
 
+	String id;
+	String origen;
+	String destino;
+	String medioTransporte;
+	float precio;
+	LocalDate fecha;
+	LocalTime hora;
+	int plazasDisponibles;
+	int plazasTotales;
+	int minutos;
+	
 	/**
 	 * Creacion de un recorrido
 	 * @author mardano (Mario Danov Ivanov)
@@ -27,17 +42,6 @@ public class Recorrido {
 	 * @throws IllegalArgumentException si el numero de plazas es menor que 1 y mayor 50 en un autobus y menor que 1 y mayor que 250 en un tren.
 	 * @throws IllegalArgumentException si la duracion en minutos es negativa.
 	 */
-	
-	String id;
-	String origen;
-	String destino;
-	String medioTransporte;
-	float precio;
-	LocalDate fecha;
-	LocalTime hora;
-	int plazasDisponibles;
-	int plazasTotales;
-	int minutos;
 	
 	public Recorrido (String id, String origen, String destino, String medioTransporte, float precio,LocalDate fecha,LocalTime hora,int plazasDisponibles, int plazasTotales, int minutos) throws IllegalArgumentException  {
 		if(id == null) {
@@ -166,7 +170,7 @@ public class Recorrido {
 	
 	/**
 	 * Actualiza la fecha del recorrido 
-	 * @return fecha del recorrido
+	 * @param fecha Fecha a la que queremos actualizar
 	 */
 	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
@@ -174,23 +178,29 @@ public class Recorrido {
 	
 	/**
 	 * Actualiza la hora del recorrido
-	 * @return hora del recorrido
+	 * @param hora Hora a la que queremos actualizar
 	 */
 	public void setHora(LocalTime hora) {
 		this.hora = hora;
 	}
 
 	/**
-	 * Devuelve las plazas dispnibles del recorrido
+	 * Devuelve las plazas disponibles del recorrido
 	 * @return plazas disponibles del recorrido
 	 */
 	public int getPlazasDisponibles() {
 		return plazasDisponibles;
 	}
 	
+	/**
+	 * Actualiza las plazas disponibles del recorrido
+	 * @param plazasDisponiblesNuevas plazas a las que queremos actualizar
+	 */
 	public void setPlazasDisponibles(int plazasDisponiblesNuevas) {
 		this.plazasDisponibles = plazasDisponiblesNuevas;
 	}
+	
+	
 	/**
 	 * Devuelve las plazas totales del recorrido
 	 * @return plazas totales del recorrido

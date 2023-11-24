@@ -3,17 +3,22 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+
+/**
+ * Clase que representa un sistema.
+ * @author marcobr (Mario Cobreros del Caz)
+ * @author mardano (Mario Danov Ivanov)
+ * 
+ */
+
 public class Sistema {
 	ArrayList<Recorrido> recorridos;
 	ArrayList<Billete> billetes;
 	ArrayList<Billete> billetesReservados;
 	
 	/**
-	 * @author marcobr (Mario Cobreros del Caz)
-	 * @author mardano (Mario Danov Ivanov)
-	 * Clase que representa un sistema.
+	 * Constructor de la clase sistema
 	 */
-
 	public Sistema() {
 		this.recorridos = new ArrayList<Recorrido>();
 		this.billetes  = new ArrayList<Billete>();
@@ -76,7 +81,7 @@ public class Sistema {
 	
 	/**
 	 * Añade un recorrido al arraylist de recorridos
-	 * @param recorrido 
+	 * @param recorrido Recorrido que quieres añadir al sistema
 	 * @throws IllegalStateException cuando se añade un recorrido con un identificador igual a otro
 	 * @throws IllegalArgumentException cuando se añade un recorrido nulo
 	 */
@@ -96,7 +101,8 @@ public class Sistema {
 	
 	
 	/**
-	 * Elimina un recorrido del arraylist de recorridos	 
+	 * Elimina un recorrido del arraylist de recorridos	
+	 * @param id Identificador del recorridow
 	 * @throws IllegalStateException cuando se elimina un recorrido con billetes asociados
 	 * @throws IllegalArgumentException cuando se intenta eliminar un recorrido con identificador nulo
 	 */
