@@ -140,32 +140,7 @@ public class Sistema {
 		}
 		return solucion;
 	}
-	/**
-	 * Metodo privado que obtiene el indice donde se encuentra el recorrido a traves de su id
-	 * 
-	 */
-	private int getIndexRecorridoPorId(String id) {
-		int indice = -1;
-		for(Recorrido item : recorridos) {
-			if(item.getId() == id) {
-				indice = recorridos.indexOf(item);
-			}
-		}
-		return indice;
-	}
-	/**
-	 * Metodo privado que obtiene el recorrido a traves de su id
-	 * 
-	 */
-	private Recorrido getRecorridoPorId(String id) {
-		Recorrido solucion = null;
-		for(Recorrido item : recorridos) {
-			if(item.getId() == id) {
-				solucion = item;
-			}
-		}
-		return solucion;
-	}
+
 	/**
 	 * Metodo privado que obtiene el billete a traves de su localizador
 	 */
