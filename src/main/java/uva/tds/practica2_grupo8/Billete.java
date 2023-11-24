@@ -43,7 +43,7 @@ public class Billete {
 	
 	/**
 	 * Metodo que devuelve el localizador del billete
-	 * @return nombre del usuario
+	 * @return localizador del billete
 	 */
 	public String getLocalizador() {
 		return this.localizador;
@@ -51,7 +51,7 @@ public class Billete {
 
 	/**
 	 * Metodo que devuelve el recorrido del billete
-	 * @return nombre del usuario
+	 * @return recorrido del billete
 	 */
 	public Recorrido getRecorrido() {
 		return this.recorrido;
@@ -59,7 +59,7 @@ public class Billete {
 
 	/**
 	 * Metodo que devuelve el usuario del billete
-	 * @return nombre del usuario
+	 * @return usuario del billete
 	 */
 	public Usuario getUsuario() {
 		return this.usuario;

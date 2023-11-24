@@ -28,7 +28,7 @@
 	</target>
 	<target name="ejecutarTests" depends="compilar">
 		<exec dir="." executable="${executable}">
-			<arg line="${arglineIni} mvn -Dtest=MonederoTest test${arglineEnd}" />
+			<arg line="${arglineIni} mvn -Dtest=BilleteTest test${arglineEnd}" />
 		</exec>
 	</target>
 	<target name="ejecutarTests2" depends="compilar">

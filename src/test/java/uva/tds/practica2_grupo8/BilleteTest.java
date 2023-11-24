@@ -9,7 +9,7 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BIlleteTest {
+class BilleteTest {
 	private Usuario usrNormal;
 	private Recorrido recorridoNormal;
 	private LocalDate fecha;
