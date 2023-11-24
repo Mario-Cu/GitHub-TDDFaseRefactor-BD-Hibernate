@@ -1,62 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="practica2-grupo8" default="all" basedir=".">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="all" name="practica2-grupo8">
 
-    <!-- Define properties -->
-    <property name="src.dir" value="src/main/java"/>
-    <property name="build.dir" value="target"/>
-    <property name="doc.dir" value="target/docs"/>
-    <property name="test.dir" value="src/test/java"/>
+	<condition property="isWindows">
+		<os family="windows" />
+	</condition>
+	<condition property="isUnix">
+		<os family="unix" />
+	</condition>
 
-    <!-- Define dependencies -->
-    <path id="classpath">
-        <!-- Add your dependencies here -->
-        <!-- Example: <pathelement path="path/to/dependency.jar"/> -->
-    </path>
+	<target name="all" depends="documentar,obtenerInformeCobertura">
 
-    <!-- Clean task -->
-    <target name="limpiar" description="Clean the project">
-        <delete dir="${build.dir}"/>
-        <delete dir="${doc.dir}"/>
-    </target>
+	</target>
+	<target name="compilar" depends="limpiar">
+		<exec dir="." executable="${executable}">
+			<arg line="${arglineIni} mvn test-compile${arglineEnd}" />
+		</exec>
+	</target>
+	<target name="limpiar" depends="os-check">
+		<exec dir="." executable="${executable}">
+			<arg line="${arglineIni} mvn clean${arglineEnd}" />
+		</exec>
+	</target>
+	<target name="documentar" description="generate documentation" depends="compilar">
+		<exec dir="." executable="${executable}">
+			<arg line="${arglineIni} mvn javadoc:javadoc${arglineEnd}" />
+		</exec>
+	</target>
+	<target name="ejecutarTests" depends="compilar">
+		<exec dir="." executable="${executable}">
+			<arg line="${arglineIni} mvn -Dtest=MonederoTest test${arglineEnd}" />
+		</exec>
+	</target>
+	<target name="ejecutarTests2" depends="compilar">
+		<exec dir="." executable="${executable}">
+			<arg line="${arglineIni} mvn -Dtest=MonedaTest test${arglineEnd}" />
+		</exec>
+	</target>
+	<target name="obtenerInformeCobertura" depends="compilar">
+		<exec dir="." executable="${executable}">
+			<arg line="${arglineIni} mvn jacoco:prepare-agent test jacoco:report${arglineEnd}" />
+		</exec>
+	</target>
+	<target name="prueba" depends="compilar">
+		<exec dir="." executable="${executable}">
+			<arg line="${arglineIni} mvn jacoco:prepare-agent test jacoco:report${arglineEnd}" />
+		</exec>
+	</target>
+	<target name="os-check" description="Determina sistema operativo y asigna executable y argline" depends="os-check-unix, os-check-win" />
+	<target name="os-check-unix" if="isUnix">
+		<property name="executable" value="sh" />
+		<property name="arglineIni" value="-c '" />
+		<property name="arglineEnd" value="'" />
+	</target>
+	<target name="os-check-win" if="isWindows">
+		<property name="executable" value="cmd" />
+		<property name="arglineIni" value="/c " />
 
-    <!-- Compile task -->
-    <target name="compilar" depends="limpiar" description="Compile the project">
-        <mkdir dir="${build.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath"/>
-    </target>
-
-    <!-- Documentation task -->
-    <target name="documentar" depends="compilar" description="Generate project documentation with Javadoc">
-        <mkdir dir="${doc.dir}"/>
-        <javadoc sourcepath="${src.dir}" destdir="${doc.dir}" classpathref="classpath"/>
-    </target>
-
-    <!-- Test tasks -->
-    <target name="ejecutarTestCobertura" depends="compilar" description="Run white-box tests for coverage">
-        <!-- Add your specific test execution commands here -->
-    </target>
-
-    <target name="ejecutarTestSinAislamiento" depends="compilar" description="Run tests without isolation">
-        <!-- Add your specific test execution commands here -->
-    </target>
-
-    <target name="ejecutarTestEnAislamiento" depends="compilar" description="Run tests with isolation">
-        <!-- Add your specific test execution commands here -->
-    </target>
-
-    <target name="ejecutarTest" depends="compilar" description="Run all tests">
-        <!-- Add your specific test execution commands here -->
-    </target>
-
-    <!-- Code coverage report task -->
-    <target name="obtenerInformeCobertura" depends="compilar" description="Generate code coverage reports">
-        <!-- Use the Jacoco Maven plugin to generate coverage reports -->
-        <!-- Example: <exec executable="mvn" dir="${basedir}">
-                     <arg value="clean test jacoco:report"/>
-                 </exec> -->
-    </target>
-
-    <!-- All task -->
-    <target name="all" depends="limpiar, compilar, documentar, ejecutarTestCobertura, ejecutarTestSinAislamiento, ejecutarTestEnAislamiento, ejecutarTest, obtenerInformeCobertura" description="Run all tasks"/>
-
+		<property name="arglineEnd" value="" />
+	</target>
 </project>
+
