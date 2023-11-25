@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class UsuarioTest {
@@ -17,7 +18,7 @@ class UsuarioTest {
 	void setUp() {
 		this.usrNormal = new Usuario("33036946E","UsuarioNormal");
 	}
-	
+	@Tag("Cobertura")
 	@Test
 	void testConstructorNIFNoValidoLetraDiferenteALaAsociada() {
 		assertThrows(IllegalArgumentException.class,()->{
@@ -65,13 +66,13 @@ class UsuarioTest {
 		Usuario usr2 = new Usuario("33036946E","UsuarioNormal");
 		assertTrue(usrNormal.equals(usr2));
 	}
-
+	@Tag("Cobertura")
 	@Test
 	void testConstructorUsuarioNoIgualaOtroPorNIF() {
 		Usuario usr2 = new Usuario("56508732D","UsuarioNormal");
 		assertFalse(usrNormal.equals(usr2));
 	}
-
+	
 	@Test
 	void testConstructorUsuarioNoValidoNIFNulo() {
 		assertThrows(IllegalArgumentException.class,()->{
