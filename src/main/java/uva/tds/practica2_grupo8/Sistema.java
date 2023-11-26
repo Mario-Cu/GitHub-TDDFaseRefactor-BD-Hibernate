@@ -2,6 +2,7 @@ package uva.tds.practica2_grupo8;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Sistema {
 	ArrayList<Recorrido> recorridos;
@@ -257,14 +258,17 @@ public class Sistema {
 		int indexRecorridoEnArrayList = getIndexRecorridoPorId(recorrido.getId());
 		recorridos.get(indexRecorridoEnArrayList).setPlazasDisponibles(recorrido.getPlazasDisponibles()+numBilletes);
 		
-		int j = numBilletes;
-		for(Billete item: billetes) {
-			if(item.getLocalizador() == loc) {
-				billetes.remove(item);
-				j--;
-				if(j == 0)
-					break;
+		ArrayList<Integer> indicesBilletesDevueltos = new ArrayList<Integer>();
+		int j =0;
+		for(int i =0;i<billetes.size();i++) {
+			if(j < numBilletes && billetes.get(i).getLocalizador() == loc) {
+				indicesBilletesDevueltos.add(i);
+				j++;
 			}
+		}
+		Collections.sort(indicesBilletesDevueltos, Collections.reverseOrder());
+		for(int i : indicesBilletesDevueltos) {
+			billetes.remove(i);
 		}
 	}
 
@@ -384,14 +388,17 @@ public class Sistema {
 		int indexRecorridoEnArrayList = getIndexRecorridoPorId(recorrido.getId());
 		recorridos.get(indexRecorridoEnArrayList).setPlazasDisponibles(recorrido.getPlazasDisponibles()+numBilletes);
 		
-		int j = numBilletes;
-		for(Billete item: billetes) {
-			if(item.getLocalizador() == Localizador) {
-				billetes.remove(item);
-				j--;
-				if(j == 0)
-					break;
+		ArrayList<Integer> indicesBilletesAnulados = new ArrayList<Integer>();
+		int j =0;
+		for(int i =0;i<billetesReservados.size();i++) {
+			if(j < numBilletes && billetesReservados.get(i).getLocalizador() == Localizador) {
+				indicesBilletesAnulados.add(i);
+				j++;
 			}
+		}
+		Collections.sort(indicesBilletesAnulados, Collections.reverseOrder());
+		for(int i : indicesBilletesAnulados) {
+			billetesReservados.remove(i);
 		}
 
 	}

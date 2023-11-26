@@ -84,7 +84,8 @@ public class Recorrido {
 			if((plazasDisponibles<0)||(plazasDisponibles>plazasTotales)) {
 				throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
 			}
-		}else if(medioTransporte.equals("tren")) {
+		}
+		if(medioTransporte.equals("tren")) {
 			if((plazasDisponibles<0)||(plazasDisponibles>plazasTotales)) {
 				throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
 			}
@@ -93,7 +94,8 @@ public class Recorrido {
 			if((plazasTotales<1)||(plazasTotales>50)) {
 				throw new IllegalArgumentException("El numero de plazas totales es erroneo");
 			}
-		}else if(medioTransporte.equals("tren")) {
+		}
+		if(medioTransporte.equals("tren")) {
 			if((plazasTotales<1)||(plazasTotales>250)) {
 				throw new IllegalArgumentException("El numero de plazas totales es erroneo");
 			}
