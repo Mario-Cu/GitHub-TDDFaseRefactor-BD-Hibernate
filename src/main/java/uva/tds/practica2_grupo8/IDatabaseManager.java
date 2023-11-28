@@ -124,6 +124,6 @@ public interface IDatabaseManager {
 	 * @param idUsuario El identificador del usuario
 	 * @return La lista de billetes asociados al usuario o lista vacia si no existe ninguno
 	 */
-	public ArrayList<Usuario> getBilletesDeUsuario(String idUsuario);
+	public ArrayList<Billete> getBilletesDeUsuario(String idUsuario);
 
 }
