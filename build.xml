@@ -63,8 +63,14 @@
 			<arg line="${arglineIni} mvn -Dtest=SistemaPersistenciaTest test${arglineEnd}" />
 		</exec>
 	</target>
+	
+	<target name="ejecutarTest" description="Ejecuta todos los tests" depends="compilar">
+		<exec dir="." executable="${executable}">
+			<arg line="${arglineIni} mvn test${arglineEnd}" />
+		</exec>
+	</target>
 	-->
-	<target name="obtenerInformeCobertura" depends="compilar">
+	<target name="obtenerInformeCobertura" description="Obtiene los informes de cobertura con jacoco" depends="compilar">
 		<exec dir="." executable="${executable}">
 			<arg line="${arglineIni} mvn jacoco:prepare-agent test jacoco:report${arglineEnd}" />
 		</exec>
