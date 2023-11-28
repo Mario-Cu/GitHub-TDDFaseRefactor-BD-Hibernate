@@ -1,9 +1,7 @@
 package uva.tds.practica2_grupo8;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Clase que define los métodos necesarios para gestionar usuarios, recorridos y billetes a traves de una interfaz 
@@ -14,7 +12,7 @@ public class SistemaPersistencia {
 	private IDatabaseManager databaseManager;
 	
 	/**
-	 * Creación del Sistema
+	 * Creación del SistemaPersistencia
 	 */
 	public SistemaPersistencia(IDatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
@@ -108,7 +106,7 @@ public class SistemaPersistencia {
 		for(int i=0; i < numBilletes; i++) {
 			billeteComprado = new Billete(loc,rec,usr);
 			try{
-				this.databaseManager.addBillete(billeteComprado);
+				this.databaseManager.comprarBillete(billeteComprado);
 			}catch(IllegalArgumentException e1) {
 				throw e1;
 			}
@@ -136,8 +134,94 @@ public class SistemaPersistencia {
 
 	}
 	
+	
 	/**
-	* Metodo que devuelve el precio total de los billetes de un usuario
+	 * Metodo que permite comprar billetesReservados
+	 * @param loc Localizador de los billetes
+	 * @throws IllegalArgumentException cuando localizador es nulo
+	 */
+	public void comprarBilletesReservados(String loc) {
+		if(loc == null)
+			throw new IllegalArgumentException("El localizador no puede ser nulo");
+		for(Billete item : this.databaseManager.getBilletesReservados(loc)) {
+			if(item.getLocalizador() == loc) {
+				try {
+					this.databaseManager.comprarBilleteReservado(item);
+				}catch(IllegalArgumentException e1) {
+					throw e1;
+				}
+			}
+		}
+
+
+	}
+	
+	/**
+	 * Reserva un billete 
+	 * @param Localizador localizador del billete reservado 
+	 * @param usuario usuario que realiza la reserva
+	 * @param recorrido recorrido del que se reveran billetes 
+	 * @param numBilletes cantidad de billetes reservados
+	 * @throws IllegalStateException si se intentan reservar mas plazas que las disponibles
+	 * @throws IllegalStateException si se intenta reservar cuando el numero de plazas disponibles es menor que la mitad del numero de plazas totales
+	 * @throws IllegalArgumentException si el localizador es nulo
+	 * @throws IllegalArgumentException si el usuario es nulo
+	 * @throws IllegalArgumentException si el recorrido es nulo
+	 * @throws IllegalArgumentException si el numero de billetes es menor que el limite inferior
+	 */
+	public void reservarBilletes(String Localizador,Usuario usuario,Recorrido recorrido,int numBilletes) {
+		if(Localizador == null)
+			throw new IllegalArgumentException("El localizador no puede ser nulo");
+		if(usuario == null)
+			throw new IllegalArgumentException("El usuario no puede ser nulo");
+		if(recorrido == null)
+			throw new IllegalArgumentException("El recorrido no puede ser nulo");
+		if(numBilletes < 1)
+			throw new IllegalArgumentException("El numero de billetes tiene que ser al menos 1");
+		if(numBilletes > recorrido.getPlazasDisponibles())
+			throw new IllegalStateException("El numero de billetes supera las plazas disponiles");
+		if(recorrido.getPlazasDisponibles() < recorrido.getPlazasTotales()/2)
+			throw new IllegalStateException("Eñ numero de plazas disponibles es menor que la mitad de plazas totales");
+		if(this.databaseManager.getRecorrido(recorrido.getId()) == null)
+			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
+
+		Billete billeteReservado;
+		for(int i=0; i < numBilletes; i++) {
+			billeteReservado = new Billete(Localizador,recorrido,usuario);
+			try {
+				this.databaseManager.reservarBillete(billeteReservado);
+			}catch(IllegalArgumentException e1) {
+				throw e1;
+			}
+		}
+	}	
+	
+	/**
+	 * Anula la reserva de billetes reservados
+	 * @param Localizador localizador de los billetes reservados
+	 * @param numBilletes cantidad de billetes reservados a anular
+	 * @throws IllegalStateException si los billetes no han sido previamente reservados
+	 * @throws IllegalArgumentException si el localizador es nulo
+	 */
+	public void anularReservaBilletes(String Localizador, int numBilletes) {
+		if(Localizador == null)
+			throw new IllegalArgumentException("El localizador no puede ser nulo");
+		if(numBilletes < 1)
+			throw new IllegalArgumentException("El numero de billetes no puede ser menor que 1");
+		ArrayList<Billete> billetesReservados = this.databaseManager.getBilletesReservados(Localizador);
+		for(int i=0; i < numBilletes; i++) {
+			try{
+				this.databaseManager.anularReserva(billetesReservados.get(i));
+			}catch(IllegalArgumentException e1) {
+				throw e1;
+			}
+		}
+
+	}
+	
+	
+	 /**
+	 * Metodo que devuelve el precio total de los billetes de un usuario
 	 * (Recordar que el precio de un billete de tren, tiene un 10% de descuento con respecto al precio del recorrido)
 	 * @param locUsr localizador del usuario
 	 * @throws IllegalArgumentException si el localizador de usuario es nulo
