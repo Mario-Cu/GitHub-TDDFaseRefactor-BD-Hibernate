@@ -6,6 +6,8 @@ import java.util.ArrayList;
 /**
  * Clase que define los métodos necesarios para gestionar usuarios, recorridos y billetes a traves de una interfaz 
  * en una base de datos
+ * @author marcobr (Mario Cobreros del Caz)
+ * @author mardano (Mario Danov Ivanov)
  */
 public class SistemaPersistencia {
 
@@ -16,6 +18,14 @@ public class SistemaPersistencia {
 	 */
 	public SistemaPersistencia(IDatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
+	}
+	
+	/**
+	 * Devuelve el arraylist que guardara los recorridos
+	 * @return arraylist que guardara los recorridos
+	 */
+	public ArrayList<Recorrido> getRecorridos(){
+		return this.databaseManager.getRecorridos();
 	}
 
 	/**
@@ -39,7 +49,7 @@ public class SistemaPersistencia {
 	
 	/**
 	 * Elimina un recorrido del arraylist de recorridos	
-	 * @param id Identificador del recorridow
+	 * @param id Identificador del recorrido
 	 * @throws IllegalStateException cuando se elimina un recorrido con billetes asociados
 	 * @throws IllegalArgumentException cuando se intenta eliminar un recorrido con identificador nulo
 	 */
