@@ -1,8 +1,12 @@
 package uva.tds.practica2_grupo8;
 
 /**
- * Clase que representa un usuario.
+ * Clase que representa un Usuario.
+ * @author marcobr (Mario Cobreros del Caz)
+ * @author mardano (Mario Danov Ivanov)
+ * 
  */
+
 public class Usuario {
 	String nif;
 	String nombre;
