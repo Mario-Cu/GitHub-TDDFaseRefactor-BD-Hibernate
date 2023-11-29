@@ -35,11 +35,6 @@ public class SistemaPersistencia {
 	 * @throws IllegalArgumentException cuando se añade un recorrido nulo
 	 */
 	public void añadirRecorrido(Recorrido recorrido) {
-		for(Recorrido item : this.databaseManager.getRecorridos()) {
-			if(item.getId() == recorrido.getId()){
-				throw new IllegalStateException("El recorrido que intentas añadir ya existe en el sistema");
-			}
-		}
 		try {
 			this.databaseManager.addRecorrido(recorrido);
 		} catch (IllegalArgumentException e1) {
