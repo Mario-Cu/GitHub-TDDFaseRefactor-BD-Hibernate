@@ -29,6 +29,14 @@ public class SistemaPersistencia {
 	}
 
 	/**
+	 * Devuelve el arraylist que guardara los billetes
+	 * @return arraylist que guardara los billetes
+	 */
+	public ArrayList<Billete> getBilletes(String loc){
+		return this.databaseManager.getBilletes(loc);
+	}
+	
+	/**
 	 * Añade un recorrido al arraylist de recorridos
 	 * @param recorrido Recorrido que quieres añadir al sistema
 	 * @throws IllegalStateException cuando se añade un recorrido con un identificador igual a otro
@@ -39,9 +47,12 @@ public class SistemaPersistencia {
 			this.databaseManager.addRecorrido(recorrido);
 		} catch (IllegalArgumentException e1) {
 			throw e1;
+		} catch(IllegalStateException e2){
+			throw e2;
 		}
 	}
 	
+
 	/**
 	 * Elimina un recorrido del arraylist de recorridos	
 	 * @param id Identificador del recorrido
@@ -61,7 +72,7 @@ public class SistemaPersistencia {
 		}
 
 	}
-	
+
 	/**
 	 * Actualiza el recorrido cuyo identificador coincida con el proporcionado. 
 	 * @param recorrido El recorrido con los datos a actualizar
@@ -69,13 +80,12 @@ public class SistemaPersistencia {
 	 * @throws IllegalStateException si no existe un recorrido con el identificador indicado en recorrido
 	 */
 	public void actualizarRecorrido(Recorrido recorrido) {
-		if(this.databaseManager.getRecorrido(recorrido.getId()) == null){
-			throw new IllegalStateException("El recorrido que intentas actualizar no existe en el sistema");
-		}
 		try {
 			this.databaseManager.actualizarRecorrido(recorrido);
 		} catch (IllegalArgumentException e1) {
 			throw e1;
+		} catch (IllegalStateException e2) {
+			throw e2;
 		}
 	}
 	
@@ -93,25 +103,18 @@ public class SistemaPersistencia {
 	 * @throws IllegalArgumentException cuando el numero de plazas del recorrido no tiene suficientes plazas libres
 	 * @throws IllegalStateException cuando el recorrido no existe en el sistema
 	 */
-	public void comprarBilletes(String loc, Usuario usr, Recorrido rec, int numBilletes) {
-		if(loc == null)
-			throw new IllegalArgumentException("El localizador no puede ser nulo"); 
-		if(usr == null) 
-			throw new IllegalArgumentException("El usuario no puede ser nulo");
-		if(rec == null)
-			throw new IllegalArgumentException("El recorrido no puede ser nulo");
+	public void añadirBilletes(Billete billete, int numBilletes) {
+		
 		if(numBilletes < 1)
 			throw new IllegalArgumentException("Tiene que comprarse al menos un billete");
-		if(numBilletes > rec.getPlazasDisponibles())
+		if(numBilletes > billete.getRecorrido().getPlazasDisponibles())
 			throw new IllegalArgumentException("No se pueden comprar mas billetes de los disponibles");
-		if(this.databaseManager.getRecorrido(rec.getId()) == null)
+		if(this.databaseManager.getRecorrido(billete.getRecorrido().getId()) == null)
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		
-		Billete billeteComprado;
 		for(int i=0; i < numBilletes; i++) {
-			billeteComprado = new Billete(loc,rec,usr);
 			try{
-				this.databaseManager.comprarBillete(billeteComprado);
+				this.databaseManager.addBillete(billete);
 			}catch(IllegalArgumentException e1) {
 				throw e1;
 			}
@@ -140,26 +143,6 @@ public class SistemaPersistencia {
 	}
 	
 	
-	/**
-	 * Metodo que permite comprar billetesReservados
-	 * @param loc Localizador de los billetes
-	 * @throws IllegalArgumentException cuando localizador es nulo
-	 */
-	public void comprarBilletesReservados(String loc) {
-		if(loc == null)
-			throw new IllegalArgumentException("El localizador no puede ser nulo");
-		for(Billete item : this.databaseManager.getBilletesReservados(loc)) {
-			if(item.getLocalizador() == loc) {
-				try {
-					this.databaseManager.comprarBilleteReservado(item);
-				}catch(IllegalArgumentException e1) {
-					throw e1;
-				}
-			}
-		}
-
-
-	}
 	
 	/**
 	 * Reserva un billete 
@@ -265,4 +248,5 @@ public class SistemaPersistencia {
 		}
 		return this.databaseManager.getRecorridos(fecha);
 	}
+
 }

@@ -90,34 +90,6 @@ public interface IDatabaseManager {
 	 */
 	public void addBillete(Billete billete);
 	/**
-	 * METODO ADICIONAL: Añade un billete a la lista y reduce las plazas en los recorridos asociados
-	 * @param billete El billete a comprar
-	 * @throws IllegalArgumentException si billete es nulo
-	 * 
-	 */
-	public void comprarBillete(Billete billete);
-	/**
-	 * METODO ADICIONAL: Reserva un billete y lo añade a billetesReservados y reduce las plazas disponibles en el recorrido asociado
-	 * @param billete El billete a añadir
-	 * @throws IllegalArgumentException si billete es nulo
-	 * 
-	 */
-	public void reservarBillete(Billete billete);
-	/**
-	 * METODO ADICIONAL: Elimina un billete de la lista de billetesReservados y aumenta las plazas disponibles en el recorrido asociado
-	 * @param billete El billete a eliminar
-	 * @throws IllegalArgumentException si billete es nulo
-	 * 
-	 */
-	public void anularReserva(Billete billete);
-	/**
-	 * METODO ADICIONAL: Añade un billete reservado a la lista y elimina los billetes comprados de la lista de billetes reservados
-	 * @param billete El billete a añadir
-	 * @throws IllegalArgumentException si billete es nulo
-	 * 
-	 */
-	public void comprarBilleteReservado(Billete billete);
-	/**
 	 * Elimina los billetes asociados a localizadorBillete. Si no existen billetes con el localizador indicado
 	 * no se produce ningún cambio en el sistema
 	 * @param localizadorBillete El localizador de los billetes a eliminar
@@ -140,13 +112,6 @@ public interface IDatabaseManager {
 	 * Si no existe ninguno, se devuelve una lista vacía
 	 */
 	public ArrayList<Billete> getBilletes(String localizadorBilletes);
-	/**
-	 * METODO ADICIONAL: Devuelve los billetes reservados con el localizador indicado por localizadorBilletes
-	 * @param localizadorBilletes El localizador de los billetes a obtener. 
-	 * @return La lista de billetes reservados con el localizador indicado por localizadorBilletes. 
-	 * Si no existe ninguno, se devuelve una lista vacía
-	 */
-	public ArrayList<Billete> getBilletesReservados(String localizadorBilletes);
 	/**
 	 * Devuelve los billetes asociados a un recorrido
 	 * @param idRecorrido El identificador del recorrido
