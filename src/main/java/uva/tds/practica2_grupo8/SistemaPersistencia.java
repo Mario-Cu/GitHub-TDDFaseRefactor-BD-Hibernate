@@ -157,30 +157,24 @@ public class SistemaPersistencia {
 	 * @throws IllegalArgumentException si el recorrido es nulo
 	 * @throws IllegalArgumentException si el numero de billetes es menor que el limite inferior
 	 */
-	public void reservarBilletes(String Localizador,Usuario usuario,Recorrido recorrido,int numBilletes) {
-		if(Localizador == null)
-			throw new IllegalArgumentException("El localizador no puede ser nulo");
-		if(usuario == null)
-			throw new IllegalArgumentException("El usuario no puede ser nulo");
-		if(recorrido == null)
-			throw new IllegalArgumentException("El recorrido no puede ser nulo");
+	public void reservarBilletes(Billete billete,int numBilletes) {
+		
 		if(numBilletes < 1)
-			throw new IllegalArgumentException("El numero de billetes tiene que ser al menos 1");
-		if(numBilletes > recorrido.getPlazasDisponibles())
-			throw new IllegalStateException("El numero de billetes supera las plazas disponiles");
-		if(recorrido.getPlazasDisponibles() < recorrido.getPlazasTotales()/2)
-			throw new IllegalStateException("Eñ numero de plazas disponibles es menor que la mitad de plazas totales");
-		if(this.databaseManager.getRecorrido(recorrido.getId()) == null)
-			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
-
-		Billete billeteReservado;
+			throw new IllegalArgumentException("Tiene que comprarse al menos un billete");
+		if(numBilletes > billete.getRecorrido().getPlazasDisponibles())
+			throw new IllegalArgumentException("No se pueden comprar mas billetes de los disponibles");
+		if(this.databaseManager.getRecorrido(billete.getRecorrido().getId()) != null) {
+			
+		
 		for(int i=0; i < numBilletes; i++) {
-			billeteReservado = new Billete(Localizador,recorrido,usuario);
-			try {
-				this.databaseManager.reservarBillete(billeteReservado);
+			try{
+				this.databaseManager.addBillete(billete);
+				billete.setEstado("Reservado");
 			}catch(IllegalArgumentException e1) {
 				throw e1;
 			}
+		}}else {
+			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		}
 	}	
 	
@@ -196,14 +190,10 @@ public class SistemaPersistencia {
 			throw new IllegalArgumentException("El localizador no puede ser nulo");
 		if(numBilletes < 1)
 			throw new IllegalArgumentException("El numero de billetes no puede ser menor que 1");
-		ArrayList<Billete> billetesReservados = this.databaseManager.getBilletesReservados(Localizador);
-		for(int i=0; i < numBilletes; i++) {
-			try{
-				this.databaseManager.anularReserva(billetesReservados.get(i));
-			}catch(IllegalArgumentException e1) {
-				throw e1;
-			}
-		}
+
+		this.databaseManager.eliminarBilletes(Localizador);
+			
+		
 
 	}
 	
@@ -222,14 +212,13 @@ public class SistemaPersistencia {
 		float precioTotal = 0;
 		
 		for(Billete item: this.databaseManager.getBilletesDeUsuario(locUsr)) {
-			if(item.getUsuario().getNif() == locUsr) {
-				if(item.getRecorrido().getMedioTransporte() == "tren") {
-					precioTotal = (float) (precioTotal + (0.9*item.getRecorrido().getPrecio()));
-				}else {
-					precioTotal = precioTotal + item.getRecorrido().getPrecio();
-				}
-				
+
+			if(item.getRecorrido().getMedioTransporte() == "tren") {
+				precioTotal = (float) (precioTotal + (0.9*item.getRecorrido().getPrecio()));
+			}else {
+				precioTotal = precioTotal + item.getRecorrido().getPrecio();
 			}
+
 		}
 		return precioTotal;
 	}

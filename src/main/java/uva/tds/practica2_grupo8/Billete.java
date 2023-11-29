@@ -10,6 +10,7 @@ public class Billete {
 	String localizador;
 	Recorrido recorrido;
 	Usuario usuario;
+	String estado;
 	/**
 	 * Creacion de un billete
 	 * @author marcobr (Mario Cobreros del Caz)
@@ -41,6 +42,7 @@ public class Billete {
 		this.localizador = localizador;
 		this.recorrido = recorrido;
 		this.usuario = usuario;
+		this.estado = "default";
 		
 	}
 	
@@ -50,6 +52,22 @@ public class Billete {
 	 */
 	public String getLocalizador() {
 		return this.localizador;
+	}
+	
+	/**
+	 * Metodo que devuelve el estado del billete
+	 * @return localizador del billete
+	 */
+	public String getEstado() {
+		return this.estado;
+	}
+	
+	/**
+	 * Metodo que settea el estado del billete
+	 * @param estado del billete
+	 */
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	/**
