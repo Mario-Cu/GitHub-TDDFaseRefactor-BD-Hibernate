@@ -15,9 +15,16 @@ Practica: Fase GREEN con metodologia TDD + Tests de mocks para SistemaPersistenc
 - [x] Recorrido.java
 - [x] Sistema.java
 - [x] Usuario.java
+- [x] IDatabaseManager.java
 - [x] SistemaPersistencia.java
 
-## Autores
-* **Mario Cobreros del Caz -- Horas Dedicadas: 8h ** - [marcobr](https://gitlab.inf.uva.es/marcobr)
+## Code to test Ratio
 
-* **Mario Danov Ivanov -- Horas Dedicadas: 7h ** - [mardano](https://gitlab.inf.uva.es/mardano)
+* Lineas de codigo no comentadas: **651**
+* Lineas de test no comentadas: **1402**
+* Code to test ratio -> **1:2.15 (1 linea de codigo equivale a 2.15 lineas de tests)**
+
+## Autores
+* **Mario Cobreros del Caz -- Horas Dedicadas: 12h ** - [marcobr](https://gitlab.inf.uva.es/marcobr)
+
+* **Mario Danov Ivanov -- Horas Dedicadas: 10h ** - [mardano](https://gitlab.inf.uva.es/mardano)
