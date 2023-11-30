@@ -15,6 +15,7 @@ public class SistemaPersistencia {
 	
 	/**
 	 * Creación del SistemaPersistencia
+	 * @param databaseManager Interfaz de la BD
 	 */
 	public SistemaPersistencia(IDatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
@@ -30,6 +31,7 @@ public class SistemaPersistencia {
 
 	/**
 	 * Devuelve el arraylist que guardara los billetes
+	 * @param loc Localizador de los billetes
 	 * @return arraylist que guardara los billetes
 	 */
 	public ArrayList<Billete> getBilletes(String loc){
@@ -92,10 +94,8 @@ public class SistemaPersistencia {
 	
 	/**
 	 * Metodo para la compra de billetes en un sistema
-	 * @param loc Localizador del billete
-	 * @param usr Usuario que realiza la compra
-	 * @param rec Recorrido al cual esta asociado el billete
-	 * @param numBilletes Cantidad de billetes que busca comprar
+	 * @param billete Billete a añadir
+	 * @param numBilletes cantidad de billetes reservados a anular
 	 * @throws IllegalArgumentException cuando localizador es nulo
 	 * @throws IllegalArgumentException cuando usuario es nulo
 	 * @throws IllegalArgumentException cuando recorrido es nulo
@@ -146,10 +146,8 @@ public class SistemaPersistencia {
 	
 	/**
 	 * Reserva un billete 
-	 * @param Localizador localizador del billete reservado 
-	 * @param usuario usuario que realiza la reserva
-	 * @param recorrido recorrido del que se reveran billetes 
-	 * @param numBilletes cantidad de billetes reservados
+	 * @param  billete Billete a reservar
+	 * @param numBilletes cantidad de billetes reservados a anular
 	 * @throws IllegalStateException si se intentan reservar mas plazas que las disponibles
 	 * @throws IllegalStateException si se intenta reservar cuando el numero de plazas disponibles es menor que la mitad del numero de plazas totales
 	 * @throws IllegalArgumentException si el localizador es nulo

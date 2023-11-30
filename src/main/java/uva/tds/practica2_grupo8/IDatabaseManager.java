@@ -47,6 +47,7 @@ public interface IDatabaseManager {
 	
 	/**
 	 * Devuelve los recorridos en una fecha del sistema 
+	 * @param fecha Fecha de la que queremos los recorridos
 	 * @return Una lista con los recorridos en la fecha indicada del. Si no hay ninguno, se
 	 * devuelve una lista vacia
 	 */
