@@ -1,10 +1,16 @@
 package uva.tds.practica2_grupo8;
 
 /**
- * Clase que representa un billete.
+ * Clase que representa un Billete.
+ * @author marcobr (Mario Cobreros del Caz)
+ * @author mardano (Mario Danov Ivanov)
+ * 
  */
 public class Billete {
-
+	String localizador;
+	Recorrido recorrido;
+	Usuario usuario;
+	String estado;
 	/**
 	 * Creacion de un billete
 	 * @author marcobr (Mario Cobreros del Caz)
@@ -18,20 +24,93 @@ public class Billete {
 	 * @throws IllegalArgumentException si usuario es nulo
 	 */
 	public Billete(String localizador, Recorrido recorrido, Usuario usuario) {
+		if(localizador == null) {
+			throw new IllegalArgumentException("El localizador no puede ser nulo");
+		}
+		if(recorrido == null ) {
+			throw new IllegalArgumentException("El recorrido  no puede ser nulo");
+		}
+		if(usuario == null) {
+			throw new IllegalArgumentException("El usuario no puede ser nulo");
+		}
+		if(localizador.length()<1) {
+			throw new IllegalArgumentException("El localizador tiene al menos 1 caracter");
+		}
+		if(localizador.length()>8) {
+			throw new IllegalArgumentException("El localizador no puede tener mas de 8 caracteres");
+		}
+		this.localizador = localizador;
+		this.recorrido = recorrido;
+		this.usuario = usuario;
+		this.estado = "default";
 		
 	}
 	
-	
+	/**
+	 * Metodo que devuelve el localizador del billete
+	 * @return localizador del billete
+	 */
 	public String getLocalizador() {
-		return null;
+		return this.localizador;
+	}
+	
+	/**
+	 * Metodo que devuelve el estado del billete
+	 * @return localizador del billete
+	 */
+	public String getEstado() {
+		return this.estado;
+	}
+	
+	/**
+	 * Metodo que settea el estado del billete
+	 * @param estado del billete
+	 */
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
+	/**
+	 * Metodo que devuelve el recorrido del billete
+	 * @return recorrido del billete
+	 */
 	public Recorrido getRecorrido() {
-		return null;
+		return this.recorrido;
 	}
 
+	/**
+	 * Metodo que devuelve el usuario del billete
+	 * @return usuario del billete
+	 */
 	public Usuario getUsuario() {
-		return null;
+		return this.usuario;
 	}
-
+	
+	/*
+	 * Override de equals() para comparar dos billetes
+	 * @return boolean que puede ser true o false 
+	 */
+	@Override
+	public boolean equals(Object o) {
+		
+		if(o == this)
+			return true;
+		if(o == null)
+			return false;
+		
+		if(!(o instanceof Billete))
+			return false;
+		
+		Billete b = (Billete) o;
+		
+		if(!this.localizador.equals(b.localizador)) 
+			return false;
+		if(!this.recorrido.equals(b.recorrido)) 
+			return false;
+		if(!this.usuario.equals(b.usuario)) 
+			return false;
+		
+		
+		return true;
+	}
 }
