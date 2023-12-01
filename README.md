@@ -1,6 +1,6 @@
 # Tecnologias para el Desarrollo Software
 
-Practica: Fase GREEN con metodologia TDD + Tests de mocks para SistemaPersistencia
+Practica: Fase REFACTOR con metodologia TDD + Implementacion BD y framework Hibernate
 
 ## Documento Web
 
@@ -18,11 +18,22 @@ Practica: Fase GREEN con metodologia TDD + Tests de mocks para SistemaPersistenc
 - [x] IDatabaseManager.java
 - [x] SistemaPersistencia.java
 
-## Code to test Ratio
+##Clases de tests nuevas 
 
+- [] .java
+
+## Code to test Ratio por Clase
+** Clase 1 **
 * Lineas de codigo no comentadas: **651**
 * Lineas de test no comentadas: **1402**
 * Code to test ratio -> **1:2.15 (1 linea de codigo equivale a 2.15 lineas de tests)**
+
+** Clase 2 **
+* Lineas de codigo no comentadas: **651**
+* Lineas de test no comentadas: **1402**
+* Code to test ratio -> **1:2.15 (1 linea de codigo equivale a 2.15 lineas de tests)**
+
+##Justificacion de refactorizaciones del catalogo Fowler aplicadas:
 
 ## Autores
 * **Mario Cobreros del Caz -- Horas Dedicadas: 12h ** - [marcobr](https://gitlab.inf.uva.es/marcobr)

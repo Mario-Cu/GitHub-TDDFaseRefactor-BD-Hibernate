@@ -6,10 +6,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>uva.tds</groupId>
-  <artifactId>practica2-grupo8</artifactId>
+  <artifactId>practica3-grupo8</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>2023-2024 practica 2 de TDS del grupo 8</name>
-  <url>https://gitlab.inf.uva.es/marcobr/tds_practica2_grupo8/</url>
+  <name>2023-2024 practica 3 de TDS del grupo 8</name>
+  <url>https://gitlab.inf.uva.es/marcobr/tds_practica3_grupo8/</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,6 +32,18 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.6.5.Final</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.7.0</version>
+			<scope>test</scope>
+		</dependency>
 
   </dependencies>
 
