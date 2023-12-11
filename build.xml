@@ -75,6 +75,14 @@
 			<arg line="${arglineIni} mvn jacoco:prepare-agent test jacoco:report${arglineEnd}" />
 		</exec>
 	</target>
+	
+	<target name="ejecutarSonarQube" depends="obtenerInformeCobertura">
+		<exec dir="." executable="${executable}">
+			<arg line="${arglineIni}mvn verify sonar:sonar -Dsonar.projectKey=practica3-grupo8 -Dsonar.projectName='practica3-grupo8' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqa_f16251e365e81c4e89a454a6200361d5e50eb72d
+${arglineEnd}" />
+		</exec>
+	</target>
+
 
 
 
