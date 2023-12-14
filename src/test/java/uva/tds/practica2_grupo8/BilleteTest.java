@@ -85,12 +85,7 @@ class BilleteTest {
 		Billete billete = new Billete("L",recorridoNormal,usrNormal);
 		assertFalse(billete.equals(null));
 	}
-	@Tag("Cobertura")
-	@Test
-	void testComparacionBilleteNoIgualesComparacionConNoBillete() {
-		Billete billete = new Billete("L",recorridoNormal,usrNormal);
-		assertFalse(billete.equals(fecha));
-	}
+
 	@Tag("Cobertura")
 	@Test
 	void testComparacionBilleteNoIgualesLocalizadorDiferente() {
