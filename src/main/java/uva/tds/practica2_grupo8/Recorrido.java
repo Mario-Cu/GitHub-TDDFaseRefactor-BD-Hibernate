@@ -20,7 +20,9 @@ public class Recorrido {
 	int plazasDisponibles;
 	int plazasTotales;
 	int minutos;
-	
+	private static final String AUTOBUS = "autobus";
+	private static final String TREN = "tren";
+
 	/**
 	 * Creacion de un recorrido
 	 * @author mardano (Mario Danov Ivanov)
@@ -70,7 +72,7 @@ public class Recorrido {
 		if(medioTransporte == null) {
 			throw new IllegalArgumentException("El medio de transporte no puede ser nulo");
 		}
-		if(!medioTransporte.equals("autobus") && !medioTransporte.equals("tren")) {
+		if(!medioTransporte.equals(AUTOBUS) && !medioTransporte.equals(TREN)) {
 			throw new IllegalArgumentException("El medio de transporte debe ser autobus o tren");
 		}
 		
@@ -84,25 +86,17 @@ public class Recorrido {
 			throw new IllegalArgumentException("La hora es nula");
 		}
 		
-		if(medioTransporte.equals("autobus")) {
-			if((plazasDisponibles<0)||(plazasDisponibles>plazasTotales)) {
-				throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
-			}
+		if(medioTransporte.equals(AUTOBUS) && valido(plazasDisponibles,plazasTotales)) {
+			throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
 		}
-		if(medioTransporte.equals("tren")) {
-			if((plazasDisponibles<0)||(plazasDisponibles>plazasTotales)) {
-				throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
-			}
+		if(medioTransporte.equals(TREN) && valido(plazasDisponibles,plazasTotales)) {
+			throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
 		}
-		if(medioTransporte.equals("autobus")) {
-			if((plazasTotales<1)||(plazasTotales>50)) {
+		if(medioTransporte.equals(AUTOBUS)  && valido2(plazasTotales,50)) {
 				throw new IllegalArgumentException("El numero de plazas totales es erroneo");
-			}
 		}
-		if(medioTransporte.equals("tren")) {
-			if((plazasTotales<1)||(plazasTotales>250)) {
-				throw new IllegalArgumentException("El numero de plazas totales es erroneo");
-			}
+		if(medioTransporte.equals(TREN) && valido2(plazasTotales,250)) {
+			throw new IllegalArgumentException("El numero de plazas totales es erroneo");
 		}
 		if(minutos<0) {
 			throw new IllegalArgumentException("La duracion del trayecto es erronea");
@@ -119,6 +113,23 @@ public class Recorrido {
 		this.minutos = minutos;
 		
 	}
+	
+	private static boolean valido(int plazasDisponibles, int plazasTotales) {
+		Boolean valor = false;  
+		if(plazasDisponibles>plazasTotales || plazasDisponibles < 0) {
+			  valor = true;
+		}
+		return valor;
+	}
+	
+	private static boolean valido2(int plazasTotales, int valormax) {
+		Boolean valor = false;  
+		if(plazasTotales>valormax || plazasTotales < 1) {
+			  valor = true;
+		}
+		return valor;
+	}
+	
 	/**
 	 * Devuelve el identificador del recorrido 
 	 * @return identificador del recorrido
@@ -223,36 +234,19 @@ public class Recorrido {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		
-		if(o == this)
-			return true;
-		if(o == null)
-			return false;
-		
-		if(!(o instanceof Recorrido))
-			return false;
-		
+		Boolean valor = true;
 		Recorrido r = (Recorrido) o;
-		
-		if(!this.id.equals(r.id)) 
-			return false;
-		if(!this.destino.equals(r.destino)) 
-			return false;
-		if(!this.origen.equals(r.origen)) 
-			return false;
-		if(!this.medioTransporte.equals(r.medioTransporte))
-			return false;
-		if(this.precio != r.precio)
-			return false;
-		if(!this.fecha.equals(r.fecha))
-			return false;
-		if(!this.hora.equals(r.hora))
-			return false;
-		if(this.plazasTotales != r.plazasTotales)
-			return false;
-		if(this.minutos != r.minutos)
-			return false;
-		
-		return true;
+		if(!(o instanceof Recorrido) || this.getClass() != o.getClass() || !this.id.equals(r.id) || !this.destino.equals(r.destino) || !this.origen.equals(r.origen)
+			|| !this.medioTransporte.equals(r.medioTransporte) || this.precio != r.precio || !this.fecha.equals(r.fecha) ||
+			!this.hora.equals(r.hora)|| this.plazasTotales != r.plazasTotales || this.minutos != r.minutos ) {
+			valor = false;
+		}
+
+		return valor;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 0;
 	}
 }

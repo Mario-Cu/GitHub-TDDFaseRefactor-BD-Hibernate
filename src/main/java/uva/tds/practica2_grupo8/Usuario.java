@@ -105,12 +105,17 @@ public class Usuario {
 	public boolean equals(Object o) {
  		Boolean valor = false;
 		Usuario u = (Usuario)o;
-		if(this.nif == u.getNif()) {
+		if(u!=null && this.nif == u.getNif()) {
 			valor = true;
 		}
+
 		return valor;
 
 	}
-
+ 	
+ 	@Override
+ 	public int hashCode() {
+ 		return 0;
+ 	}
  
 }
