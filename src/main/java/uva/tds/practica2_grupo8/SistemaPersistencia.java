@@ -179,7 +179,6 @@ public class SistemaPersistencia {
 				billete.setEstado("Reservado");
 			}catch(IllegalArgumentException e1) {
 				e1.printStackTrace();
-
 				throw e1;
 			}
 		}}else {
