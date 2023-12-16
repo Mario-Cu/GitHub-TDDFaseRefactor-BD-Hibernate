@@ -18,6 +18,7 @@ class BilleteTest {
 	private LocalDate fecha;
 	private LocalTime hora;
 	private InfoRecorrido info;
+	private BilleteId id;
 	
 	@BeforeEach
 	void setUp() {
@@ -26,6 +27,7 @@ class BilleteTest {
 		hora = LocalTime.of(12, 30);
 		info = new InfoRecorrido(fecha,hora,50,50,1);
 		this.recorridoNormal = new Recorrido("1","origen","destino","autobus",0,info);
+		id = new BilleteId("LocNorm",1);
 
 	}
 	
@@ -75,52 +77,54 @@ class BilleteTest {
 	@Test
 	void testConstructorBilleteNoValidoRecorridoNulo() {
 		assertThrows(IllegalArgumentException.class,()->{
-			new Billete(localizadorNormal,null,usrNormal);
+			new Billete(id,null,usrNormal);
 		});
 	}
 	
 	@Test
 	void testConstructorBilleteNoValidoUsuarioNulo() {
 		assertThrows(IllegalArgumentException.class,()->{
-			new Billete(localizadorNormal,recorridoNormal,null);
+			new Billete(id,recorridoNormal,null);
 		});
 	}
 	@Tag("Cobertura")
 	@Test
 	void testComparacionBilleteNoIgualesComparacionConBilleteNulo() {
-		Billete billete = new Billete("L",recorridoNormal,usrNormal);
+		Billete billete = new Billete(id,recorridoNormal,usrNormal);
 		assertNotEquals(null,billete);
 	}
 
 	@Tag("Cobertura")
 	@Test
 	void testComparacionBilleteNoIgualesLocalizadorDiferente() {
-		Billete billete = new Billete("L1",recorridoNormal,usrNormal);
-		Billete billete2 = new Billete("L2",recorridoNormal,usrNormal);
+		BilleteId id1 = new BilleteId("L1",1);
+		BilleteId id2 = new BilleteId("L2",1);
+		Billete billete = new Billete(id1,recorridoNormal,usrNormal);
+		Billete billete2 = new Billete(id2,recorridoNormal,usrNormal);
 		assertNotEquals(billete,billete2);
 	}
 	@Tag("Cobertura")
 	@Test
 	void testComparacionBilleteNoIgualesRecorridoDiferente() {
 		Recorrido recorridoNormal2 = new Recorrido("2","origen","destino","autobus",0,info);
-		Billete billete = new Billete("L",recorridoNormal,usrNormal);
-		Billete billete2 = new Billete("L",recorridoNormal2,usrNormal);
+		Billete billete = new Billete(id,recorridoNormal,usrNormal);
+		Billete billete2 = new Billete(id,recorridoNormal2,usrNormal);
 		assertNotEquals(billete,billete2);
 	}
 	@Tag("Cobertura")
 	@Test
 	void testComparacionBilleteNoIgualesUsuariosDiferente() {
 		Usuario usrNormal2 = new Usuario("71328961G","UsuarioNormal");
-		Billete billete = new Billete("L",recorridoNormal,usrNormal);
-		Billete billete2 = new Billete("L",recorridoNormal,usrNormal2);
+		Billete billete = new Billete(id,recorridoNormal,usrNormal);
+		Billete billete2 = new Billete(id,recorridoNormal,usrNormal2);
 		assertNotEquals(billete,billete2);
 	}
 
 	@Tag("Cobertura")
 	@Test
 	void testConstructorBilleteGettersSinCobertura() {
-		Billete billete = new Billete(localizadorNormal,recorridoNormal,usrNormal);
-		assertEquals(localizadorNormal,billete.getId());
+		Billete billete = new Billete(id,recorridoNormal,usrNormal);
+		assertEquals(id,billete.getId());
 		assertEquals(billete.getRecorrido().getId(),recorridoNormal.getId());
 		assertEquals(billete.getUsuario().getNombre(),usrNormal.getNombre());
 	}

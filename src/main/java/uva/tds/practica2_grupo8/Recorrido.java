@@ -6,10 +6,13 @@ import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 
@@ -24,11 +27,14 @@ import javax.persistence.Table;
 public class Recorrido {
 	
 	@Id
+	@Column(name = "id")
 	String id;
 	String origen;
 	String destino;
 	String medioTransporte;
 	float precio;
+	@OneToOne(mappedBy = "recorrido", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
 	InfoRecorrido infoRecorrido;
 	private static final String AUTOBUS = "autobus";
 	private static final String TREN = "tren";
