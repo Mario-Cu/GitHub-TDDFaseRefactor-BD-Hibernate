@@ -3,6 +3,14 @@ package uva.tds.practica2_grupo8;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * Clase que representa la información asociada a un recorrido, incluyendo la fecha, hora, plazas disponibles,
  * plazas totales y la duración en minutos.
@@ -10,12 +18,21 @@ import java.time.LocalTime;
  * @author marcobr (Mario Cobreros del Caz)
  * @author mardano (Mario Danov Ivanov)
  */
+@Entity
+@Table(name = "INFO_RECORRIDO")
 public class InfoRecorrido {
+	@Id
+	@Column(name ="recorrido_id")
+	private String id;
     private LocalDate fecha;
     private LocalTime hora;
     private int plazasDisponibles;
     private int plazasTotales;
     private int minutos;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "recorrido_id")
+    private Recorrido reocorrido;
 
     /**
      * Constructor de la clase InfoRecorrido.

@@ -23,6 +23,7 @@ class SistemaPersistenciaTest {
 	private LocalDate fecha;
 	private LocalTime hora;
 	private InfoRecorrido info;
+	private BilleteId billeteId;
 	@TestSubject
 	private SistemaPersistencia sistema;
 
@@ -500,7 +501,8 @@ class SistemaPersistenciaTest {
 	void testObtenerPrecioTotalDescuentoTrenAplicado() {
 		InfoRecorrido info2 = new InfoRecorrido(fecha,hora,250,250,1);
 		Recorrido recorridoTren = new Recorrido("3", "origen", "destino", "tren", 5, info2);
-		Billete billete = new Billete("LocNor1", recorridoTren, usuario);
+		BilleteId billeteId1 = new BilleteId("LocNor1",1);
+		Billete billete = new Billete(billeteId1, recorridoTren, usuario);
 		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
 		billetesReturn.add(billete);
 		databaseManager.addRecorrido(recorridoTren);
