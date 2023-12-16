@@ -68,7 +68,7 @@ public class Sistema {
 			throw new IllegalArgumentException(EX_REC);
 		if(numBilletes < 1)
 			throw new IllegalArgumentException("Tiene que comprarse al menos un billete");
-		if(numBilletes > rec.getPlazasDisponibles())
+		if(numBilletes > rec.getInfoRecorrido().getPlazasDisponibles())
 			throw new IllegalArgumentException("No se pueden comprar mas billetes de los disponibles");
 		if(getRecorridoPorId(rec.getId()) == null)
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
@@ -79,7 +79,7 @@ public class Sistema {
 			billetes.add(billeteComprado);
 		}
 		int indexRecorridoEnArrayList = getIndexRecorridoPorId(rec.getId());
-		recorridos.get(indexRecorridoEnArrayList).setPlazasDisponibles(rec.getPlazasDisponibles()-numBilletes);
+		recorridos.get(indexRecorridoEnArrayList).getInfoRecorrido().setPlazasDisponibles(rec.getInfoRecorrido().getPlazasDisponibles()-numBilletes);
 	}
 	
 	
@@ -196,7 +196,7 @@ public class Sistema {
 		}
 		Recorrido recorrido = getRecorridoPorId(id);
 		if (recorrido != null)
-			recorrido.setFecha(fecha);
+			recorrido.getInfoRecorrido().setFecha(fecha);
 
 	}
 	
@@ -217,7 +217,7 @@ public class Sistema {
 		}
 		Recorrido recorrido = getRecorridoPorId(id);
 		if (recorrido != null)
-			recorrido.setHora(hora);
+			recorrido.getInfoRecorrido().setHora(hora);
 
 	}
 
@@ -268,7 +268,7 @@ public class Sistema {
 			throw new IllegalStateException("El localizador no coincide con el de un billete comprado");
 		Recorrido recorrido = billete.getRecorrido();
 		int indexRecorridoEnArrayList = getIndexRecorridoPorId(recorrido.getId());
-		recorridos.get(indexRecorridoEnArrayList).setPlazasDisponibles(recorrido.getPlazasDisponibles()+numBilletes);
+		recorridos.get(indexRecorridoEnArrayList).getInfoRecorrido().setPlazasDisponibles(recorrido.getInfoRecorrido().getPlazasDisponibles()+numBilletes);
 		
 		List<Integer> indicesBilletesDevueltos = new ArrayList<>();
 		int j =0;
@@ -323,7 +323,7 @@ public class Sistema {
 		}
 		List<Recorrido> recorridosEnFecha = new ArrayList<>();
 		for(Recorrido item: recorridos) {
-			if(item.getFecha() == fecha) {
+			if(item.getInfoRecorrido().getFecha() == fecha) {
 				recorridosEnFecha.add(item);
 			}
 		}
@@ -366,9 +366,9 @@ public class Sistema {
 			throw new IllegalArgumentException(EX_REC);
 		if(numBilletes < 1)
 			throw new IllegalArgumentException("El numero de billetes tiene que ser al menos 1");
-		if(numBilletes > recorrido.getPlazasDisponibles())
+		if(numBilletes > recorrido.getInfoRecorrido().getPlazasDisponibles())
 			throw new IllegalStateException("El numero de billetes supera las plazas disponiles");
-		if(recorrido.getPlazasDisponibles() < recorrido.getPlazasTotales()/2)
+		if(recorrido.getInfoRecorrido().getPlazasDisponibles() < recorrido.getInfoRecorrido().getPlazasTotales()/2)
 			throw new IllegalStateException("En numero de plazas disponibles es menor que la mitad de plazas totales");
 		if(getRecorridoPorId(recorrido.getId()) == null)
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
@@ -379,7 +379,7 @@ public class Sistema {
 			billetesReservados.add(billeteReservado);
 		}
 		int indexRecorridoEnArrayList = getIndexRecorridoPorId(recorrido.getId());
-		recorridos.get(indexRecorridoEnArrayList).setPlazasDisponibles(recorrido.getPlazasDisponibles()-numBilletes);
+		recorridos.get(indexRecorridoEnArrayList).getInfoRecorrido().setPlazasDisponibles(recorrido.getInfoRecorrido().getPlazasDisponibles()-numBilletes);
 	}	
 	/**
 	 * Anula la reserva de billetes reservados
@@ -398,7 +398,7 @@ public class Sistema {
 			throw new IllegalStateException("El localizador no coincide con el de un billete reservado");
 		Recorrido recorrido = billete.getRecorrido();
 		int indexRecorridoEnArrayList = getIndexRecorridoPorId(recorrido.getId());
-		recorridos.get(indexRecorridoEnArrayList).setPlazasDisponibles(recorrido.getPlazasDisponibles()+numBilletes);
+		recorridos.get(indexRecorridoEnArrayList).getInfoRecorrido().setPlazasDisponibles(recorrido.getInfoRecorrido().getPlazasDisponibles()+numBilletes);
 		
 		List<Integer> indicesBilletesAnulados = new ArrayList<>();
 		int j =0;

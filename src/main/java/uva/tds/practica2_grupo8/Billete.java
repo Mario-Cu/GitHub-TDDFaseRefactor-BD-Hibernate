@@ -93,8 +93,11 @@ public class Billete {
 	@Override
 	public boolean equals(Object o) {
 		Boolean valor = true;
+		
+		if(!(o instanceof Billete) || this.getClass() != o.getClass()) 
+			return false;
 		Billete b = (Billete) o;
-		if(!(o instanceof Billete) || this.getClass() != o.getClass() || !this.localizador.equals(b.localizador) || !this.recorrido.equals(b.recorrido) || !this.usuario.equals(b.usuario)) 
+		if( !this.localizador.equals(b.localizador) || !this.recorrido.equals(b.recorrido) || !this.usuario.equals(b.usuario))
 			valor = false;
 		
 		return valor;

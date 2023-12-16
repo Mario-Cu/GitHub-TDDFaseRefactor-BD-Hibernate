@@ -104,8 +104,11 @@ public class Usuario {
  	@Override
 	public boolean equals(Object o) {
  		Boolean valor = false;
+ 		if (o == null || this.getClass() != o.getClass()) {
+ 		      return false;
+ 		}
 		Usuario u = (Usuario)o;
-		if(u!=null && this.nif == u.getNif()) {
+		if(this.nif == u.getNif()) {
 			valor = true;
 		}
 

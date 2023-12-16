@@ -33,7 +33,11 @@ Practica: Fase REFACTOR con metodologia TDD + Implementacion BD y framework Hibe
 * Lineas de test no comentadas: **1402**
 * Code to test ratio -> **1:2.15 (1 linea de codigo equivale a 2.15 lineas de tests)**
 
-##Justificacion de refactorizaciones del catalogo Fowler aplicadas:
+## Justificacion de refactorizaciones del catalogo Fowler aplicadas:
+
+* Introduce Parameter Object
+*
+*
 
 ## Autores
 * **Mario Cobreros del Caz -- Horas Dedicadas: 12h ** - [marcobr](https://gitlab.inf.uva.es/marcobr)

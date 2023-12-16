@@ -67,14 +67,9 @@ public class SistemaPersistencia {
 				throw new IllegalStateException("El recorrido que intentas eliminar tiene un billete asociado");
 			}
 		}
-		try {
-			this.databaseManager.eliminarRecorrido(id);
-		} catch (IllegalArgumentException e1) {
-			e1.printStackTrace();
-			throw e1;
-			
-			
-		}
+		
+		this.databaseManager.eliminarRecorrido(id);
+	
 
 	}
 
@@ -84,16 +79,8 @@ public class SistemaPersistencia {
 	 * @throws IllegalArgumentException si recorrido es nulo
 	 * @throws IllegalStateException si no existe un recorrido con el identificador indicado en recorrido
 	 */
-	public void actualizarRecorrido(Recorrido recorrido) {
-		try {
-			this.databaseManager.actualizarRecorrido(recorrido);
-		} catch (IllegalArgumentException e1) {
-			e1.printStackTrace();
-			throw e1;
-		} catch (IllegalStateException e2) {
-			e2.printStackTrace();
-			throw e2;
-		}
+	public void actualizarRecorrido(Recorrido recorrido) {	
+		this.databaseManager.actualizarRecorrido(recorrido);
 	}
 	
 	
@@ -112,19 +99,13 @@ public class SistemaPersistencia {
 		
 		if(numBilletes < 1)
 			throw new IllegalArgumentException("Tiene que comprarse al menos un billete");
-		if(numBilletes > billete.getRecorrido().getPlazasDisponibles())
+		if(numBilletes > billete.getRecorrido().getInfoRecorrido().getPlazasDisponibles())
 			throw new IllegalArgumentException("No se pueden comprar mas billetes de los disponibles");
 		if(this.databaseManager.getRecorrido(billete.getRecorrido().getId()) == null)
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		
-		for(int i=0; i < numBilletes; i++) {
-			try{
-				this.databaseManager.addBillete(billete);
-			}catch(IllegalArgumentException e1) {
-				e1.printStackTrace();
-
-				throw e1;
-			}
+		for(int i=0; i < numBilletes; i++) {	
+			this.databaseManager.addBillete(billete);
 		}
 	}
 	
@@ -141,13 +122,8 @@ public class SistemaPersistencia {
 			throw new IllegalArgumentException("El numero de billetes no puede ser menor que 1");
 		if(this.databaseManager.getBilletes(loc).isEmpty()) 
 			throw new IllegalStateException("El localizador no coincide con el de un billete comprado");
-		try {
-			this.databaseManager.eliminarBilletes(loc);
-		}catch(IllegalArgumentException e1) {
-			e1.printStackTrace();
-
-			throw e1;
-		}
+		
+		this.databaseManager.eliminarBilletes(loc);
 
 	}
 	
@@ -168,20 +144,15 @@ public class SistemaPersistencia {
 		
 		if(numBilletes < 1)
 			throw new IllegalArgumentException("Tiene que comprarse al menos un billete");
-		if(numBilletes > billete.getRecorrido().getPlazasDisponibles())
+		if(numBilletes > billete.getRecorrido().getInfoRecorrido().getPlazasDisponibles())
 			throw new IllegalArgumentException("No se pueden comprar mas billetes de los disponibles");
 		if(this.databaseManager.getRecorrido(billete.getRecorrido().getId()) != null) {
-			
-		
-		for(int i=0; i < numBilletes; i++) {
-			try{
+
+			for(int i=0; i < numBilletes; i++) {
 				this.databaseManager.addBillete(billete);
 				billete.setEstado("Reservado");
-			}catch(IllegalArgumentException e1) {
-				e1.printStackTrace();
-				throw e1;
 			}
-		}}else {
+		}else {
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		}
 	}	

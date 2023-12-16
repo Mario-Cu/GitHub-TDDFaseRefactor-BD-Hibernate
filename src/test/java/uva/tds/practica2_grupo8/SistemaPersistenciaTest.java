@@ -22,7 +22,7 @@ class SistemaPersistenciaTest {
 	private Usuario usuario;
 	private LocalDate fecha;
 	private LocalTime hora;
-
+	private InfoRecorrido info;
 	@TestSubject
 	private SistemaPersistencia sistema;
 
@@ -35,9 +35,10 @@ class SistemaPersistenciaTest {
 		sistema = new SistemaPersistencia(databaseManager);
 		fecha = LocalDate.of(2002, 7, 18);
 		hora = LocalTime.of(12, 30);
-		recorrido1 = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
-		recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
-		recorrido2 = new Recorrido("2", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
+		info = new InfoRecorrido(fecha,hora,50,50,1);
+		recorrido1 = new Recorrido("1", "origen", "destino", "autobus", 5,info);
+		recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 5,info);
+		recorrido2 = new Recorrido("2", "origen", "destino", "autobus", 5, info);
 		usuario = new Usuario("33036946E", "UsuarioNormal");
 	}
 
@@ -69,7 +70,7 @@ class SistemaPersistenciaTest {
 
 	@Test
 	void testAnadirRecorridoAlSistemaNoValidoDosRecorrridosConMismoIdentificador() {
-		Recorrido recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 0, fecha, hora, 50, 50, 1);
+		Recorrido recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 0, info);
 		databaseManager.addRecorrido(recorrido1Copia);
 		EasyMock.expectLastCall();
 		databaseManager.addRecorrido(recorrido1Copia);
@@ -150,8 +151,9 @@ class SistemaPersistenciaTest {
 	@Test
 	void testActualizarRecorridoFecha() {
 		LocalDate fechaNueva = LocalDate.of(2002, 7, 19);
-		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
-		Recorrido recorridoActualizado = new Recorrido("1", "origen", "destino", "autobus", 5, fechaNueva, hora, 50, 50, 1);
+		InfoRecorrido infoNuevo = new InfoRecorrido(fechaNueva,hora,50,50,1);
+		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, info);
+		Recorrido recorridoActualizado = new Recorrido("1", "origen", "destino", "autobus", 5, infoNuevo);
 		databaseManager.addRecorrido(recorridoAntiguo);
 		EasyMock.expectLastCall();
 		databaseManager.actualizarRecorrido(recorridoActualizado);
@@ -159,13 +161,13 @@ class SistemaPersistenciaTest {
 		EasyMock.replay(databaseManager);
 		sistema.anadirRecorrido(recorridoAntiguo);
 		sistema.actualizarRecorrido(recorridoActualizado);
-		assertEquals(fechaNueva, recorridoActualizado.getFecha());
+		assertEquals(fechaNueva, recorridoActualizado.getInfoRecorrido().getFecha());
 		EasyMock.verify(databaseManager);
 	}
 
 	@Test
 	void testActualizarRecorridoNoValidaRecorridoNulo() {
-		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
+		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, info);
 		databaseManager.addRecorrido(recorridoAntiguo);
 		EasyMock.expectLastCall();
 		databaseManager.actualizarRecorrido(null);
@@ -191,8 +193,10 @@ class SistemaPersistenciaTest {
 	@Test
 	void testActualizarRecorridoHora() {
 		LocalTime horaNueva = LocalTime.of(13, 00);
-		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
-		Recorrido recorridoActualizado = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, horaNueva, 50, 50, 1);
+		InfoRecorrido info2 = new InfoRecorrido(fecha,horaNueva,50,50,1);
+
+		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, info);
+		Recorrido recorridoActualizado = new Recorrido("1", "origen", "destino", "autobus", 5, info2);
 		databaseManager.addRecorrido(recorridoAntiguo);
 		EasyMock.expectLastCall();
 		databaseManager.actualizarRecorrido(recorridoActualizado);
@@ -200,7 +204,7 @@ class SistemaPersistenciaTest {
 		EasyMock.replay(databaseManager);
 		sistema.anadirRecorrido(recorridoAntiguo);
 		sistema.actualizarRecorrido(recorridoActualizado);
-		assertEquals(horaNueva, recorridoActualizado.getHora());
+		assertEquals(horaNueva, recorridoActualizado.getInfoRecorrido().getHora());
 		EasyMock.verify(databaseManager);
 	}
 
@@ -368,7 +372,7 @@ class SistemaPersistenciaTest {
 		Billete billete = new Billete("LocNorm", recorrido1, usuario);
 
 		sistema.anadirRecorrido(recorrido1);
-		Recorrido recorridoNoEnSistema = new Recorrido("3", "origen", "destino", "autobus", 0, fecha, hora, 50, 50, 1);
+		Recorrido recorridoNoEnSistema = new Recorrido("3", "origen", "destino", "autobus", 0, info);
 		assertThrows(IllegalStateException.class, () -> {
 			sistema.reservarBilletes(billete, 5);
 
@@ -489,7 +493,8 @@ class SistemaPersistenciaTest {
 	
 	@Test
 	void testObtenerPrecioTotalDescuentoTrenAplicado() {
-		Recorrido recorridoTren = new Recorrido("3", "origen", "destino", "tren", 5, fecha, hora, 250, 250, 1);
+		InfoRecorrido info2 = new InfoRecorrido(fecha,hora,250,250,1);
+		Recorrido recorridoTren = new Recorrido("3", "origen", "destino", "tren", 5, info2);
 		Billete billete = new Billete("LocNor1", recorridoTren, usuario);
 		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
 		billetesReturn.add(billete);

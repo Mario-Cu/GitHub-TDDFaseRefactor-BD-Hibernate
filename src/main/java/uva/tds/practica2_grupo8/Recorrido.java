@@ -1,8 +1,5 @@
 package uva.tds.practica2_grupo8;
 
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 /**
  * Clase que representa un Recorrido.
  * @author marcobr (Mario Cobreros del Caz)
@@ -15,11 +12,7 @@ public class Recorrido {
 	String destino;
 	String medioTransporte;
 	float precio;
-	LocalDate fecha;
-	LocalTime hora;
-	int plazasDisponibles;
-	int plazasTotales;
-	int minutos;
+	InfoRecorrido infoRecorrido;
 	private static final String AUTOBUS = "autobus";
 	private static final String TREN = "tren";
 
@@ -45,7 +38,7 @@ public class Recorrido {
 	 * @throws IllegalArgumentException si la duracion en minutos es negativa.
 	 */
 	
-	public Recorrido (String id, String origen, String destino, String medioTransporte, float precio,LocalDate fecha,LocalTime hora,int plazasDisponibles, int plazasTotales, int minutos) throws IllegalArgumentException  {
+	public Recorrido (String id, String origen, String destino, String medioTransporte, float precio, InfoRecorrido infoRecorrido) throws IllegalArgumentException  {
 		if(id == null) {
 			throw new IllegalArgumentException("El id no puede ser nulo");
 		}
@@ -79,26 +72,27 @@ public class Recorrido {
 		if(precio < 0) {
 			throw new IllegalArgumentException("El precio es menor que 0");
 		}
-		if(fecha == null) {
+
+		if(infoRecorrido.getFecha() == null) {
 			throw new IllegalArgumentException("La fecha es nula");
 		}
-		if(hora == null) {
+		if(infoRecorrido.getHora() == null) {
 			throw new IllegalArgumentException("La hora es nula");
 		}
 		
-		if(medioTransporte.equals(AUTOBUS) && valido(plazasDisponibles,plazasTotales)) {
+		if(medioTransporte.equals(AUTOBUS) && valido(infoRecorrido.getPlazasDisponibles(),infoRecorrido.getPlazasTotales())) {
 			throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
 		}
-		if(medioTransporte.equals(TREN) && valido(plazasDisponibles,plazasTotales)) {
+		if(medioTransporte.equals(TREN) && valido(infoRecorrido.getPlazasDisponibles(),infoRecorrido.getPlazasTotales())) {
 			throw new IllegalArgumentException("El numero de plazas disponibles es erroneo");
 		}
-		if(medioTransporte.equals(AUTOBUS)  && valido2(plazasTotales,50)) {
+		if(medioTransporte.equals(AUTOBUS)  && valido2(infoRecorrido.getPlazasTotales(),50)) {
 				throw new IllegalArgumentException("El numero de plazas totales es erroneo");
 		}
-		if(medioTransporte.equals(TREN) && valido2(plazasTotales,250)) {
+		if(medioTransporte.equals(TREN) && valido2(infoRecorrido.getPlazasTotales(),250)) {
 			throw new IllegalArgumentException("El numero de plazas totales es erroneo");
 		}
-		if(minutos<0) {
+		if(infoRecorrido.getMinutos()<0) {
 			throw new IllegalArgumentException("La duracion del trayecto es erronea");
 		}
 		this.id = id;
@@ -106,11 +100,7 @@ public class Recorrido {
 		this.origen = origen;
 		this.medioTransporte = medioTransporte;
 		this.precio = precio;
-		this.fecha = fecha;
-		this.hora = hora;
-		this.plazasDisponibles = plazasDisponibles;
-		this.plazasTotales = plazasTotales;
-		this.minutos = minutos;
+		this.infoRecorrido = infoRecorrido;
 		
 	}
 	
@@ -165,69 +155,15 @@ public class Recorrido {
 	public float getPrecio() {
 		return precio;
 	}
-	/**
-	 * Devuelve la fecha del recorrido 
-	 * @return fecha del recorrido
-	 */
-	public LocalDate getFecha() {
-		return fecha;
-	}
-	
-	/**
-	 * Devuelve la hora del recorrido
-	 * @return hora del recorrido
-	 */
-	public LocalTime getHora() {
-		return hora;
-	}
-	
-	/**
-	 * Actualiza la fecha del recorrido 
-	 * @param fecha Fecha a la que queremos actualizar
-	 */
-	public void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
-	}
-	
-	/**
-	 * Actualiza la hora del recorrido
-	 * @param hora Hora a la que queremos actualizar
-	 */
-	public void setHora(LocalTime hora) {
-		this.hora = hora;
-	}
-
-	/**
-	 * Devuelve las plazas disponibles del recorrido
-	 * @return plazas disponibles del recorrido
-	 */
-	public int getPlazasDisponibles() {
-		return plazasDisponibles;
-	}
-	
-	/**
-	 * Actualiza las plazas disponibles del recorrido
-	 * @param plazasDisponiblesNuevas plazas a las que queremos actualizar
-	 */
-	public void setPlazasDisponibles(int plazasDisponiblesNuevas) {
-		this.plazasDisponibles = plazasDisponiblesNuevas;
-	}
-	
-	
-	/**
-	 * Devuelve las plazas totales del recorrido
-	 * @return plazas totales del recorrido
-	 */
-	public int getPlazasTotales() {
-		return plazasTotales;
-	}
-	/**
-	 * Devuelve la duracion del recorrido
-	 * @return duracion del recorrido
-	 */
-	public int getDuracion() {
-		return minutos;
-	}
+    /**
+     * Devuelve la información asociada al recorrido.
+     * 
+     * @return información asociada al recorrido
+     */
+    public InfoRecorrido getInfoRecorrido() {
+        return infoRecorrido;
+    }
+    
 	/*
 	 * Override de equals() para comparar dos recorridos
 	 * @return boolean que puede ser true o false 
@@ -235,13 +171,16 @@ public class Recorrido {
 	@Override
 	public boolean equals(Object o) {
 		Boolean valor = true;
+		
+		if(!(o instanceof Recorrido) || this.getClass() != o.getClass()) {
+			return false;
+		}
 		Recorrido r = (Recorrido) o;
-		if(!(o instanceof Recorrido) || this.getClass() != o.getClass() || !this.id.equals(r.id) || !this.destino.equals(r.destino) || !this.origen.equals(r.origen)
-			|| !this.medioTransporte.equals(r.medioTransporte) || this.precio != r.precio || !this.fecha.equals(r.fecha) ||
-			!this.hora.equals(r.hora)|| this.plazasTotales != r.plazasTotales || this.minutos != r.minutos ) {
+		if( !this.id.equals(r.id) || !this.destino.equals(r.destino) || !this.origen.equals(r.origen)
+			|| !this.medioTransporte.equals(r.medioTransporte) || this.precio != r.precio ||
+			!this.infoRecorrido.equals(r.infoRecorrido)) {
 			valor = false;
 		}
-
 		return valor;
 	}
 	

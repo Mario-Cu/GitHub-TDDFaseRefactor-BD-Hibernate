@@ -17,14 +17,15 @@ class BilleteTest {
 	private Recorrido recorridoNormal;
 	private LocalDate fecha;
 	private LocalTime hora;
-
+	private InfoRecorrido info;
 	
 	@BeforeEach
 	void setUp() {
 		this.usrNormal = new Usuario("33036946E","UsuarioNormal");
 		fecha = LocalDate.of(2002, 7, 18);
 		hora = LocalTime.of(12, 30);
-		this.recorridoNormal = new Recorrido("1","origen","destino","autobus",0,fecha,hora,50,50,1);
+		info = new InfoRecorrido(fecha,hora,50,50,1);
+		this.recorridoNormal = new Recorrido("1","origen","destino","autobus",0,info);
 
 	}
 	
@@ -97,7 +98,7 @@ class BilleteTest {
 	@Tag("Cobertura")
 	@Test
 	void testComparacionBilleteNoIgualesRecorridoDiferente() {
-		Recorrido recorridoNormal2 = new Recorrido("2","origen","destino","autobus",0,fecha,hora,50,50,1);
+		Recorrido recorridoNormal2 = new Recorrido("2","origen","destino","autobus",0,info);
 		Billete billete = new Billete("L",recorridoNormal,usrNormal);
 		Billete billete2 = new Billete("L",recorridoNormal2,usrNormal);
 		assertNotEquals(billete,billete2);
