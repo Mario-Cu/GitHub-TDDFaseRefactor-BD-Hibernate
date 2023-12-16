@@ -1,7 +1,6 @@
 package uva.tds.practica2_grupo8;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,12 +39,12 @@ public class SistemaPersistenciaSinAislamiento {
 	}
 	
 	/**
-	 * Añade un recorrido al arraylist de recorridos
-	 * @param recorrido Recorrido que quieres añadir al sistema
-	 * @throws IllegalStateException cuando se añade un recorrido con un identificador igual a otro
-	 * @throws IllegalArgumentException cuando se añade un recorrido nulo
+	 * Anade un recorrido al arraylist de recorridos
+	 * @param recorrido Recorrido que quieres anadir al sistema
+	 * @throws IllegalStateException cuando se anade un recorrido con un identificador igual a otro
+	 * @throws IllegalArgumentException cuando se anade un recorrido nulo
 	 */
-	public void añadirRecorrido(Recorrido recorrido) {
+	public void anadirRecorrido(Recorrido recorrido) {
 		try {
 			this.databaseManager.addRecorrido(recorrido);
 		} catch (IllegalArgumentException e1) {
@@ -64,15 +63,13 @@ public class SistemaPersistenciaSinAislamiento {
 	 */
 	public void eliminarRecorrido(String id) {
 		for(Billete item : this.databaseManager.getBilletesDeRecorrido(id)) {
-			if(item.getRecorrido().getId() == id){
+			if((item.getRecorrido().getId()).equals(id)){
 				throw new IllegalStateException("El recorrido que intentas eliminar tiene un billete asociado");
 			}
 		}
-		try {
-			this.databaseManager.eliminarRecorrido(id);
-		} catch (IllegalArgumentException e1) {
-			throw e1;
-		}
+		
+		this.databaseManager.eliminarRecorrido(id);
+	
 
 	}
 
@@ -82,20 +79,14 @@ public class SistemaPersistenciaSinAislamiento {
 	 * @throws IllegalArgumentException si recorrido es nulo
 	 * @throws IllegalStateException si no existe un recorrido con el identificador indicado en recorrido
 	 */
-	public void actualizarRecorrido(Recorrido recorrido) {
-		try {
-			this.databaseManager.actualizarRecorrido(recorrido);
-		} catch (IllegalArgumentException e1) {
-			throw e1;
-		} catch (IllegalStateException e2) {
-			throw e2;
-		}
+	public void actualizarRecorrido(Recorrido recorrido) {	
+		this.databaseManager.actualizarRecorrido(recorrido);
 	}
 	
 	
 	/**
 	 * Metodo para la compra de billetes en un sistema
-	 * @param billete Billete a añadir
+	 * @param billete Billete a anadir
 	 * @param numBilletes cantidad de billetes reservados a anular
 	 * @throws IllegalArgumentException cuando localizador es nulo
 	 * @throws IllegalArgumentException cuando usuario es nulo
@@ -104,21 +95,17 @@ public class SistemaPersistenciaSinAislamiento {
 	 * @throws IllegalArgumentException cuando el numero de plazas del recorrido no tiene suficientes plazas libres
 	 * @throws IllegalStateException cuando el recorrido no existe en el sistema
 	 */
-	public void añadirBilletes(Billete billete, int numBilletes) {
+	public void anadirBilletes(Billete billete, int numBilletes) {
 		
 		if(numBilletes < 1)
 			throw new IllegalArgumentException("Tiene que comprarse al menos un billete");
-		if(numBilletes > billete.getRecorrido().getPlazasDisponibles())
+		if(numBilletes > billete.getRecorrido().getInfoRecorrido().getPlazasDisponibles())
 			throw new IllegalArgumentException("No se pueden comprar mas billetes de los disponibles");
 		if(this.databaseManager.getRecorrido(billete.getRecorrido().getId()) == null)
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		
-		for(int i=0; i < numBilletes; i++) {
-			try{
-				this.databaseManager.addBillete(billete);
-			}catch(IllegalArgumentException e1) {
-				throw e1;
-			}
+		for(int i=0; i < numBilletes; i++) {	
+			this.databaseManager.addBillete(billete);
 		}
 	}
 	
@@ -135,11 +122,8 @@ public class SistemaPersistenciaSinAislamiento {
 			throw new IllegalArgumentException("El numero de billetes no puede ser menor que 1");
 		if(this.databaseManager.getBilletes(loc).isEmpty()) 
 			throw new IllegalStateException("El localizador no coincide con el de un billete comprado");
-		try {
-			this.databaseManager.eliminarBilletes(loc);
-		}catch(IllegalArgumentException e1) {
-			throw e1;
-		}
+		
+		this.databaseManager.eliminarBilletes(loc);
 
 	}
 	
@@ -160,37 +144,33 @@ public class SistemaPersistenciaSinAislamiento {
 		
 		if(numBilletes < 1)
 			throw new IllegalArgumentException("Tiene que comprarse al menos un billete");
-		if(numBilletes > billete.getRecorrido().getPlazasDisponibles())
+		if(numBilletes > billete.getRecorrido().getInfoRecorrido().getPlazasDisponibles())
 			throw new IllegalArgumentException("No se pueden comprar mas billetes de los disponibles");
 		if(this.databaseManager.getRecorrido(billete.getRecorrido().getId()) != null) {
-			
-		
-		for(int i=0; i < numBilletes; i++) {
-			try{
+
+			for(int i=0; i < numBilletes; i++) {
 				this.databaseManager.addBillete(billete);
 				billete.setEstado("Reservado");
-			}catch(IllegalArgumentException e1) {
-				throw e1;
 			}
-		}}else {
+		}else {
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		}
 	}	
 	
 	/**
 	 * Anula la reserva de billetes reservados
-	 * @param Localizador localizador de los billetes reservados
+	 * @param localizador localizador de los billetes reservados
 	 * @param numBilletes cantidad de billetes reservados a anular
 	 * @throws IllegalStateException si los billetes no han sido previamente reservados
 	 * @throws IllegalArgumentException si el localizador es nulo
 	 */
-	public void anularReservaBilletes(String Localizador, int numBilletes) {
-		if(Localizador == null)
+	public void anularReservaBilletes(String localizador, int numBilletes) {
+		if(localizador == null)
 			throw new IllegalArgumentException("El localizador no puede ser nulo");
 		if(numBilletes < 1)
 			throw new IllegalArgumentException("El numero de billetes no puede ser menor que 1");
 
-		this.databaseManager.eliminarBilletes(Localizador);
+		this.databaseManager.eliminarBilletes(localizador);
 			
 		
 
@@ -212,7 +192,7 @@ public class SistemaPersistenciaSinAislamiento {
 		
 		for(Billete item: this.databaseManager.getBilletesDeUsuario(locUsr)) {
 
-			if(item.getRecorrido().getMedioTransporte() == "tren") {
+			if((item.getRecorrido().getMedioTransporte()).equals("tren")) {
 				precioTotal = (float) (precioTotal + (0.9*item.getRecorrido().getPrecio()));
 			}else {
 				precioTotal = precioTotal + item.getRecorrido().getPrecio();

@@ -22,8 +22,7 @@ class SistemaPersistenciaTest {
 	private Usuario usuario;
 	private LocalDate fecha;
 	private LocalTime hora;
-	private BilleteId billeteId;
-
+	private InfoRecorrido info;
 	@TestSubject
 	private SistemaPersistencia sistema;
 
@@ -36,16 +35,16 @@ class SistemaPersistenciaTest {
 		sistema = new SistemaPersistencia(databaseManager);
 		fecha = LocalDate.of(2002, 7, 18);
 		hora = LocalTime.of(12, 30);
-		
-		recorrido1 = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
-		recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
-		recorrido2 = new Recorrido("2", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
+		info = new InfoRecorrido(fecha,hora,50,50,1);
+		recorrido1 = new Recorrido("1", "origen", "destino", "autobus", 5,info);
+		recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 5,info);
+		recorrido2 = new Recorrido("2", "origen", "destino", "autobus", 5, info);
 		usuario = new Usuario("33036946E", "UsuarioNormal");
 		billeteId = new BilleteId("LocNorm",1);
 	}
 
 	@Test
-	void testAñadirRecorridoAlSistema() {
+	void testAnadirRecorridoAlSistema() {
 		ArrayList<Recorrido> recorridosEsperados = new ArrayList<Recorrido>();
 		ArrayList<Recorrido> recorridosDevueltos = new ArrayList<Recorrido>();
 		recorridosEsperados.add(recorrido1);
@@ -54,33 +53,33 @@ class SistemaPersistenciaTest {
 		EasyMock.expectLastCall().times(1);
 		EasyMock.expect(databaseManager.getRecorridos()).andReturn(recorridosDevueltos).times(1);
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido1);
 		assertEquals(recorridosEsperados, sistema.getRecorridos());
 		EasyMock.verify(databaseManager);
 	}
 
 	@Test
-	void testAñadirRecorridoAlSistemaNoValidoRecorridoNulo() {
+	void testAnadirRecorridoAlSistemaNoValidoRecorridoNulo() {
 		databaseManager.addRecorrido(null);
 		EasyMock.expectLastCall().andThrow(new IllegalArgumentException());
 		EasyMock.replay(databaseManager);
 		assertThrows(IllegalArgumentException.class, () -> {
-			sistema.añadirRecorrido(null);
+			sistema.anadirRecorrido(null);
 		});
 		EasyMock.verify(databaseManager);
 	}
 
 	@Test
-	void testAñadirRecorridoAlSistemaNoValidoDosRecorrridosConMismoIdentificador() {
-		Recorrido recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 0, fecha, hora, 50, 50, 1);
+	void testAnadirRecorridoAlSistemaNoValidoDosRecorrridosConMismoIdentificador() {
+		Recorrido recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 0, info);
 		databaseManager.addRecorrido(recorrido1Copia);
 		EasyMock.expectLastCall();
 		databaseManager.addRecorrido(recorrido1Copia);
 		EasyMock.expectLastCall().andThrow(new IllegalStateException());
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1Copia);
+		sistema.anadirRecorrido(recorrido1Copia);
 		assertThrows(IllegalStateException.class, () -> {
-			sistema.añadirRecorrido(recorrido1Copia);
+			sistema.anadirRecorrido(recorrido1Copia);
 		});
 		EasyMock.verify(databaseManager);
 	}
@@ -104,8 +103,8 @@ class SistemaPersistenciaTest {
 		EasyMock.expectLastCall();
 		EasyMock.expect(databaseManager.getRecorridos()).andReturn(recorridosDevueltos).times(1);
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
-		sistema.añadirRecorrido(recorrido2);
+		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido2);
 		sistema.eliminarRecorrido(recorrido2.getId());
 		assertEquals(recorridosEsperados, sistema.getRecorridos());
 		EasyMock.verify(databaseManager);
@@ -126,10 +125,10 @@ class SistemaPersistenciaTest {
 		databaseManager.eliminarRecorrido(recorrido1.getId());
 		EasyMock.expectLastCall().andThrow(new IllegalStateException());
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
-		sistema.añadirBilletes(billete,1);
+		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirBilletes(billete,1);
 		assertThrows(IllegalStateException.class, () -> {
-			sistema.eliminarRecorrido(recorrido1.getId());
+			sistema.eliminarRecorrido("1");
 		});
 
 	}
@@ -143,7 +142,7 @@ class SistemaPersistenciaTest {
 		databaseManager.eliminarRecorrido(null);
 		EasyMock.expectLastCall().andThrow(new IllegalArgumentException());
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido1);
 		assertThrows(IllegalArgumentException.class, () -> {
 			sistema.eliminarRecorrido(null);
 		});
@@ -153,28 +152,29 @@ class SistemaPersistenciaTest {
 	@Test
 	void testActualizarRecorridoFecha() {
 		LocalDate fechaNueva = LocalDate.of(2002, 7, 19);
-		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
-		Recorrido recorridoActualizado = new Recorrido("1", "origen", "destino", "autobus", 5, fechaNueva, hora, 50, 50, 1);
+		InfoRecorrido infoNuevo = new InfoRecorrido(fechaNueva,hora,50,50,1);
+		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, info);
+		Recorrido recorridoActualizado = new Recorrido("1", "origen", "destino", "autobus", 5, infoNuevo);
 		databaseManager.addRecorrido(recorridoAntiguo);
 		EasyMock.expectLastCall();
 		databaseManager.actualizarRecorrido(recorridoActualizado);
 		EasyMock.expectLastCall();
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorridoAntiguo);
+		sistema.anadirRecorrido(recorridoAntiguo);
 		sistema.actualizarRecorrido(recorridoActualizado);
-		assertEquals(fechaNueva, recorridoActualizado.getFecha());
+		assertEquals(fechaNueva, recorridoActualizado.getInfoRecorrido().getFecha());
 		EasyMock.verify(databaseManager);
 	}
 
 	@Test
 	void testActualizarRecorridoNoValidaRecorridoNulo() {
-		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
+		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, info);
 		databaseManager.addRecorrido(recorridoAntiguo);
 		EasyMock.expectLastCall();
 		databaseManager.actualizarRecorrido(null);
 		EasyMock.expectLastCall().andThrow(new IllegalArgumentException());
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorridoAntiguo);
+		sistema.anadirRecorrido(recorridoAntiguo);
 		assertThrows(IllegalArgumentException.class, () -> {
 			sistema.actualizarRecorrido(null);
 		});
@@ -194,16 +194,18 @@ class SistemaPersistenciaTest {
 	@Test
 	void testActualizarRecorridoHora() {
 		LocalTime horaNueva = LocalTime.of(13, 00);
-		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
-		Recorrido recorridoActualizado = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, horaNueva, 50, 50, 1);
+		InfoRecorrido info2 = new InfoRecorrido(fecha,horaNueva,50,50,1);
+
+		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, info);
+		Recorrido recorridoActualizado = new Recorrido("1", "origen", "destino", "autobus", 5, info2);
 		databaseManager.addRecorrido(recorridoAntiguo);
 		EasyMock.expectLastCall();
 		databaseManager.actualizarRecorrido(recorridoActualizado);
 		EasyMock.expectLastCall();
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorridoAntiguo);
+		sistema.anadirRecorrido(recorridoAntiguo);
 		sistema.actualizarRecorrido(recorridoActualizado);
-		assertEquals(horaNueva, recorridoActualizado.getHora());
+		assertEquals(horaNueva, recorridoActualizado.getInfoRecorrido().getHora());
 		EasyMock.verify(databaseManager);
 	}
 
@@ -221,9 +223,9 @@ class SistemaPersistenciaTest {
 		EasyMock.expect(databaseManager.getBilletes("Locnorm")).andReturn(billetes).times(1);
 		
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
-		sistema.añadirBilletes(billete, 1);
-		assertTrue(billete.equals(sistema.getBilletes("Locnorm").get(0)));
+		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirBilletes(billete, 1);
+		assertEquals(billete,sistema.getBilletes("Locnorm").get(0));
 		EasyMock.verify(databaseManager);
 	}
 
@@ -245,8 +247,8 @@ class SistemaPersistenciaTest {
 		EasyMock.expectLastCall();
 		EasyMock.expect(databaseManager.getBilletes("LocNorm")).andReturn(billetes).times(1);
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
-		sistema.añadirBilletes(billetePrueba, 3);
+		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirBilletes(billetePrueba, 3);
 		assertEquals(billetes, sistema.getBilletes("LocNorm"));
 		EasyMock.verify(databaseManager);
 	}
@@ -261,9 +263,9 @@ class SistemaPersistenciaTest {
 		databaseManager.addBillete(null);
 		EasyMock.expectLastCall().andThrow(new IllegalArgumentException());
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido1);
 		assertThrows(IllegalArgumentException.class, () -> {
-			sistema.añadirBilletes(null, 1); 
+			sistema.anadirBilletes(null, 1); 
 		});
 		EasyMock.verify(databaseManager);
 	}
@@ -273,7 +275,7 @@ class SistemaPersistenciaTest {
 	void testComprarBilleteEnSistemaNoValidoPlazasInsuficientes(){
 		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		assertThrows(IllegalArgumentException.class, () ->{
-			sistema.añadirBilletes(billete,51);
+			sistema.anadirBilletes(billete,51);
 		});
 	}
 	
@@ -282,7 +284,7 @@ class SistemaPersistenciaTest {
 	void testComprarBilleteEnSistemaNoValidoRecorridoNoExisteEnSistema() {
 		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		assertThrows(IllegalStateException.class, () -> {
-			sistema.añadirBilletes(billete, 5);
+			sistema.anadirBilletes(billete, 5);
 
 		});
 	}
@@ -292,7 +294,7 @@ class SistemaPersistenciaTest {
 		Billete billete = new Billete(billeteId, recorrido1, usuario);
 
 		assertThrows(IllegalArgumentException.class, () -> {
-			sistema.añadirBilletes(billete, 0);
+			sistema.anadirBilletes(billete, 0);
 		});
 	}
 	
@@ -309,9 +311,9 @@ class SistemaPersistenciaTest {
 		EasyMock.expect(databaseManager.getBilletes("Locnorm")).andReturn(billetes).times(1);
 		
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido1);
 		sistema.reservarBilletes(billete, 1);
-		assertTrue(billete.equals(sistema.getBilletes("Locnorm").get(0)));
+		assertEquals(billete,sistema.getBilletes("Locnorm").get(0));
 		EasyMock.verify(databaseManager);
 	}
 
@@ -333,7 +335,7 @@ class SistemaPersistenciaTest {
 		EasyMock.expectLastCall();
 		EasyMock.expect(databaseManager.getBilletes("LocNorm")).andReturn(billetes).times(1);
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido1);
 		sistema.reservarBilletes(billetePrueba, 3);
 		assertEquals(billetes, sistema.getBilletes("LocNorm"));
 		EasyMock.verify(databaseManager);
@@ -349,7 +351,7 @@ class SistemaPersistenciaTest {
 		databaseManager.addBillete(null);
 		EasyMock.expectLastCall().andThrow(new IllegalArgumentException());
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido1);
 		assertThrows(IllegalArgumentException.class, () -> {
 			sistema.reservarBilletes(null, 1); 
 		});
@@ -370,8 +372,8 @@ class SistemaPersistenciaTest {
 	void testReservarBilleteEnSistemaNoValidoRecorridoNoExisteEnSistema() {
 		Billete billete = new Billete(billeteId, recorrido1, usuario);
 
-		sistema.añadirRecorrido(recorrido1);
-		Recorrido recorridoNoEnSistema = new Recorrido("3", "origen", "destino", "autobus", 0, fecha, hora, 50, 50, 1);
+		sistema.anadirRecorrido(recorrido1);
+		Recorrido recorridoNoEnSistema = new Recorrido("3", "origen", "destino", "autobus", 0, info);
 		assertThrows(IllegalStateException.class, () -> {
 			sistema.reservarBilletes(billete, 5);
 
@@ -414,10 +416,10 @@ class SistemaPersistenciaTest {
 		EasyMock.expect(databaseManager.getBilletes("LocNorm")).andReturn(billetesEsperados).times(1);
 
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
-		sistema.añadirRecorrido(recorrido2);
-		sistema.añadirBilletes(billete1, 1);
-		sistema.añadirBilletes(billete2, 1);
+		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido2);
+		sistema.anadirBilletes(billete1, 1);
+		sistema.anadirBilletes(billete2, 1);
 		sistema.devolverBilletes("LocNor2", 1);
 		assertEquals(billetesEsperados, sistema.getBilletes("LocNorm"));
 		EasyMock.verify(databaseManager);
@@ -455,7 +457,7 @@ class SistemaPersistenciaTest {
 
 	@Test
 	void testDevolverBilleteEnSistemaNoValidoNumBilletesMenorQueUno() {
-		sistema.añadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido1);
 		assertThrows(IllegalArgumentException.class, () -> {
 			sistema.devolverBilletes("locNorm", 0);
 		});
@@ -484,10 +486,10 @@ class SistemaPersistenciaTest {
 		EasyMock.expectLastCall();
 		EasyMock.expect(databaseManager.getBilletesDeUsuario(usuario.getNif())).andReturn(billetesReturn).times(1);
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
-		sistema.añadirRecorrido(recorrido2);
-		sistema.añadirBilletes(billete1, 1);
-		sistema.añadirBilletes(billete2, 1);
+		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido2);
+		sistema.anadirBilletes(billete1, 1);
+		sistema.anadirBilletes(billete2, 1);
 		float precioTotal = sistema.obtenerPrecioTotal(usuario.getNif());
 		assertEquals(10, precioTotal);
 		EasyMock.verify(databaseManager);
@@ -496,8 +498,9 @@ class SistemaPersistenciaTest {
 	
 	@Test
 	void testObtenerPrecioTotalDescuentoTrenAplicado() {
-		Recorrido recorridoTren = new Recorrido("3", "origen", "destino", "tren", 5, fecha, hora, 250, 250, 1);
-		Billete billete = new Billete(billeteId, recorridoTren, usuario);
+		InfoRecorrido info2 = new InfoRecorrido(fecha,hora,250,250,1);
+		Recorrido recorridoTren = new Recorrido("3", "origen", "destino", "tren", 5, info2);
+		Billete billete = new Billete("LocNor1", recorridoTren, usuario);
 		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
 		billetesReturn.add(billete);
 		databaseManager.addRecorrido(recorridoTren);
@@ -507,10 +510,10 @@ class SistemaPersistenciaTest {
 		EasyMock.expectLastCall();
 		EasyMock.expect(databaseManager.getBilletesDeUsuario(usuario.getNif())).andReturn(billetesReturn).times(1);
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorridoTren);
-		sistema.añadirBilletes(billete, 1);
+		sistema.anadirRecorrido(recorridoTren);
+		sistema.anadirBilletes(billete, 1);
 		float precioTotal = sistema.obtenerPrecioTotal(usuario.getNif());
-		assertEquals(precioTotal, 4.5);
+		assertEquals(4.5, precioTotal);
 		EasyMock.verify(databaseManager);
 	}
 
@@ -534,7 +537,7 @@ class SistemaPersistenciaTest {
 		EasyMock.expectLastCall();
 		EasyMock.expect(databaseManager.getRecorridos(fecha2)).andReturn(recorridosReturn).times(1);
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido1);
 		assertEquals(recorridosEnFecha, sistema.getRecorridosPorFecha(fecha2));
 		EasyMock.verify(databaseManager);
 	}
@@ -559,7 +562,7 @@ class SistemaPersistenciaTest {
 		EasyMock.expectLastCall();
 		EasyMock.expect(databaseManager.getBilletes("LocNorm")).andReturn(billetesReturn).times(1);
 		EasyMock.replay(databaseManager);
-		sistema.añadirRecorrido(recorrido1);
+		sistema.anadirRecorrido(recorrido1);
 		sistema.reservarBilletes(billete, 1);
 		sistema.anularReservaBilletes("LocNorm", 1);
 		assertTrue(sistema.getBilletes("LocNorm").isEmpty());

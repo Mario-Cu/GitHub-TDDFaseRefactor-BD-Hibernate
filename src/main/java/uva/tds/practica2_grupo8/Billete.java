@@ -110,25 +110,19 @@ public class Billete {
 	 */
 	@Override
 	public boolean equals(Object o) {
+		Boolean valor = true;
 		
-		if(o == this)
-			return true;
-		if(o == null)
+		if(!(o instanceof Billete) || this.getClass() != o.getClass()) 
 			return false;
-		
-		if(!(o instanceof Billete))
-			return false;
-		
 		Billete b = (Billete) o;
+		if( !this.localizador.equals(b.localizador) || !this.recorrido.equals(b.recorrido) || !this.usuario.equals(b.usuario))
+			valor = false;
 		
-		if(!this.id.equals(b.id)) 
-			return false;
-		if(!this.recorrido.equals(b.recorrido)) 
-			return false;
-		if(!this.usuario.equals(b.usuario)) 
-			return false;
-		
-		
-		return true;
+		return valor;
 	}
+    @Override
+    public int hashCode() {
+		return 0;
+
+    }
 }

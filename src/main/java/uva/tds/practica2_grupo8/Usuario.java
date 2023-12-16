@@ -59,7 +59,8 @@ public class Usuario {
 		if(nif.length()>9) {
 			throw new IllegalArgumentException("El nif tiene que tener 9 caracteres");
 		}
-		if(letraDNI(nif) == false) {
+		Boolean b = letraDNI(nif);
+		if(Boolean.FALSE.equals(b)) {
 			throw new IllegalArgumentException("El resto de la division del numero nif entre 23 no coincide con su letra asociada");
 		}
 
@@ -74,7 +75,7 @@ public class Usuario {
 	 * @return nif del usuario
 	 */
 	private Boolean letraDNI(String dni) {
-	
+		Boolean valor = false;
 		int miDNI = Integer.parseInt(dni.substring(0,8));
 		String letra = dni.substring(8);
 		int resto = 0;
@@ -82,11 +83,9 @@ public class Usuario {
 		resto = miDNI % 23;
 		String letraAsociada = asignacionLetra[resto];
 		if(letra.equals(letraAsociada)) {
-			return true;
-		}else {
-			return false;
+			valor = true;
 		}
-
+		return valor;
 	}
 
 	/**
@@ -112,13 +111,22 @@ public class Usuario {
 	 */
  	@Override
 	public boolean equals(Object o) {
+ 		Boolean valor = false;
+ 		if (o == null || this.getClass() != o.getClass()) {
+ 		      return false;
+ 		}
 		Usuario u = (Usuario)o;
 		if(this.nif == u.getNif()) {
-			return true;
+			valor = true;
 		}
-		return false;
+
+		return valor;
 
 	}
-
+ 	
+ 	@Override
+ 	public int hashCode() {
+ 		return 0;
+ 	}
  
 }
