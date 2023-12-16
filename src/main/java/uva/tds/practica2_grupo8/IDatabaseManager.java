@@ -2,6 +2,7 @@ package uva.tds.practica2_grupo8;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Interfaz que define los métodos necesarios para gestionar usuarios, recorridos y billetes 
@@ -21,6 +22,7 @@ public interface IDatabaseManager {
 	 * en el sistema
 	 * @param idRecorrido El identificador del recorrido
 	 * @throws IllegalArgumentException si idRecorrido es nulo
+	 * @throws IllegalStateException si el recorrido tiene billetes asociados
 	 */
 	public void eliminarRecorrido(String idRecorrido);
 	/**
@@ -43,7 +45,7 @@ public interface IDatabaseManager {
 	 * @return Una lista con todos los recorridos del sistema. Si no hay ninguno, se
 	 * devuelve una lista vacia
 	 */
-	public ArrayList<Recorrido> getRecorridos();
+	public List<Recorrido> getRecorridos();
 	
 	/**
 	 * Devuelve los recorridos en una fecha del sistema 
@@ -51,7 +53,7 @@ public interface IDatabaseManager {
 	 * @return Una lista con los recorridos en la fecha indicada del. Si no hay ninguno, se
 	 * devuelve una lista vacia
 	 */
-	public ArrayList<Recorrido> getRecorridos(LocalDate fecha);
+	public List<Recorrido> getRecorridos(LocalDate fecha);
 	
 	/**
 	 * Añade un usuario al sistema
@@ -112,19 +114,19 @@ public interface IDatabaseManager {
 	 * @return La lista de billetes con el localizador indicado por localizadorBilletes. 
 	 * Si no existe ninguno, se devuelve una lista vacía
 	 */
-	public ArrayList<Billete> getBilletes(String localizadorBilletes);
+	public List<Billete> getBilletes(String localizadorBilletes);
 	/**
 	 * Devuelve los billetes asociados a un recorrido
 	 * @param idRecorrido El identificador del recorrido
 	 * @return La lista de billetes asociados al recorrido o lista vacia si no existe ninguno
 	 */
-	public ArrayList<Billete> getBilletesDeRecorrido(String idRecorrido);
+	public List<Billete> getBilletesDeRecorrido(String idRecorrido);
 	
 	/**
 	 * Devuelve los billetes asociados a un usuario
 	 * @param idUsuario El identificador del usuario
 	 * @return La lista de billetes asociados al usuario o lista vacia si no existe ninguno
 	 */
-	public ArrayList<Billete> getBilletesDeUsuario(String idUsuario);
+	public List<Billete> getBilletesDeUsuario(String idUsuario);
 
 }

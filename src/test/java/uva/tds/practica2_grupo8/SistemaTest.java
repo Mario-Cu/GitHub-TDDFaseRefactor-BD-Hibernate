@@ -30,6 +30,7 @@ class SistemaTest {
 		recorrido1 = new Recorrido("1","origen","destino","autobus",5,info);
 		recorrido2 = new Recorrido("2","origen","destino","autobus",5,info);
 		usuario = new Usuario("33036946E","UsuarioNormal");
+		billeteId = new BilleteId("LocNorm",1);
 	}
 	
 	
@@ -54,7 +55,7 @@ class SistemaTest {
 		Sistema sistema = new Sistema();
 		sistema.anadirRecorrido(recorrido1);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		Billete billetePrueba = new Billete(billeteId, recorrido1, usuario);
 		billetes.add(billetePrueba);
 		sistema.comprarBilletes("LocNorm",usuario,recorrido1,1);
 		assertEquals(billetePrueba,(sistema.getBilletes().get(0)));
@@ -63,6 +64,7 @@ class SistemaTest {
 	
 	@Test
 	void testComprarBilletesReservados(){
+		BilleteId id1 = new BilleteId("L1",1);
 		Sistema sistema = new Sistema();
 		sistema.anadirRecorrido(recorrido1);
 		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
@@ -76,7 +78,7 @@ class SistemaTest {
 	void testComprarBilletesReservadosNoValidoLocalizadorNulo(){
 		Sistema sistema = new Sistema();
 		ArrayList<Billete> billetesReservados = new ArrayList<Billete>();
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		Billete billetePrueba = new Billete(billeteId, recorrido1, usuario);
 		billetesReservados.add(billetePrueba);
 		assertThrows(IllegalArgumentException.class, () ->{
 			sistema.comprarBilletesReservados(null);
@@ -86,8 +88,8 @@ class SistemaTest {
 	@Test
 	void testDevolverBilleteEnSistema(){
 		Sistema sistema = new Sistema();
-		sistema.anadirRecorrido(recorrido1);
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		sistema.añadirRecorrido(recorrido1);
+		Billete billetePrueba = new Billete(billeteId, recorrido1, usuario);
 		sistema.comprarBilletes("LocNor2", usuario, recorrido1, 1);
 		sistema.comprarBilletes("LocNorm", usuario, recorrido1, 2);
 		sistema.devolverBilletes("LocNorm",1);
@@ -131,7 +133,7 @@ class SistemaTest {
 		Sistema sistema = new Sistema();
 		sistema.anadirRecorrido(recorrido1);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		Billete billetePrueba = new Billete(billeteId, recorrido1, usuario);
 		for(int i = 1; i<4; i++) {
 			billetes.add(billetePrueba);
 		}
@@ -223,9 +225,9 @@ class SistemaTest {
 	void testEliminarRecorridoDelSistemaNoValidoRecorridoConBilletesAsociados() {
 		Sistema sistema = new Sistema();
 		Usuario usuario = new Usuario("33036946E","UsuarioNormal");
-		Billete billete = new Billete("LocNorm",recorrido1,usuario);
-		sistema.anadirRecorrido(recorrido1);
-		sistema.anadirBillete(billete);
+		Billete billete = new Billete(billeteId,recorrido1,usuario);
+		sistema.añadirRecorrido(recorrido1);
+		sistema.añadirBillete(billete);
 		assertThrows(IllegalStateException.class, () ->{
 			sistema.eliminarRecorrido("1");
 		});
@@ -361,8 +363,8 @@ class SistemaTest {
 	@Test
 	void testReservarVariosBilletes() {
 		Sistema sistema = new Sistema();
-		sistema.anadirRecorrido(recorrido1);
-		Billete reservaBillete = new Billete("LocNorm", recorrido1, usuario);
+		sistema.añadirRecorrido(recorrido1);
+		Billete reservaBillete = new Billete(billeteId, recorrido1, usuario);
 		sistema.reservarBilletes("LocNorm",usuario,recorrido1,3);
 		assertEquals(reservaBillete,(sistema.getBilletesReservados().get(0)));
 		assertEquals(reservaBillete,(sistema.getBilletesReservados().get(1)));
@@ -436,7 +438,7 @@ class SistemaTest {
 	void testAnadirBillete() {
 		Sistema sistema = new Sistema();
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		billetes.add(billete);
 		sistema.anadirBillete(billete);
 		assertEquals(billetes,sistema.getBilletes());
@@ -451,8 +453,8 @@ class SistemaTest {
 	@Test
 	void testAnularReserva() {
 		Sistema sistema = new Sistema();
-		sistema.anadirRecorrido(recorrido1);
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		sistema.añadirRecorrido(recorrido1);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		sistema.reservarBilletes("LocNor2", usuario, recorrido1, 1);
 		sistema.reservarBilletes("LocNorm", usuario, recorrido1, 2);
 		sistema.anularReservaBilletes("LocNorm",1);

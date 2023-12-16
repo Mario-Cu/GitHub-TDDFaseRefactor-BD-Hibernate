@@ -74,8 +74,10 @@ public class Sistema {
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		
 		Billete billeteComprado;
+		BilleteId billeteId;
 		for(int i=0; i < numBilletes; i++) {
-			billeteComprado = new Billete(loc,rec,usr);
+			billeteId = new BilleteId(loc,i);
+			billeteComprado = new Billete(billeteId,rec,usr);
 			billetes.add(billeteComprado);
 		}
 		int indexRecorridoEnArrayList = getIndexRecorridoPorId(rec.getId());
@@ -158,7 +160,7 @@ public class Sistema {
 	private Billete getBilletePorLocalizador(String loc) {
 		Billete solucion = null;
 		for(Billete item : billetes) {
-			if((item.getLocalizador()).equals(loc)) {
+			if(item.getId().getLocalizador().equals(loc)) {
 				solucion = item;
 				
 			}
@@ -171,7 +173,7 @@ public class Sistema {
 	private Billete getBilleteReservadoPorLocalizador(String loc) {
 		Billete solucion = null;
 		for(Billete item : billetesReservados) {
-			if((item.getLocalizador()).equals(loc)) {
+			if(item.getId().getLocalizador().equals(loc)) {
 				solucion = item;
 				
 			}
@@ -232,7 +234,7 @@ public class Sistema {
 		if(loc == null)
 			throw new IllegalArgumentException(EX_LOC);
 		for(Billete item : billetesReservados) {
-			if((item.getLocalizador()).equals(loc)) {
+			if(item.getId().getLocalizador() == loc) {
 				billetes.add(item);
 				billetesComprados.add(item);
 			}
@@ -273,7 +275,7 @@ public class Sistema {
 		List<Integer> indicesBilletesDevueltos = new ArrayList<>();
 		int j =0;
 		for(int i =0;i<billetes.size();i++) {
-			if(j < numBilletes && (billetes.get(i).getLocalizador()).equals(loc)) {
+			if(j < numBilletes && billetes.get(i).getId().getLocalizador() == loc) {
 				indicesBilletesDevueltos.add(i);
 				j++;
 			}
@@ -374,8 +376,10 @@ public class Sistema {
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		
 		Billete billeteReservado;
+		BilleteId billeteId;
 		for(int i=0; i < numBilletes; i++) {
-			billeteReservado = new Billete(localizador,recorrido,usuario);
+			billeteId = new BilleteId(localizador,i);
+			billeteReservado = new Billete(billeteId,recorrido,usuario);
 			billetesReservados.add(billeteReservado);
 		}
 		int indexRecorridoEnArrayList = getIndexRecorridoPorId(recorrido.getId());
@@ -403,7 +407,7 @@ public class Sistema {
 		List<Integer> indicesBilletesAnulados = new ArrayList<>();
 		int j =0;
 		for(int i =0;i<billetesReservados.size();i++) {
-			if(j < numBilletes && (billetesReservados.get(i).getLocalizador()).equals(localizador)) {
+			if(j < numBilletes && billetesReservados.get(i).getId().getLocalizador() == localizador) {
 				indicesBilletesAnulados.add(i);
 				j++;
 			}
