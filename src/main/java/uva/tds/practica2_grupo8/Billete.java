@@ -22,7 +22,7 @@ public class Billete {
 	@EmbeddedId
 	BilleteId id;
 	@Enumerated(EnumType.STRING)
-	String estado;
+	EstadoBillete estado;
 	@ManyToOne()
 	@JoinColumn(name = "ID_RECORRIDO",referencedColumnName = "Id")
 	Recorrido recorrido;
@@ -60,7 +60,6 @@ public class Billete {
 		this.id = id;
 		this.recorrido = recorrido;
 		this.usuario = usuario;
-		this.estado = "default";
 		
 	}
 	
@@ -76,7 +75,7 @@ public class Billete {
 	 * Metodo que devuelve el estado del billete
 	 * @return localizador del billete
 	 */
-	public String getEstado() {
+	public EstadoBillete getEstado() {
 		return this.estado;
 	}
 	
@@ -84,7 +83,7 @@ public class Billete {
 	 * Metodo que settea el estado del billete
 	 * @param estado del billete
 	 */
-	public void setEstado(String estado) {
+	public void setEstado(EstadoBillete estado) {
 		this.estado = estado;
 	}
 
