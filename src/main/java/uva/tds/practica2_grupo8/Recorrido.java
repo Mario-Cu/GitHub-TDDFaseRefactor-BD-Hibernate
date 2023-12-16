@@ -72,6 +72,27 @@ public class Recorrido {
 		if(precio < 0) {
 			throw new IllegalArgumentException("El precio es menor que 0");
 		}
+		
+		comprobacionesInfoRecorrido(medioTransporte,infoRecorrido);
+		
+		this.id = id;
+		this.destino = destino;
+		this.origen = origen;
+		this.medioTransporte = medioTransporte;
+		this.precio = precio;
+		this.infoRecorrido = infoRecorrido;
+		
+	}
+	
+	private static boolean valido(int plazasDisponibles, int plazasTotales) {
+		Boolean valor = false;  
+		if(plazasDisponibles>plazasTotales || plazasDisponibles < 0) {
+			  valor = true;
+		}
+		return valor;
+	}
+	
+	private static void comprobacionesInfoRecorrido(String medioTransporte, InfoRecorrido infoRecorrido) {
 
 		if(infoRecorrido.getFecha() == null) {
 			throw new IllegalArgumentException("La fecha es nula");
@@ -95,21 +116,6 @@ public class Recorrido {
 		if(infoRecorrido.getMinutos()<0) {
 			throw new IllegalArgumentException("La duracion del trayecto es erronea");
 		}
-		this.id = id;
-		this.destino = destino;
-		this.origen = origen;
-		this.medioTransporte = medioTransporte;
-		this.precio = precio;
-		this.infoRecorrido = infoRecorrido;
-		
-	}
-	
-	private static boolean valido(int plazasDisponibles, int plazasTotales) {
-		Boolean valor = false;  
-		if(plazasDisponibles>plazasTotales || plazasDisponibles < 0) {
-			  valor = true;
-		}
-		return valor;
 	}
 	
 	private static boolean valido2(int plazasTotales, int valormax) {

@@ -29,38 +29,38 @@ class RecorridoTest {
 	
 	@Test
 	void testConstructorRecorridoAutobusLimiteInferior() {
-		InfoRecorrido info = new InfoRecorrido(fecha,hora,1,1,1);
-		Recorrido recorrido = new Recorrido("1","origen","destino","autobus",0,info);
+		InfoRecorrido info1 = new InfoRecorrido(fecha,hora,1,1,1);
+		Recorrido recorrido = new Recorrido("1","origen","destino","autobus",0,info1);
 		assertEquals("1",recorrido.getId());
 		assertEquals("origen",recorrido.getOrigen());
 		assertEquals("destino",recorrido.getDestino());
 		assertEquals("autobus",recorrido.getMedioTransporte());
 		assertEquals(0,recorrido.getPrecio());
-		assertEquals(info,recorrido.getInfoRecorrido());
+		assertEquals(info1,recorrido.getInfoRecorrido());
 
 	}
 	@Test
 	void testConstructorRecorridoAutobusLimiteSuperior() {
-		InfoRecorrido info = new InfoRecorrido(fecha,hora,1,50,1);
-		Recorrido recorrido = new Recorrido("1","origen","destino","autobus",0,info);
+		InfoRecorrido info2 = new InfoRecorrido(fecha,hora,1,50,1);
+		Recorrido recorrido = new Recorrido("1","origen","destino","autobus",0,info2);
 		assertEquals("1",recorrido.getId());
 		assertEquals("origen",recorrido.getOrigen());
 		assertEquals("destino",recorrido.getDestino());
 		assertEquals("autobus",recorrido.getMedioTransporte());
 		assertEquals(0,recorrido.getPrecio());
-		assertEquals(info,recorrido.getInfoRecorrido());
+		assertEquals(info2,recorrido.getInfoRecorrido());
 
 	}
 	@Test
 	void testConstructorRecorridoTrenLimiteInferior() {
-		InfoRecorrido info = new InfoRecorrido(fecha,hora,1,1,1);
-		Recorrido recorrido = new Recorrido("1","origen","destino","tren",0,info);
+		InfoRecorrido info3 = new InfoRecorrido(fecha,hora,1,1,1);
+		Recorrido recorrido = new Recorrido("1","origen","destino","tren",0,info3);
 		assertEquals("1",recorrido.getId());
 		assertEquals("origen",recorrido.getOrigen());
 		assertEquals("destino",recorrido.getDestino());
 		assertEquals("tren",recorrido.getMedioTransporte());
 		assertEquals(0,recorrido.getPrecio());
-		assertEquals(info,recorrido.getInfoRecorrido());
+		assertEquals(info3,recorrido.getInfoRecorrido());
 
 	}
 
