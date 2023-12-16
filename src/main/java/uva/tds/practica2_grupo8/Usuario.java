@@ -1,5 +1,11 @@
 package uva.tds.practica2_grupo8;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
 /**
  * Clase que representa un Usuario.
  * @author marcobr (Mario Cobreros del Caz)
@@ -10,6 +16,8 @@ package uva.tds.practica2_grupo8;
 public class Usuario {
 	String nif;
 	String nombre;
+	@OneToMany(mappedBy = "deck",fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+	List<Billete> billetes; 
 	/**
 	 * Creacion de un usuario
 	 * @author marcobr (Mario Cobreros del Caz)

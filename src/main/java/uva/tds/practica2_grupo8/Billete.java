@@ -1,16 +1,34 @@
 package uva.tds.practica2_grupo8;
 
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Clase que representa un Billete.
  * @author marcobr (Mario Cobreros del Caz)
  * @author mardano (Mario Danov Ivanov)
  * 
  */
+@Entity
+@Table(name = "BILLETE")
 public class Billete {
-	String localizador;
-	Recorrido recorrido;
-	Usuario usuario;
+	
+	@EmbeddedId
+	BilleteId id;
+	@Enumerated(EnumType.STRING)
 	String estado;
+	@ManyToOne()
+	@JoinColumn(name = "ID_RECORRIDO",referencedColumnName = "Id")
+	Recorrido recorrido;
+	@ManyToOne()
+	@JoinColumn(name = "NIF_USUARIO",referencedColumnName = "nif")
+	Usuario usuario;
 	/**
 	 * Creacion de un billete
 	 * @author marcobr (Mario Cobreros del Caz)
@@ -23,8 +41,8 @@ public class Billete {
 	 * @throws IllegalArgumentException si recorrido es nulo
 	 * @throws IllegalArgumentException si usuario es nulo
 	 */
-	public Billete(String localizador, Recorrido recorrido, Usuario usuario) {
-		if(localizador == null) {
+	public Billete(BilleteId id, Recorrido recorrido, Usuario usuario) {
+		if(id == null) {
 			throw new IllegalArgumentException("El localizador no puede ser nulo");
 		}
 		if(recorrido == null ) {
@@ -33,13 +51,13 @@ public class Billete {
 		if(usuario == null) {
 			throw new IllegalArgumentException("El usuario no puede ser nulo");
 		}
-		if(localizador.length()<1) {
+		if(id.getLocalizador().length()<1) {
 			throw new IllegalArgumentException("El localizador tiene al menos 1 caracter");
 		}
-		if(localizador.length()>8) {
+		if(id.getLocalizador().length()>8) {
 			throw new IllegalArgumentException("El localizador no puede tener mas de 8 caracteres");
 		}
-		this.localizador = localizador;
+		this.id = id;
 		this.recorrido = recorrido;
 		this.usuario = usuario;
 		this.estado = "default";
@@ -50,8 +68,8 @@ public class Billete {
 	 * Metodo que devuelve el localizador del billete
 	 * @return localizador del billete
 	 */
-	public String getLocalizador() {
-		return this.localizador;
+	public BilleteId getId() {
+		return this.id;
 	}
 	
 	/**
@@ -103,7 +121,7 @@ public class Billete {
 		
 		Billete b = (Billete) o;
 		
-		if(!this.localizador.equals(b.localizador)) 
+		if(!this.id.equals(b.id)) 
 			return false;
 		if(!this.recorrido.equals(b.recorrido)) 
 			return false;

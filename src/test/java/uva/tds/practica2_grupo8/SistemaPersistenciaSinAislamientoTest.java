@@ -22,6 +22,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	private Usuario usuario;
 	private LocalDate fecha;
 	private LocalTime hora;
+	private BilleteId billeteId;
 
 	@TestSubject
 	private SistemaPersistencia sistema;
@@ -35,10 +36,12 @@ class SistemaPersistenciaSinAislamientoTest {
 		sistema = new SistemaPersistencia(databaseManager);
 		fecha = LocalDate.of(2002, 7, 18);
 		hora = LocalTime.of(12, 30);
+		
 		recorrido1 = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
 		recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
 		recorrido2 = new Recorrido("2", "origen", "destino", "autobus", 5, fecha, hora, 50, 50, 1);
 		usuario = new Usuario("33036946E", "UsuarioNormal");
+		billeteId = new BilleteId("LocNorm",1);
 	}
 
 	@Test
@@ -89,7 +92,7 @@ class SistemaPersistenciaSinAislamientoTest {
 		recorridosEsperados.add(recorrido1);
 		recorridosDevueltos.add(recorrido1Copia);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		Billete billete = new Billete("1", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		billetes.add(billete);
 		
 		databaseManager.addRecorrido(recorrido1);
@@ -111,7 +114,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	@Test
 	void testEliminarRecorridoDelSistemaNoValidoRecorridoConBilletesAsociados() {
 		Usuario usuario = new Usuario("33036946E", "UsuarioNormal");
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
 		billetes.add(billete);
 		databaseManager.addRecorrido(recorrido1);
@@ -207,7 +210,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	
 	@Test
 	void testComprarBilleteEnSistema() {
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
 		billetes.add(billete);
 		databaseManager.addRecorrido(recorrido1);
@@ -229,7 +232,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	@Test
 	void testComprarVariosBilletesEnSistema() {
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		Billete billetePrueba = new Billete(billeteId, recorrido1, usuario);
 		for (int i = 1; i < 4; i++) {
 			billetes.add(billetePrueba);
 		}
@@ -268,7 +271,7 @@ class SistemaPersistenciaSinAislamientoTest {
 
 	@Test
 	void testComprarBilleteEnSistemaNoValidoPlazasInsuficientes(){
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		assertThrows(IllegalArgumentException.class, () ->{
 			sistema.añadirBilletes(billete,51);
 		});
@@ -277,7 +280,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	
 	@Test
 	void testComprarBilleteEnSistemaNoValidoRecorridoNoExisteEnSistema() {
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		assertThrows(IllegalStateException.class, () -> {
 			sistema.añadirBilletes(billete, 5);
 
@@ -286,7 +289,7 @@ class SistemaPersistenciaSinAislamientoTest {
 
 	@Test
 	void testComprarBilleteEnSistemaNoValidoNumeroDeBilletesMenorQueUno() {
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 
 		assertThrows(IllegalArgumentException.class, () -> {
 			sistema.añadirBilletes(billete, 0);
@@ -295,7 +298,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	
 	@Test
 	void testReservarBilleteEnSistema() {
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
 		billetes.add(billete);
 		databaseManager.addRecorrido(recorrido1);
@@ -317,7 +320,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	@Test
 	void testReservarVariosBilletesEnSistema() {
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		Billete billetePrueba = new Billete(billeteId, recorrido1, usuario);
 		for (int i = 1; i < 4; i++) {
 			billetes.add(billetePrueba);
 		}
@@ -356,7 +359,7 @@ class SistemaPersistenciaSinAislamientoTest {
 
 	@Test
 	void testReservarBilleteEnSistemaNoValidoPlazasInsuficientes(){
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		assertThrows(IllegalArgumentException.class, () ->{
 			sistema.reservarBilletes(billete,51);
 		});
@@ -365,7 +368,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	
 	@Test
 	void testReservarBilleteEnSistemaNoValidoRecorridoNoExisteEnSistema() {
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 
 		sistema.añadirRecorrido(recorrido1);
 		Recorrido recorridoNoEnSistema = new Recorrido("3", "origen", "destino", "autobus", 0, fecha, hora, 50, 50, 1);
@@ -377,7 +380,7 @@ class SistemaPersistenciaSinAislamientoTest {
 
 	@Test
 	void testReservarBilleteEnSistemaNoValidoNumeroDeBilletesMenorQueUno() {
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 
 		assertThrows(IllegalArgumentException.class, () -> {
 			sistema.reservarBilletes(billete, 0);
@@ -386,9 +389,11 @@ class SistemaPersistenciaSinAislamientoTest {
 
 	@Test
 	void testDevolverBilleteEnSistema() {
-		Billete billete1 = new Billete("LocNorm", recorrido1,usuario);
-		Billete billete2 = new Billete("LocNor2", recorrido2,usuario);
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		BilleteId id1 = new BilleteId("LocNorm",1);
+		BilleteId id2 = new BilleteId("LocNorm",1);
+		Billete billete1 = new Billete(id1, recorrido1,usuario);
+		Billete billete2 = new Billete(id2, recorrido2,usuario);
+		Billete billetePrueba = new Billete(id1, recorrido1, usuario);
 		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
 		billetesReturn.add(billete2);
 		ArrayList<Billete> billetesEsperados = new ArrayList<Billete>();
@@ -460,8 +465,10 @@ class SistemaPersistenciaSinAislamientoTest {
 
 	@Test
 	void testObtenerPrecioTotal() {
-		Billete billete1 = new Billete("LocNor1", recorrido1,usuario);
-		Billete billete2 = new Billete("LocNor2", recorrido2,usuario);
+		BilleteId id1 = new BilleteId("LocNorm",1);
+		BilleteId id2 = new BilleteId("LocNorm",1);
+		Billete billete1 = new Billete(id1, recorrido1,usuario);
+		Billete billete2 = new Billete(id2, recorrido2,usuario);
 		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
 		billetesReturn.add(billete1);
 		billetesReturn.add(billete2);
@@ -490,7 +497,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	@Test
 	void testObtenerPrecioTotalDescuentoTrenAplicado() {
 		Recorrido recorridoTren = new Recorrido("3", "origen", "destino", "tren", 5, fecha, hora, 250, 250, 1);
-		Billete billete = new Billete("LocNor1", recorridoTren, usuario);
+		Billete billete = new Billete(billeteId, recorridoTren, usuario);
 		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
 		billetesReturn.add(billete);
 		databaseManager.addRecorrido(recorridoTren);
@@ -541,7 +548,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	
 	@Test
 	void testAnularReserva() {
-		Billete billete = new Billete("LocNorm", recorrido1,usuario);
+		Billete billete = new Billete(billeteId, recorrido1,usuario);
 		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
 	    databaseManager.addRecorrido(recorrido1);
 		EasyMock.expectLastCall();
@@ -562,7 +569,7 @@ class SistemaPersistenciaSinAislamientoTest {
 
 	@Test
 	void testAnularReservaNoValidaNumeroDeBilletesMenorQueLimiteInferior() {
-		Billete billete = new Billete("LocNorm", recorrido1,usuario);
+		Billete billete = new Billete(billeteId, recorrido1,usuario);
 		assertThrows(IllegalArgumentException.class, () -> {
 			sistema.anularReservaBilletes("LocNorm", 0);
 		});

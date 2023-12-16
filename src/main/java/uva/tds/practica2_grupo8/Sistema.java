@@ -71,8 +71,10 @@ public class Sistema {
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		
 		Billete billeteComprado;
+		BilleteId billeteId;
 		for(int i=0; i < numBilletes; i++) {
-			billeteComprado = new Billete(loc,rec,usr);
+			billeteId = new BilleteId(loc,i);
+			billeteComprado = new Billete(billeteId,rec,usr);
 			billetes.add(billeteComprado);
 		}
 		int indexRecorridoEnArrayList = getIndexRecorridoPorId(rec.getId());
@@ -154,7 +156,7 @@ public class Sistema {
 	private Billete getBilletePorLocalizador(String loc) {
 		Billete solucion = null;
 		for(Billete item : billetes) {
-			if(item.getLocalizador() == loc) {
+			if(item.getId().getLocalizador().equals(loc)) {
 				solucion = item;
 				
 			}
@@ -167,7 +169,7 @@ public class Sistema {
 	private Billete getBilleteReservadoPorLocalizador(String loc) {
 		Billete solucion = null;
 		for(Billete item : billetesReservados) {
-			if(item.getLocalizador() == loc) {
+			if(item.getId().getLocalizador().equals(loc)) {
 				solucion = item;
 				
 			}
@@ -226,7 +228,7 @@ public class Sistema {
 		if(loc == null)
 			throw new IllegalArgumentException("El localizador no puede ser nulo");
 		for(Billete item : billetesReservados) {
-			if(item.getLocalizador() == loc) {
+			if(item.getId().getLocalizador() == loc) {
 				billetes.add(item);
 				billetesComprados.add(item);
 			}
@@ -267,7 +269,7 @@ public class Sistema {
 		ArrayList<Integer> indicesBilletesDevueltos = new ArrayList<Integer>();
 		int j =0;
 		for(int i =0;i<billetes.size();i++) {
-			if(j < numBilletes && billetes.get(i).getLocalizador() == loc) {
+			if(j < numBilletes && billetes.get(i).getId().getLocalizador() == loc) {
 				indicesBilletesDevueltos.add(i);
 				j++;
 			}
@@ -351,8 +353,8 @@ public class Sistema {
 	 * @throws IllegalArgumentException si el recorrido es nulo
 	 * @throws IllegalArgumentException si el numero de billetes es menor que el limite inferior
 	 */
-	public void reservarBilletes(String Localizador,Usuario usuario,Recorrido recorrido,int numBilletes) {
-		if(Localizador == null)
+	public void reservarBilletes(String localizador,Usuario usuario,Recorrido recorrido,int numBilletes) {
+		if(localizador == null)
 			throw new IllegalArgumentException("El localizador no puede ser nulo");
 		if(usuario == null)
 			throw new IllegalArgumentException("El usuario no puede ser nulo");
@@ -368,8 +370,10 @@ public class Sistema {
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		
 		Billete billeteReservado;
+		BilleteId billeteId;
 		for(int i=0; i < numBilletes; i++) {
-			billeteReservado = new Billete(Localizador,recorrido,usuario);
+			billeteId = new BilleteId(localizador,i);
+			billeteReservado = new Billete(billeteId,recorrido,usuario);
 			billetesReservados.add(billeteReservado);
 		}
 		int indexRecorridoEnArrayList = getIndexRecorridoPorId(recorrido.getId());
@@ -382,12 +386,12 @@ public class Sistema {
 	 * @throws IllegalStateException si los billetes no han sido previamente reservados
 	 * @throws IllegalArgumentException si el localizador es nulo
 	 */
-	public void anularReservaBilletes(String Localizador, int numBilletes) {
-		if(Localizador == null)
+	public void anularReservaBilletes(String localizador, int numBilletes) {
+		if(localizador == null)
 			throw new IllegalArgumentException("El localizador no puede ser nulo");
 		if(numBilletes < 1)
 			throw new IllegalArgumentException("El numero de billetes no puede ser menor que 1");
-		Billete billete = getBilleteReservadoPorLocalizador(Localizador);
+		Billete billete = getBilleteReservadoPorLocalizador(localizador);
 		if(billete == null) 
 			throw new IllegalStateException("El localizador no coincide con el de un billete reservado");
 		Recorrido recorrido = billete.getRecorrido();
@@ -397,7 +401,7 @@ public class Sistema {
 		ArrayList<Integer> indicesBilletesAnulados = new ArrayList<Integer>();
 		int j =0;
 		for(int i =0;i<billetesReservados.size();i++) {
-			if(j < numBilletes && billetesReservados.get(i).getLocalizador() == Localizador) {
+			if(j < numBilletes && billetesReservados.get(i).getId().getLocalizador() == localizador) {
 				indicesBilletesAnulados.add(i);
 				j++;
 			}

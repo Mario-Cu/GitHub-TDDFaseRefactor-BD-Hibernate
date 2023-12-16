@@ -18,6 +18,7 @@ class SistemaTest {
 	private Usuario usuario;
 	private LocalDate fecha;
 	private LocalTime hora;
+	private BilleteId billeteId;
 
 
 		
@@ -28,6 +29,7 @@ class SistemaTest {
 		recorrido1 = new Recorrido("1","origen","destino","autobus",5,fecha,hora,50,50,1);
 		recorrido2 = new Recorrido("2","origen","destino","autobus",5,fecha,hora,50,50,1);
 		usuario = new Usuario("33036946E","UsuarioNormal");
+		billeteId = new BilleteId("LocNorm",1);
 	}
 	
 	
@@ -52,7 +54,7 @@ class SistemaTest {
 		Sistema sistema = new Sistema();
 		sistema.añadirRecorrido(recorrido1);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		Billete billetePrueba = new Billete(billeteId, recorrido1, usuario);
 		billetes.add(billetePrueba);
 		sistema.comprarBilletes("LocNorm",usuario,recorrido1,1);
 		assertTrue(billetePrueba.equals(sistema.getBilletes().get(0)));
@@ -61,12 +63,13 @@ class SistemaTest {
 	
 	@Test
 	void testComprarBilletesReservados(){
+		BilleteId id1 = new BilleteId("L1",1);
 		Sistema sistema = new Sistema();
 		sistema.añadirRecorrido(recorrido1);
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
-		sistema.reservarBilletes("LocNor2", usuario, recorrido1, 1);
-		sistema.reservarBilletes("LocNorm", usuario, recorrido1, 1);
-		sistema.comprarBilletesReservados("LocNorm");
+		Billete billetePrueba = new Billete(id1, recorrido1, usuario);
+		sistema.reservarBilletes("L1", usuario, recorrido1, 1);
+		sistema.reservarBilletes("L2", usuario, recorrido1, 1);
+		sistema.comprarBilletesReservados(id1.getLocalizador());
 		assertTrue(billetePrueba.equals(sistema.getBilletes().get(0)));
 	}
 	
@@ -74,7 +77,7 @@ class SistemaTest {
 	void testComprarBilletesReservadosNoValidoLocalizadorNulo(){
 		Sistema sistema = new Sistema();
 		ArrayList<Billete> billetesReservados = new ArrayList<Billete>();
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		Billete billetePrueba = new Billete(billeteId, recorrido1, usuario);
 		billetesReservados.add(billetePrueba);
 		assertThrows(IllegalArgumentException.class, () ->{
 			sistema.comprarBilletesReservados(null);
@@ -85,7 +88,7 @@ class SistemaTest {
 	void testDevolverBilleteEnSistema(){
 		Sistema sistema = new Sistema();
 		sistema.añadirRecorrido(recorrido1);
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		Billete billetePrueba = new Billete(billeteId, recorrido1, usuario);
 		sistema.comprarBilletes("LocNor2", usuario, recorrido1, 1);
 		sistema.comprarBilletes("LocNorm", usuario, recorrido1, 2);
 		sistema.devolverBilletes("LocNorm",1);
@@ -129,7 +132,7 @@ class SistemaTest {
 		Sistema sistema = new Sistema();
 		sistema.añadirRecorrido(recorrido1);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
+		Billete billetePrueba = new Billete(billeteId, recorrido1, usuario);
 		for(int i = 1; i<4; i++) {
 			billetes.add(billetePrueba);
 		}
@@ -221,7 +224,7 @@ class SistemaTest {
 	void testEliminarRecorridoDelSistemaNoValidoRecorridoConBilletesAsociados() {
 		Sistema sistema = new Sistema();
 		Usuario usuario = new Usuario("33036946E","UsuarioNormal");
-		Billete billete = new Billete("LocNorm",recorrido1,usuario);
+		Billete billete = new Billete(billeteId,recorrido1,usuario);
 		sistema.añadirRecorrido(recorrido1);
 		sistema.añadirBillete(billete);
 		assertThrows(IllegalStateException.class, () ->{
@@ -292,7 +295,7 @@ class SistemaTest {
 		Sistema sistema = new Sistema();
 		sistema.añadirRecorrido(recorrido1);
 		sistema.reservarBilletes("LocNorm",usuario,recorrido1,1);
-		Billete billeteReservado = new Billete("LocNorm",recorrido1,usuario);
+		Billete billeteReservado = new Billete(billeteId,recorrido1,usuario);
 		assertEquals(49,recorrido1.getPlazasDisponibles());
 		assertTrue(billeteReservado.equals(sistema.getBilletesReservados().get(0)));
 
@@ -325,7 +328,6 @@ class SistemaTest {
 		Sistema sistema = new Sistema();
 		Recorrido recorridoTren = new Recorrido("3","origen","destino","tren",5,fecha,hora,250,250,1);
 		sistema.añadirRecorrido(recorridoTren);
-		Billete billete = new Billete("LocNor1",recorridoTren,usuario);
 		sistema.comprarBilletes("LocNor1", usuario, recorridoTren, 1);
 		float precioTotal =sistema.obtenerPrecioTotal(usuario.getNif());
 		assertEquals(precioTotal,4.5);
@@ -356,7 +358,7 @@ class SistemaTest {
 	void testReservarVariosBilletes() {
 		Sistema sistema = new Sistema();
 		sistema.añadirRecorrido(recorrido1);
-		Billete reservaBillete = new Billete("LocNorm", recorrido1, usuario);
+		Billete reservaBillete = new Billete(billeteId, recorrido1, usuario);
 		sistema.reservarBilletes("LocNorm",usuario,recorrido1,3);
 		assertTrue(reservaBillete.equals(sistema.getBilletesReservados().get(0)));
 		assertTrue(reservaBillete.equals(sistema.getBilletesReservados().get(1)));
@@ -426,7 +428,7 @@ class SistemaTest {
 	void testAñadirBillete() {
 		Sistema sistema = new Sistema();
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		billetes.add(billete);
 		sistema.añadirBillete(billete);
 		assertEquals(billetes,sistema.getBilletes());
@@ -442,7 +444,7 @@ class SistemaTest {
 	void testAnularReserva() {
 		Sistema sistema = new Sistema();
 		sistema.añadirRecorrido(recorrido1);
-		Billete billete = new Billete("LocNorm", recorrido1, usuario);
+		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		sistema.reservarBilletes("LocNor2", usuario, recorrido1, 1);
 		sistema.reservarBilletes("LocNorm", usuario, recorrido1, 2);
 		sistema.anularReservaBilletes("LocNorm",1);

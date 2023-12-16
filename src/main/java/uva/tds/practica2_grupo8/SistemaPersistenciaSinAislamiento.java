@@ -2,6 +2,7 @@ package uva.tds.practica2_grupo8;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase que define los métodos necesarios para gestionar usuarios, recorridos y billetes a traves de una interfaz 
@@ -25,7 +26,7 @@ public class SistemaPersistenciaSinAislamiento {
 	 * Devuelve el arraylist que guardara los recorridos
 	 * @return arraylist que guardara los recorridos
 	 */
-	public ArrayList<Recorrido> getRecorridos(){
+	public List<Recorrido> getRecorridos(){
 		return this.databaseManager.getRecorridos();
 	}
 
@@ -34,7 +35,7 @@ public class SistemaPersistenciaSinAislamiento {
 	 * @param loc Localizador de los billetes
 	 * @return arraylist que guardara los billetes
 	 */
-	public ArrayList<Billete> getBilletes(String loc){
+	public List<Billete> getBilletes(String loc){
 		return this.databaseManager.getBilletes(loc);
 	}
 	
@@ -229,7 +230,7 @@ public class SistemaPersistenciaSinAislamiento {
 	 * @throws IllegalArgumentException si la fecha es nula
 	 * 
 	 */
-	public ArrayList<Recorrido> getRecorridosPorFecha(LocalDate fecha) {
+	public List<Recorrido> getRecorridosPorFecha(LocalDate fecha) {
 		if(fecha == null) {
 			throw new IllegalArgumentException("La fecha no puede ser nula");
 		}

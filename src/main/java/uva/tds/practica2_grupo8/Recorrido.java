@@ -3,13 +3,27 @@ package uva.tds.practica2_grupo8;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+
 /**
  * Clase que representa un Recorrido.
  * @author marcobr (Mario Cobreros del Caz)
  * @author mardano (Mario Danov Ivanov)
  */
+	
+@Entity	 
+@Table(name = "RECORRIDO")
 public class Recorrido {
-
+	
+	@Id
 	String id;
 	String origen;
 	String destino;
@@ -20,6 +34,9 @@ public class Recorrido {
 	int plazasDisponibles;
 	int plazasTotales;
 	int minutos;
+	@OneToMany(mappedBy = "recorrido",fetch=FetchType.EAGER,cascade = CascadeType.ALL )
+	List<Billete> billetes;
+	
 	
 	/**
 	 * Creacion de un recorrido
@@ -221,6 +238,8 @@ public class Recorrido {
 	 * Override de equals() para comparar dos recorridos
 	 * @return boolean que puede ser true o false 
 	 */
+	
+	
 	@Override
 	public boolean equals(Object o) {
 		
