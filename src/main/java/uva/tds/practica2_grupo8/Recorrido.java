@@ -27,7 +27,6 @@ import javax.persistence.Table;
 public class Recorrido {
 	
 	@Id
-	@Column(name = "id")
 	String id;
 	String origen;
 	String destino;
@@ -38,6 +37,8 @@ public class Recorrido {
 	InfoRecorrido infoRecorrido;
 	private static final String AUTOBUS = "autobus";
 	private static final String TREN = "tren";
+	@OneToMany(mappedBy = "recorrido",fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+	List<Billete> billetes; 
 
 	/**
 	 * Creacion de un recorrido
@@ -61,6 +62,9 @@ public class Recorrido {
 	 * @throws IllegalArgumentException si la duracion en minutos es negativa.
 	 */
 	
+	public Recorrido() {
+		
+	}
 	public Recorrido (String id, String origen, String destino, String medioTransporte, float precio, InfoRecorrido infoRecorrido) throws IllegalArgumentException  {
 		if(id == null) {
 			throw new IllegalArgumentException("El id no puede ser nulo");

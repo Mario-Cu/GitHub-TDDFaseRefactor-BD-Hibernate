@@ -22,9 +22,9 @@ public class Billete {
 	@EmbeddedId
 	BilleteId id;
 	@Enumerated(EnumType.STRING)
-	String estado;
+	EstadoBillete estado;
 	@ManyToOne()
-	@JoinColumn(name = "ID_RECORRIDO",referencedColumnName = "Id")
+	@JoinColumn(name = "ID_RECORRIDO",referencedColumnName = "id")
 	Recorrido recorrido;
 	@ManyToOne()
 	@JoinColumn(name = "NIF_USUARIO",referencedColumnName = "nif")
@@ -41,6 +41,9 @@ public class Billete {
 	 * @throws IllegalArgumentException si recorrido es nulo
 	 * @throws IllegalArgumentException si usuario es nulo
 	 */
+	public Billete() {
+		
+	}
 	public Billete(BilleteId id, Recorrido recorrido, Usuario usuario) {
 		if(id == null) {
 			throw new IllegalArgumentException("El localizador no puede ser nulo");
@@ -60,7 +63,7 @@ public class Billete {
 		this.id = id;
 		this.recorrido = recorrido;
 		this.usuario = usuario;
-		this.estado = "default";
+	
 		
 	}
 	
@@ -76,7 +79,7 @@ public class Billete {
 	 * Metodo que devuelve el estado del billete
 	 * @return localizador del billete
 	 */
-	public String getEstado() {
+	public EstadoBillete getEstado() {
 		return this.estado;
 	}
 	
@@ -84,7 +87,7 @@ public class Billete {
 	 * Metodo que settea el estado del billete
 	 * @param estado del billete
 	 */
-	public void setEstado(String estado) {
+	public void setEstado(EstadoBillete estado) {
 		this.estado = estado;
 	}
 
