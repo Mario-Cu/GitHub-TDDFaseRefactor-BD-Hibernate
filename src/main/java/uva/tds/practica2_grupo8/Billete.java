@@ -24,7 +24,7 @@ public class Billete {
 	@Enumerated(EnumType.STRING)
 	EstadoBillete estado;
 	@ManyToOne()
-	@JoinColumn(name = "ID_RECORRIDO",referencedColumnName = "Id")
+	@JoinColumn(name = "ID_RECORRIDO",referencedColumnName = "id")
 	Recorrido recorrido;
 	@ManyToOne()
 	@JoinColumn(name = "NIF_USUARIO",referencedColumnName = "nif")
@@ -41,6 +41,9 @@ public class Billete {
 	 * @throws IllegalArgumentException si recorrido es nulo
 	 * @throws IllegalArgumentException si usuario es nulo
 	 */
+	public Billete() {
+		
+	}
 	public Billete(BilleteId id, Recorrido recorrido, Usuario usuario) {
 		if(id == null) {
 			throw new IllegalArgumentException("El localizador no puede ser nulo");
@@ -60,6 +63,7 @@ public class Billete {
 		this.id = id;
 		this.recorrido = recorrido;
 		this.usuario = usuario;
+	
 		
 	}
 	

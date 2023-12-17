@@ -3,8 +3,11 @@ package uva.tds.practica2_grupo8;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * Clase que representa un Usuario.
@@ -12,11 +15,13 @@ import javax.persistence.OneToMany;
  * @author mardano (Mario Danov Ivanov)
  * 
  */
-
+@Entity
+@Table(name = "USUARIO")
 public class Usuario {
+	@Id
 	String nif;
 	String nombre;
-	@OneToMany(mappedBy = "deck",fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuario",fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	List<Billete> billetes; 
 	/**
 	 * Creacion de un usuario
@@ -32,6 +37,9 @@ public class Usuario {
 	 * @throws IllegalArgumentException si nif utiliza las letras I,Ñ,O,U.
 	 * @throws IllegalArgumentException si nif es nulo.
 	 */
+	public Usuario() {
+		
+	}
 	public Usuario(String nif, String nombre) {
 		char[] letrasProhibidas = {'I','Ñ','O','U'};
 		
@@ -116,7 +124,7 @@ public class Usuario {
  		      return false;
  		}
 		Usuario u = (Usuario)o;
-		if(this.nif == u.getNif()) {
+		if(this.nif.equals(u.getNif())) {
 			valor = true;
 		}
 
