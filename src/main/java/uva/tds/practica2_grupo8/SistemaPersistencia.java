@@ -150,7 +150,7 @@ public class SistemaPersistencia {
 
 			for(int i=0; i < numBilletes; i++) {
 				this.databaseManager.addBillete(billete);
-				billete.setEstado("Reservado");
+				billete.setEstado(EstadoBillete.RESERVADO);
 			}
 		}else {
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");

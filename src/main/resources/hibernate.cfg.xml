@@ -31,6 +31,7 @@
 		
 		<mapping class="uva.tds.practica2_grupo8.Usuario" />
 		<mapping class="uva.tds.practica2_grupo8.Recorrido" />
+		<mapping class="uva.tds.practica2_grupo8.InfoRecorrido" />
 		<mapping class="uva.tds.practica2_grupo8.Billete" />
 		<mapping class="uva.tds.practica2_grupo8.Sistema" />
 

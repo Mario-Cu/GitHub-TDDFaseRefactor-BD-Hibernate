@@ -46,12 +46,11 @@ public class DataBaseManager implements IDatabaseManager {
 		if(idRecorrido == null) {
 			throw new IllegalArgumentException("El identificador no puede ser nulo");
 		}
-		if(getBilletesDeRecorrido(idRecorrido) == null) {
+		if(getBilletesDeRecorrido(idRecorrido) != null) {
 			throw new IllegalStateException("El recorrido que intentas eliminar tiene un billete asociado");
 		}
-		
-		Session session = getSession();
 		Recorrido recorrido = getRecorrido(idRecorrido);
+		Session session = getSession();
 		try {
 			session.beginTransaction();
 			
@@ -120,9 +119,9 @@ public class DataBaseManager implements IDatabaseManager {
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			Query q = session.createQuery("select * from RECORRIDO", Recorrido.class);
-			List<Recorrido> list = q.getResultList();
-		return list;
+			List<Recorrido> list = session.createQuery("FROM Recorrido").list();
+			session.flush();
+			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
@@ -133,9 +132,23 @@ public class DataBaseManager implements IDatabaseManager {
 	}
 
 	@Override
-	//CAMBIAR 
+	
 	public List<Recorrido> getRecorridos(LocalDate fecha) {
-		
+		Session session = getSession();
+		try {
+			session.beginTransaction();
+			Query q = session.createQuery("FROM Recorrido r where r.infoRecorrido.fecha = ?1", Recorrido.class)
+					.setParameter(1, fecha);
+			List<Billete> list = q.getResultList();
+			session.flush();
+			if(list.isEmpty())
+				return  null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		}finally {
+			session.close();
+		}
 		return null;
 	}
 
@@ -171,8 +184,8 @@ public class DataBaseManager implements IDatabaseManager {
 			throw new IllegalArgumentException("El identificador no puede ser nulo");
 		}
 		
-		Session session = getSession();
 		Usuario usuario = getUsuario(idUsuario);
+		Session session = getSession();
 		try {
 			session.beginTransaction();
 			
@@ -225,8 +238,8 @@ public class DataBaseManager implements IDatabaseManager {
 			session.beginTransaction();
 
 			Usuario usuario = session.get(Usuario.class, idUsuario);
+			session.flush();
 			return usuario;
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
@@ -267,8 +280,8 @@ public class DataBaseManager implements IDatabaseManager {
 		try {
 			session.beginTransaction();
 
-			session.createNativeQuery("delete from BILLETE where id.localizador = :localizador")
-				.setParameter("localizador", localizadorBillete)
+			session.createQuery("delete from Billete b where b.id.localizador = ?1")
+				.setParameter(1, localizadorBillete)
 				.executeUpdate();
 				
 			session.flush();
@@ -293,10 +306,10 @@ public class DataBaseManager implements IDatabaseManager {
 		try {
 			session.beginTransaction();
 			
-			session.createNativeQuery("update BILLETE set ID_RECORRIDO = ?, set = NIF_USUARIO = ? where id.localizador = ?")
-				.setParameter(0, billete.getRecorrido().getId())
-				.setParameter(1, billete.getUsuario().getNif())
-				.setParameter(2, billete.getId().getLocalizador())
+			session.createSQLQuery("update Billete b set b.ID_RECORRIDO = ?1,b.NIF_USUARIO = ?2 where b.LOCALIZADOR = ?3")
+				.setParameter(1, billete.getRecorrido().getId())
+				.setParameter(2, billete.getUsuario().getNif())
+				.setParameter(3, billete.getId().getLocalizador())
 				.executeUpdate();
 			
 			session.flush();
@@ -315,9 +328,12 @@ public class DataBaseManager implements IDatabaseManager {
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			Query q = session.createQuery("select * from BILLETE b where b.id.localizador = ?", Billete.class)
-					.setParameter(0, localizadorBilletes);
+			Query q = session.createQuery("FROM Billete b where b.id.localizador = ?1", Billete.class)
+					.setParameter(1, localizadorBilletes);
 			List<Billete> list = q.getResultList();
+			session.flush();
+			if(list.isEmpty())
+				return  null;
 		return list;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -335,10 +351,12 @@ public class DataBaseManager implements IDatabaseManager {
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			Query q = session.createQuery("select * from BILLETE b where b.ID_RECORRIDO = ?", Billete.class)
-					.setParameter(0, idRecorrido);
+			Query q = session.createSQLQuery("SELECT * FROM BILLETE b where b.ID_RECORRIDO = ?1")
+					.setParameter(1, idRecorrido);
 			List<Billete> list = q.getResultList();
-		return list;
+			session.flush();
+			if(list.isEmpty())
+				return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
@@ -354,9 +372,10 @@ public class DataBaseManager implements IDatabaseManager {
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			Query q = session.createQuery("select * from BILLETE b where b.NIF_USUARIO = ?", Billete.class)
-					.setParameter(0, idUsuario);
+			Query q = session.createSQLQuery("SELECT * FROM BILLETE b WHERE b.NIF_USUARIO = ?1")
+					.setParameter(1, idUsuario);
 			List<Billete> list = q.getResultList();
+			session.flush();
 		return list;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -367,7 +386,7 @@ public class DataBaseManager implements IDatabaseManager {
 		return null;
 	}
 	
-	private Session getSession() {
+	public Session getSession() {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session session;
 		try {
@@ -379,6 +398,20 @@ public class DataBaseManager implements IDatabaseManager {
 		}
 
 		return null;
+	}
+	public void clearDatabase() {
+		Session session = getSession();
+		session.getTransaction().begin();
+		Query query = session.createSQLQuery("Truncate table Billete");
+		query.executeUpdate();
+		query = session.createSQLQuery("Truncate table InfoRecorrido");
+		query.executeUpdate();
+		query = session.createSQLQuery("Truncate table Recorrido");
+		query.executeUpdate();
+		query = session.createSQLQuery("Truncate table Usuario");
+		query.executeUpdate();
+		session.close();
+
 	}
 
 

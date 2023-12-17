@@ -16,6 +16,9 @@ public class BilleteId implements Serializable {
 	private String localizador;
 	private int numeroBillete;
 	
+	public BilleteId() {
+		
+	}
 	public BilleteId(String localizador, int i) {
         super();
         this.localizador = localizador;

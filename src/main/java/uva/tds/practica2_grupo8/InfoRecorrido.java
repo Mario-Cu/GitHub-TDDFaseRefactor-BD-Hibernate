@@ -19,7 +19,6 @@ import javax.persistence.Table;
  * @author mardano (Mario Danov Ivanov)
  */
 @Entity
-@Table(name = "INFO_RECORRIDO")
 public class InfoRecorrido {
 	@Id
 	@Column(name ="recorrido_id")
@@ -29,11 +28,15 @@ public class InfoRecorrido {
     private int plazasDisponibles;
     private int plazasTotales;
     private int minutos;
-    @OneToOne
+    @OneToOne()
     @MapsId
-    @JoinColumn(name = "recorrido_id")
-    private Recorrido reocorrido;
-
+    @JoinColumn(name = "recorrido_id",referencedColumnName = "id")
+    private Recorrido recorrido;
+    
+    
+    public InfoRecorrido() {
+    	
+    }
     /**
      * Constructor de la clase InfoRecorrido.
      * 
@@ -141,4 +144,27 @@ public class InfoRecorrido {
     public void setMinutos(int minutosNuevos) {
         this.minutos = minutosNuevos;
     }
+    
+    public void setRecorrido(Recorrido recorrido) {
+    	this.recorrido = recorrido;
+    }
+    public Recorrido getRecorrido() {
+    	return recorrido;
+    }
+    @Override
+    public boolean equals(Object o) {
+    	Boolean valor = true;
+		
+		if(!(o instanceof InfoRecorrido) || this.getClass() != o.getClass()) {
+			return false;
+		}
+		InfoRecorrido r = (InfoRecorrido) o;
+		if( !this.fecha.equals(r.fecha) || !this.hora.equals(r.hora)
+			|| this.plazasDisponibles != r.plazasDisponibles || this.plazasTotales != r.plazasTotales ||
+			this.minutos != r.minutos) {
+			valor = false;
+		}
+		return valor;	
+    }
+    
 }
