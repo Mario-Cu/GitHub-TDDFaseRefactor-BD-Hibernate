@@ -234,7 +234,7 @@ public class Sistema {
 		if(loc == null)
 			throw new IllegalArgumentException(EX_LOC);
 		for(Billete item : billetesReservados) {
-			if(item.getId().getLocalizador() == loc) {
+			if((item.getId().getLocalizador()).equals(loc)){
 				billetes.add(item);
 				billetesComprados.add(item);
 			}
@@ -275,7 +275,7 @@ public class Sistema {
 		List<Integer> indicesBilletesDevueltos = new ArrayList<>();
 		int j =0;
 		for(int i =0;i<billetes.size();i++) {
-			if(j < numBilletes && billetes.get(i).getId().getLocalizador() == loc) {
+			if(j < numBilletes && (billetes.get(i).getId().getLocalizador()).equals(loc)) {
 				indicesBilletesDevueltos.add(i);
 				j++;
 			}
@@ -407,7 +407,7 @@ public class Sistema {
 		List<Integer> indicesBilletesAnulados = new ArrayList<>();
 		int j =0;
 		for(int i =0;i<billetesReservados.size();i++) {
-			if(j < numBilletes && billetesReservados.get(i).getId().getLocalizador() == localizador) {
+			if(j < numBilletes && (billetesReservados.get(i).getId().getLocalizador()).equals(localizador)) {
 				indicesBilletesAnulados.add(i);
 				j++;
 			}

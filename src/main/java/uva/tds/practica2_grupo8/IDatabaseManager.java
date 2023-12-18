@@ -1,7 +1,6 @@
 package uva.tds.practica2_grupo8;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
