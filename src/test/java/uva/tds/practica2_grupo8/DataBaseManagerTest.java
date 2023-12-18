@@ -170,8 +170,8 @@ class DataBaseManagerTest {
 		dataBaseManager.addBillete(billete2);
 		System.out.println(recorrido1.getId());
 		List<Billete> billetesList = dataBaseManager.getBilletesDeRecorrido(recorrido2.getId());
-		Billete billeteBase = billetesList.get(0);
-		assertTrue(billete1.equals(billeteBase));
+		Billete billeteBase = (Billete) billetesList.get(0);
+		assertTrue(billete2.equals(billeteBase));
 	}
 	@Test
 	void getBilletesDeUsuario() {

@@ -347,14 +347,14 @@ public class DataBaseManager implements IDatabaseManager {
 
 	@Override
 	public List<Billete> getBilletesDeRecorrido(String idRecorrido) {
-
+		
+		Recorrido recorrido = getRecorrido(idRecorrido);
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			Query q = session.createSQLQuery("SELECT * FROM BILLETE b where b.ID_RECORRIDO = ?1")
-					.setParameter(1, idRecorrido);
-			List<Billete> list = q.getResultList();
-			session.flush();
+			
+			List<Billete> list = session.createQuery("FROM Billete b where b.recorrido = ?1",Billete.class)
+					.setParameter(1, recorrido).list();
 			if(list.isEmpty())
 				return Collections.emptyList();
 			return list;
@@ -370,13 +370,15 @@ public class DataBaseManager implements IDatabaseManager {
 
 	@Override
 	public List<Billete> getBilletesDeUsuario(String idUsuario) {
+		Usuario usuario = getUsuario(idUsuario);
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			Query q = session.createSQLQuery("SELECT * FROM BILLETE b WHERE b.NIF_USUARIO = ?1")
-					.setParameter(1, idUsuario);
+			Query q = session.createQuery("FROM Billete b WHERE b.usuario = ?1",Billete.class)
+					.setParameter(1, usuario);
 			List<Billete> list = q.getResultList();
-			session.flush();
+			if(list.isEmpty())
+				return null;
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
