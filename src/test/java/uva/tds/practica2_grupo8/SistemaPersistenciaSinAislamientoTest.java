@@ -182,23 +182,6 @@ class SistemaPersistenciaSinAislamientoTest {
 		assertEquals(billetes, sistema.getBilletes("LocNorm"));
 	}
 	
-/*  No funciona no se por que
-	@Test
-	void testComprarBilleteEnSistemaNoValidoBilleteNulo() {
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
-		databaseManager.addRecorrido(recorrido1);
-		EasyMock.expectLastCall();
-		EasyMock.expect(databaseManager.getRecorrido(billetePrueba.getRecorrido().getId())).andReturn(recorrido1).times(1);
-		databaseManager.addBillete(null);
-		EasyMock.expectLastCall().andThrow(new IllegalArgumentException());
-		EasyMock.replay(databaseManager);
-		sistema.anadirRecorrido(recorrido1);
-		assertThrows(IllegalArgumentException.class, () -> {
-			sistema.anadirBilletes(null, 1); 
-		});
-		EasyMock.verify(databaseManager);
-	}
-*/
 
 	@Test
 	void testComprarBilleteEnSistemaNoValidoPlazasInsuficientes(){
@@ -249,24 +232,6 @@ class SistemaPersistenciaSinAislamientoTest {
 		sistema.reservarBilletes(billetePrueba, 3);
 		assertEquals(billetes, sistema.getBilletes("LocNorm"));
 	}
-	
-/* No funciona no se por que 
-	@Test
-	void testReservarBilleteEnSistemaNoValidoBilleteNulo() {
-		Billete billetePrueba = new Billete("LocNorm", recorrido1, usuario);
-		databaseManager.addRecorrido(recorrido1);
-		EasyMock.expectLastCall();
-		EasyMock.expect(databaseManager.getRecorrido(billetePrueba.getRecorrido().getId())).andReturn(recorrido1).times(1);
-		databaseManager.addBillete(null);
-		EasyMock.expectLastCall().andThrow(new IllegalArgumentException());
-		EasyMock.replay(databaseManager);
-		sistema.anadirRecorrido(recorrido1);
-		assertThrows(IllegalArgumentException.class, () -> {
-			sistema.reservarBilletes(null, 1); 
-		});
-		EasyMock.verify(databaseManager);
-	}
-*/
 
 	@Test
 	void testReservarBilleteEnSistemaNoValidoPlazasInsuficientes(){
@@ -323,27 +288,9 @@ class SistemaPersistenciaSinAislamientoTest {
 		});
 	}
 
-/* No funciona no se por que
-	@Test
-	void testDevolverBilleteEnSistemaNoValidoBilleteNulo() {
-		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
-		Billete billete1 = new Billete("LocNorm", recorrido1,usuario);
-		billetesReturn.add(billete1);
-		EasyMock.expect(databaseManager.getBilletes("LocNorm")).andReturn(billetesReturn).times(1);
-		databaseManager.eliminarBilletes(null);
-		EasyMock.expectLastCall().andThrow(new IllegalArgumentException());
-		EasyMock.replay(databaseManager);
-		assertThrows(IllegalArgumentException.class, () -> {
-			sistema.devolverBilletes(null, 1);
-		});
-		EasyMock.verify(databaseManager);
-
-	}
-*/
 
 	@Test
 	void testDevolverBilleteEnSistemaNoValidoNumBilletesMenorQueUno() {
-		sistema.anadirRecorrido(recorrido1);
 		assertThrows(IllegalArgumentException.class, () -> {
 			sistema.devolverBilletes("locNorm", 0);
 		});
@@ -436,3 +383,4 @@ class SistemaPersistenciaSinAislamientoTest {
 	}
 
 }
+

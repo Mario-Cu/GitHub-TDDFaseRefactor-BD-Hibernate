@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 /**
  * Clase que representa la información asociada a un recorrido, incluyendo la fecha, hora, plazas disponibles,
@@ -165,6 +164,11 @@ public class InfoRecorrido {
 			valor = false;
 		}
 		return valor;	
+    }
+    
+    @Override
+    public int hashCode() {
+    	return 0;
     }
     
 }

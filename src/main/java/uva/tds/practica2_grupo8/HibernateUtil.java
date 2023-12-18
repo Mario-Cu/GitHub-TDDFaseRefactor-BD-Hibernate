@@ -9,6 +9,10 @@ public class HibernateUtil {
 
 	private static final SessionFactory sessionFactory = buildSessionFactory();
 	 
+	  private HibernateUtil() {
+		    throw new IllegalStateException("Utility class");
+		  }
+	  
     // Hibernate 5:
     private static SessionFactory buildSessionFactory() {
     	// A SessionFactory is set up once for an application!

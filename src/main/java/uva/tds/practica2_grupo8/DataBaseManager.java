@@ -1,10 +1,8 @@
 package uva.tds.practica2_grupo8;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale.Category;
 
 import javax.persistence.Query;
 
@@ -14,6 +12,7 @@ import org.hibernate.SessionFactory;
 
 public class DataBaseManager implements IDatabaseManager {
 
+	private static final String EX_ID = "El identificador no puede ser nulo";
 	@Override
 	public void addRecorrido(Recorrido recorrido) {
 
@@ -45,7 +44,7 @@ public class DataBaseManager implements IDatabaseManager {
 	public void eliminarRecorrido(String idRecorrido) {
 		
 		if(idRecorrido == null) {
-			throw new IllegalArgumentException("El identificador no puede ser nulo");
+			throw new IllegalArgumentException(EX_ID);
 		}
 		if(getBilletesDeRecorrido(idRecorrido) != null) {
 			throw new IllegalStateException("El recorrido que intentas eliminar tiene un billete asociado");
@@ -93,15 +92,13 @@ public class DataBaseManager implements IDatabaseManager {
 	public Recorrido getRecorrido(String idRecorrido) {
 		
 		if(idRecorrido == null) {
-			throw new IllegalArgumentException("El identificador no puede ser nulo");
+			throw new IllegalArgumentException(EX_ID);
 		}
 		Session session = getSession();
 		
 		try {
 			session.beginTransaction();
-
-			Recorrido recorrido = session.get(Recorrido.class, idRecorrido);
-			return recorrido;
+			return session.get(Recorrido.class, idRecorrido);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,7 +126,7 @@ public class DataBaseManager implements IDatabaseManager {
 		}finally {
 			session.close();
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -142,7 +139,10 @@ public class DataBaseManager implements IDatabaseManager {
 					.setParameter(1, fecha);
 			List<Recorrido> list = q.getResultList();
 			session.flush();
+			if(list.isEmpty())
+				return  Collections.emptyList();
 			return list;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
@@ -181,7 +181,7 @@ public class DataBaseManager implements IDatabaseManager {
 	@Override
 	public void eliminarUsuario(String idUsuario) {
 		if(idUsuario == null) {
-			throw new IllegalArgumentException("El identificador no puede ser nulo");
+			throw new IllegalArgumentException(EX_ID);
 		}
 		
 		Usuario usuario = getUsuario(idUsuario);
@@ -229,7 +229,7 @@ public class DataBaseManager implements IDatabaseManager {
 	public Usuario getUsuario(String idUsuario) {
 		
 		if(idUsuario == null) {
-			throw new IllegalArgumentException("El identificador no puede ser nulo");
+			throw new IllegalArgumentException(EX_ID);
 		}
 		
 		Session session = getSession();
@@ -333,15 +333,15 @@ public class DataBaseManager implements IDatabaseManager {
 			List<Billete> list = q.getResultList();
 			session.flush();
 			if(list.isEmpty())
-				return  null;
-		return list;
+				return  Collections.emptyList();
+			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 		}finally {
 			session.close();
 		}
-		return null;
+		return Collections.emptyList();
 		
 	}
 
@@ -356,15 +356,15 @@ public class DataBaseManager implements IDatabaseManager {
 			List<Billete> list = session.createQuery("FROM Billete b where b.recorrido = ?1",Billete.class)
 					.setParameter(1, recorrido).list();
 			if(list.isEmpty())
-				return null;
-			return list; 
+				return Collections.emptyList();
+			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 		}finally {
 			session.close();
 		}
-		return null;
+		return Collections.emptyList();
 		
 	}
 
@@ -386,7 +386,7 @@ public class DataBaseManager implements IDatabaseManager {
 		}finally {
 			session.close();
 		}
-		return null;
+		return Collections.emptyList();
 	}
 	
 	public Session getSession() {
@@ -396,7 +396,6 @@ public class DataBaseManager implements IDatabaseManager {
 			session = factory.getCurrentSession();
 			return session;
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
