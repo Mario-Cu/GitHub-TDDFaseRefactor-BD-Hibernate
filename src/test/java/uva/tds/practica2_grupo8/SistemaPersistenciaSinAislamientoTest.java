@@ -7,10 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.easymock.EasyMock;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,21 +24,28 @@ class SistemaPersistenciaSinAislamientoTest {
 	private Usuario usuario;
 	private LocalDate fecha;
 	private LocalTime hora;
-	private InfoRecorrido info;
+	private InfoRecorrido info1;
+	private InfoRecorrido info1Copia;
+	private InfoRecorrido info2;
 	private BilleteId billeteId;
-	private SistemaPersistencia sistema;
-	private IDatabaseManager databaseManager;
+	private SistemaPersistenciaSinAislamiento sistema;
+
 
 	@BeforeEach
 	void setUp() {
-		databaseManager = new DataBaseManager();
-		sistema = new SistemaPersistencia(databaseManager);
+		IDatabaseManager databaseManager = new DataBaseManager();
+		sistema = new SistemaPersistenciaSinAislamiento(databaseManager);
 		fecha = LocalDate.of(2002, 7, 18);
 		hora = LocalTime.of(12, 30);
-		info = new InfoRecorrido(fecha,hora,50,50,1);
-		recorrido1 = new Recorrido("1", "origen", "destino", "autobus", 5,info);
-		recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 5,info);
-		recorrido2 = new Recorrido("2", "origen", "destino", "autobus", 5, info);
+		info1 = new InfoRecorrido(fecha,hora,50,50,1);
+		info1Copia = new InfoRecorrido(fecha,hora,50,50,1);
+		info2 = new InfoRecorrido(fecha,hora,50,50,1);
+		recorrido1 = new Recorrido("1", "origen", "destino", "autobus", 5,info1);
+		info1.setRecorrido(recorrido1);
+		recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 5,info1Copia);
+		info1Copia.setRecorrido(recorrido1Copia);
+		recorrido2 = new Recorrido("2", "origen", "destino", "autobus", 5, info2);
+		info2.setRecorrido(recorrido2);
 		usuario = new Usuario("33036946E", "UsuarioNormal");
 		billeteId = new BilleteId("LocNorm",1);
 	}
@@ -61,7 +70,9 @@ class SistemaPersistenciaSinAislamientoTest {
 
 	@Test
 	void testAnadirRecorridoAlSistemaNoValidoDosRecorrridosConMismoIdentificador() {
-		Recorrido recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 0, info);
+		InfoRecorrido info1Copia = new InfoRecorrido(fecha,hora,50,50,1);
+		Recorrido recorrido1Copia = new Recorrido("1", "origen", "destino", "autobus", 0, info1Copia);
+		info1Copia.setRecorrido(recorrido1Copia);
 		sistema.anadirRecorrido(recorrido1Copia);
 		assertThrows(IllegalStateException.class, () -> {
 			sistema.anadirRecorrido(recorrido1Copia);
@@ -88,9 +99,8 @@ class SistemaPersistenciaSinAislamientoTest {
 	void testEliminarRecorridoDelSistemaNoValidoRecorridoConBilletesAsociados() {
 		Usuario usuario = new Usuario("33036946E", "UsuarioNormal");
 		Billete billete = new Billete(billeteId, recorrido1, usuario);
-		ArrayList<Billete> billetes = new ArrayList<Billete>();
-		billetes.add(billete);
 		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirUsario(usuario);
 		sistema.anadirBilletes(billete,1);
 		assertThrows(IllegalStateException.class, () -> {
 			sistema.eliminarRecorrido("1");
@@ -109,17 +119,28 @@ class SistemaPersistenciaSinAislamientoTest {
 	@Test
 	void testActualizarRecorridoFecha() {
 		LocalDate fechaNueva = LocalDate.of(2002, 7, 19);
+		InfoRecorrido infoAntiguo = new InfoRecorrido(fecha,hora,50,50,1);
 		InfoRecorrido infoNuevo = new InfoRecorrido(fechaNueva,hora,50,50,1);
-		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, info);
+		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, infoAntiguo);
+		Billete billete = new Billete(billeteId, recorridoAntiguo,usuario);
+		infoAntiguo.setRecorrido(recorridoAntiguo);
 		Recorrido recorridoActualizado = new Recorrido("1", "origen", "destino", "autobus", 5, infoNuevo);
+		infoNuevo.setRecorrido(recorridoActualizado);
 		sistema.anadirRecorrido(recorridoAntiguo);
+		sistema.anadirUsario(usuario);
+		sistema.anadirBilletes(billete, 1);
 		sistema.actualizarRecorrido(recorridoActualizado);
-		assertEquals(fechaNueva, recorridoActualizado.getInfoRecorrido().getFecha());
+		List<Recorrido> recorridosList = sistema.getRecorridos();
+		Recorrido recorridoBase = recorridosList.get(0);
+		assertEquals(fechaNueva, recorridoBase.getInfoRecorrido().getFecha());
+
 	}
 
 	@Test
 	void testActualizarRecorridoNoValidaRecorridoNulo() {
-		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, info);
+		InfoRecorrido infoAntiguo= new InfoRecorrido(fecha,hora,50,50,1);
+		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, infoAntiguo);
+		infoAntiguo.setRecorrido(recorridoAntiguo);
 		sistema.anadirRecorrido(recorridoAntiguo);
 		assertThrows(IllegalArgumentException.class, () -> {
 			sistema.actualizarRecorrido(null);
@@ -138,8 +159,10 @@ class SistemaPersistenciaSinAislamientoTest {
 	void testActualizarRecorridoHora() {
 		LocalTime horaNueva = LocalTime.of(13, 00);
 		InfoRecorrido info2 = new InfoRecorrido(fecha,horaNueva,50,50,1);
-		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, info);
+		Recorrido recorridoAntiguo = new Recorrido("1", "origen", "destino", "autobus", 5, info1);
+		info1.setRecorrido(recorridoAntiguo);
 		Recorrido recorridoActualizado = new Recorrido("1", "origen", "destino", "autobus", 5, info2);
+		info2.setRecorrido(recorridoActualizado);
 		sistema.anadirRecorrido(recorridoAntiguo);
 		sistema.actualizarRecorrido(recorridoActualizado);
 		assertEquals(horaNueva, recorridoActualizado.getInfoRecorrido().getHora());
@@ -152,10 +175,10 @@ class SistemaPersistenciaSinAislamientoTest {
 		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
 		billetes.add(billete);
-		
 		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirUsario(usuario);
 		sistema.anadirBilletes(billete, 1);
-		assertEquals(billete,sistema.getBilletes("Locnorm").get(0));
+		assertEquals(billete,sistema.getBilletes(billete.getId().getLocalizador()).get(0));
 
 	}
 
@@ -168,16 +191,8 @@ class SistemaPersistenciaSinAislamientoTest {
 		for (int i = 1; i < 4; i++) {
 			billetes.add(billetePrueba);
 		}
-		databaseManager.addRecorrido(recorrido1);
-		EasyMock.expectLastCall();
-		EasyMock.expect(databaseManager.getRecorrido(recorrido1.getId())).andReturn(recorrido1).times(1);
-		databaseManager.addBillete(billetePrueba);
-		databaseManager.addBillete(billetePrueba);
-		databaseManager.addBillete(billetePrueba);
-		EasyMock.expectLastCall();
-		EasyMock.expect(databaseManager.getBilletes("LocNorm")).andReturn(billetes).times(1);
-		EasyMock.replay(databaseManager);
 		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirUsario(usuario);
 		sistema.anadirBilletes(billetePrueba, 3);
 		assertEquals(billetes, sistema.getBilletes("LocNorm"));
 	}
@@ -215,8 +230,9 @@ class SistemaPersistenciaSinAislamientoTest {
 		ArrayList<Billete> billetes = new ArrayList<Billete>();
 		billetes.add(billete);
 		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirUsario(usuario);
 		sistema.reservarBilletes(billete, 1);
-		assertEquals(billete,sistema.getBilletes("Locnorm").get(0));
+		assertEquals(billete,sistema.getBilletes(billete.getId().getLocalizador()).get(0));
 	}
 
 	
@@ -229,8 +245,9 @@ class SistemaPersistenciaSinAislamientoTest {
 			billetes.add(billetePrueba);
 		}
 		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirUsario(usuario);
 		sistema.reservarBilletes(billetePrueba, 3);
-		assertEquals(billetes, sistema.getBilletes("LocNorm"));
+		assertEquals(billetes, sistema.getBilletes(billetePrueba.getId().getLocalizador()));
 	}
 
 	@Test
@@ -244,9 +261,9 @@ class SistemaPersistenciaSinAislamientoTest {
 	
 	@Test
 	void testReservarBilleteEnSistemaNoValidoRecorridoNoExisteEnSistema() {
-		Billete billete = new Billete(billeteId, recorrido1, usuario);
 		sistema.anadirRecorrido(recorrido1);
-		Recorrido recorridoNoEnSistema = new Recorrido("3", "origen", "destino", "autobus", 0, info);
+		Recorrido recorridoNoEnSistema = new Recorrido("3", "origen", "destino", "autobus", 0, info1);
+		Billete billete = new Billete(billeteId, recorridoNoEnSistema, usuario);
 		assertThrows(IllegalStateException.class, () -> {
 			sistema.reservarBilletes(billete, 5);
 
@@ -264,8 +281,8 @@ class SistemaPersistenciaSinAislamientoTest {
 
 	@Test
 	void testDevolverBilleteEnSistema() {
-		BilleteId id1 = new BilleteId("LocNorm",1);
-		BilleteId id2 = new BilleteId("LocNorm",1);
+		BilleteId id1 = new BilleteId("LocNor1",1);
+		BilleteId id2 = new BilleteId("LocNor2",1);
 		Billete billete1 = new Billete(id1, recorrido1,usuario);
 		Billete billete2 = new Billete(id2, recorrido2,usuario);
 		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
@@ -274,6 +291,7 @@ class SistemaPersistenciaSinAislamientoTest {
 		billetesReturn.add(billete1);
 		sistema.anadirRecorrido(recorrido1);
 		sistema.anadirRecorrido(recorrido2);
+		sistema.anadirUsario(usuario);
 		sistema.anadirBilletes(billete1, 1);
 		sistema.anadirBilletes(billete2, 1);
 		sistema.devolverBilletes("LocNor2", 1);
@@ -300,8 +318,8 @@ class SistemaPersistenciaSinAislamientoTest {
 
 	@Test
 	void testObtenerPrecioTotal() {
-		BilleteId id1 = new BilleteId("LocNorm",1);
-		BilleteId id2 = new BilleteId("LocNorm",1);
+		BilleteId id1 = new BilleteId("LocNor1",1);
+		BilleteId id2 = new BilleteId("LocNor2",1);
 		Billete billete1 = new Billete(id1, recorrido1,usuario);
 		Billete billete2 = new Billete(id2, recorrido2,usuario);
 		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
@@ -309,6 +327,7 @@ class SistemaPersistenciaSinAislamientoTest {
 		billetesReturn.add(billete2);
 		sistema.anadirRecorrido(recorrido1);
 		sistema.anadirRecorrido(recorrido2);
+		sistema.anadirUsario(usuario);
 		sistema.anadirBilletes(billete1, 1);
 		sistema.anadirBilletes(billete2, 1);
 		float precioTotal = sistema.obtenerPrecioTotal(usuario.getNif());
@@ -320,11 +339,13 @@ class SistemaPersistenciaSinAislamientoTest {
 	void testObtenerPrecioTotalDescuentoTrenAplicado() {
 		InfoRecorrido info2 = new InfoRecorrido(fecha,hora,250,250,1);
 		Recorrido recorridoTren = new Recorrido("3", "origen", "destino", "tren", 5, info2);
+		info2.setRecorrido(recorridoTren);
 		BilleteId billeteId1 = new BilleteId("LocNor1",1);
 		Billete billete = new Billete(billeteId1, recorridoTren, usuario);
 		ArrayList<Billete> billetesReturn = new ArrayList<Billete>();
 		billetesReturn.add(billete);
 		sistema.anadirRecorrido(recorridoTren);
+		sistema.anadirUsario(usuario);
 		sistema.anadirBilletes(billete, 1);
 		float precioTotal = sistema.obtenerPrecioTotal(usuario.getNif());
 		assertEquals(4.5, precioTotal);
@@ -343,11 +364,10 @@ class SistemaPersistenciaSinAislamientoTest {
 	void testObtenerRecorridoDisponiblesPorFecha() {
 		ArrayList<Recorrido> recorridosEnFecha = new ArrayList<Recorrido>();
 		ArrayList<Recorrido> recorridosReturn = new ArrayList<Recorrido>();
-		LocalDate fecha2 = LocalDate.of(2002, 11, 14);
 		recorridosEnFecha.add(recorrido1);
 		recorridosReturn.add(recorrido1);
 		sistema.anadirRecorrido(recorrido1);
-		assertEquals(recorridosEnFecha, sistema.getRecorridosPorFecha(fecha2));
+		assertEquals(recorridosEnFecha, sistema.getRecorridosPorFecha(recorrido1.getInfoRecorrido().getFecha()));
 	}
 
 	@Test
@@ -361,6 +381,7 @@ class SistemaPersistenciaSinAislamientoTest {
 	void testAnularReserva() {
 		Billete billete = new Billete(billeteId, recorrido1,usuario);
 		sistema.anadirRecorrido(recorrido1);
+		sistema.anadirUsario(usuario);
 		sistema.reservarBilletes(billete, 1);
 		sistema.anularReservaBilletes("LocNorm", 1);
 		assertTrue(sistema.getBilletes("LocNorm").isEmpty());
@@ -380,6 +401,10 @@ class SistemaPersistenciaSinAislamientoTest {
 		assertThrows(IllegalArgumentException.class, () -> {
 			sistema.anularReservaBilletes(null, 1);
 		});
+	}
+	@AfterEach
+	void tearDown() {
+		sistema.clearDataBase();
 	}
 
 }

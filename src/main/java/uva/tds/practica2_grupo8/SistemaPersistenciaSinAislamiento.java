@@ -12,7 +12,6 @@ import java.util.List;
 public class SistemaPersistenciaSinAislamiento {
 
 	private IDatabaseManager databaseManager;
-	
 	/**
 	 * Creación del SistemaPersistencia
 	 * @param databaseManager Interfaz de la BD
@@ -104,8 +103,14 @@ public class SistemaPersistenciaSinAislamiento {
 		if(this.databaseManager.getRecorrido(billete.getRecorrido().getId()) == null)
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
 		
-		for(int i=0; i < numBilletes; i++) {	
-			this.databaseManager.addBillete(billete);
+		
+		String localizador = billete.getId().getLocalizador();
+		BilleteId billeteId;
+		Billete billetePersistencia;
+		for(int i=0; i < numBilletes; i++) {
+			billeteId = new BilleteId(localizador,i);
+			billetePersistencia = new Billete(billeteId, billete.getRecorrido(),billete.getUsuario());
+			this.databaseManager.addBillete(billetePersistencia);
 		}
 	}
 	
@@ -147,10 +152,15 @@ public class SistemaPersistenciaSinAislamiento {
 		if(numBilletes > billete.getRecorrido().getInfoRecorrido().getPlazasDisponibles())
 			throw new IllegalArgumentException("No se pueden comprar mas billetes de los disponibles");
 		if(this.databaseManager.getRecorrido(billete.getRecorrido().getId()) != null) {
-
-			for(int i=0; i < numBilletes; i++) {
-				this.databaseManager.addBillete(billete);
-				billete.setEstado(EstadoBillete.RESERVADO);
+		
+		String localizador = billete.getId().getLocalizador();
+		BilleteId billeteId;
+		Billete billetePersistencia;
+		for(int i=0; i < numBilletes; i++) {
+			billeteId = new BilleteId(localizador,i);
+			billetePersistencia = new Billete(billeteId, billete.getRecorrido(),billete.getUsuario());
+			billetePersistencia.setEstado(EstadoBillete.RESERVADO);
+			this.databaseManager.addBillete(billetePersistencia);
 			}
 		}else {
 			throw new IllegalStateException("El recorrido no se encuentra en el sistema");
@@ -216,5 +226,12 @@ public class SistemaPersistenciaSinAislamiento {
 		}
 		return this.databaseManager.getRecorridos(fecha);
 	}
-
+	
+	public void anadirUsario(Usuario usuario) {
+		this.databaseManager.addUsuario(usuario);
+	}
+	
+	public void clearDataBase() {
+	 ((DataBaseManager) databaseManager).clearDatabase();
+	}
 }

@@ -46,7 +46,7 @@ public class DataBaseManager implements IDatabaseManager {
 		if(idRecorrido == null) {
 			throw new IllegalArgumentException(EX_ID);
 		}
-		if(getBilletesDeRecorrido(idRecorrido) != null) {
+		if(!getBilletesDeRecorrido(idRecorrido).isEmpty()) {
 			throw new IllegalStateException("El recorrido que intentas eliminar tiene un billete asociado");
 		}
 		Recorrido recorrido = getRecorrido(idRecorrido);
@@ -74,18 +74,24 @@ public class DataBaseManager implements IDatabaseManager {
 		if(getRecorrido(recorrido.getId())== null) {
 			throw new  IllegalStateException("No existe un recorrido con el identificador indicado en recorrido");
 		}
-		Session session = getSession();
-		try {
-			session.beginTransaction();
-			
-			session.saveOrUpdate(recorrido);
-			session.flush();
-		}catch (HibernateException e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		} finally {
-			session.close();
+		List<Billete> billetesRecorrido = getBilletesDeRecorrido(recorrido.getId());
+		
+		if(!billetesRecorrido.isEmpty()) {
+			for(Billete item : billetesRecorrido) {
+				eliminarBilletes(item.getId().getLocalizador());
+			}
 		}
+		
+		eliminarRecorrido(recorrido.getId());
+		addRecorrido(recorrido);
+		
+		if(!billetesRecorrido.isEmpty()) {
+			for(Billete item : billetesRecorrido) {
+				addBillete(item);
+			}
+		}
+		
+		
 	}
 
 	@Override
@@ -95,7 +101,6 @@ public class DataBaseManager implements IDatabaseManager {
 			throw new IllegalArgumentException(EX_ID);
 		}
 		Session session = getSession();
-		
 		try {
 			session.beginTransaction();
 			return session.get(Recorrido.class, idRecorrido);
@@ -158,11 +163,11 @@ public class DataBaseManager implements IDatabaseManager {
 			throw new IllegalArgumentException();
 		}
 		if(getUsuario(usuario.getNif()) != null) {
+			
 			throw new IllegalStateException("El usuario que intentas añadir ya existe en el sistema");
 		}
 
 		Session session = getSession();
-
 		try {
 			session.beginTransaction();
 
@@ -299,7 +304,7 @@ public class DataBaseManager implements IDatabaseManager {
 		if(billete == null) {
 			throw new IllegalArgumentException("El localizador del billete no puede ser nulo");
 		}
-		if(getBilletes(billete.getId().getLocalizador()) == null) {
+		if(getBilletes(billete.getId().getLocalizador()).isEmpty()) {
 			throw new IllegalStateException("No existen billetes con el localizador indicado");
 		}
 		Session session = getSession();
