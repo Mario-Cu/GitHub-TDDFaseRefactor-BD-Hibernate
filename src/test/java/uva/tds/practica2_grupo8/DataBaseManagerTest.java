@@ -1,4 +1,4 @@
-/**
+
 package uva.tds.practica2_grupo8;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -70,7 +71,9 @@ class DataBaseManagerTest {
 	@Test
 	void actualizarRecorrido() {
 		dataBaseManager.addRecorrido(recorrido1);
-		Recorrido recorrido1Nuevo = new Recorrido("1","origen","destinoNuevo","autobus",5,info1);
+		InfoRecorrido info1Nuevo = new InfoRecorrido(fecha,hora,50,50,1);
+		Recorrido recorrido1Nuevo = new Recorrido("1","origen","destinoNuevo","autobus",5,info1Nuevo);
+		info1Nuevo.setRecorrido(recorrido1Nuevo);
 		dataBaseManager.actualizarRecorrido(recorrido1Nuevo);
 		Recorrido recorridoBase = dataBaseManager.getRecorrido(recorrido1Nuevo.getId());
 		assertTrue(recorrido1Nuevo.equals(recorridoBase));	
@@ -136,7 +139,7 @@ class DataBaseManagerTest {
 		dataBaseManager.addBillete(billete1);
 		dataBaseManager.eliminarBilletes(billete1.getId().getLocalizador());
 		List<Billete> billetesList = dataBaseManager.getBilletes(billete1.getId().getLocalizador());
-		assertEquals(null,billetesList);
+		assertEquals(Collections.EMPTY_LIST,billetesList);
 	}
 	@Test
 	void actualizarBilleteTest() {
@@ -284,4 +287,4 @@ class DataBaseManagerTest {
 	
 	
 }
-**/
+
