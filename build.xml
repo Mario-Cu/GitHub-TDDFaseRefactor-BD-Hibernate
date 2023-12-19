@@ -72,14 +72,13 @@
 	
 	<target name="obtenerInformeCobertura" depends="compilar">
 		<exec dir="." executable="${executable}">
-			<arg line="${arglineIni} mvn jacoco:prepare-agent test jacoco:report${arglineEnd}" />
+			<arg line="${arglineIni} mvn jacoco:prepare-agent test jacoco:report ${arglineEnd}" />
 		</exec>
 	</target>
 	
 	<target name="ejecutarSonarQube" depends="obtenerInformeCobertura">
 		<exec dir="." executable="${executable}">
-			<arg line="${arglineIni}mvn verify sonar:sonar -Dsonar.projectKey=practica3-grupo8 -Dsonar.projectName='practica3-grupo8' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqa_f16251e365e81c4e89a454a6200361d5e50eb72d
-${arglineEnd}" />
+			<arg line="${arglineIni}mvn verify sonar:sonar -Dsonar.projectKey=practica3-grupo8 -Dsonar.projectName='practica3-grupo8' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_a192418f36826632d79a572dce21e7f30bb5d4d3 ${arglineEnd}" />
 		</exec>
 	</target>
 

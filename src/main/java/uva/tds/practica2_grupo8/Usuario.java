@@ -1,15 +1,37 @@
 package uva.tds.practica2_grupo8;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /**
  * Clase que representa un Usuario.
  * @author marcobr (Mario Cobreros del Caz)
  * @author mardano (Mario Danov Ivanov)
  * 
  */
-
+@Entity
+@Table(name = "USUARIO")
 public class Usuario {
+	@Id
 	String nif;
 	String nombre;
+	@OneToMany(mappedBy = "usuario",fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+	List<Billete> billetes; 
+	
+	/**
+	 * Constructor de un usuario vacio
+	 */
+	public Usuario() {
+		
+	}
+	
+	
 	/**
 	 * Creacion de un usuario
 	 * @author marcobr (Mario Cobreros del Caz)
@@ -51,7 +73,8 @@ public class Usuario {
 		if(nif.length()>9) {
 			throw new IllegalArgumentException("El nif tiene que tener 9 caracteres");
 		}
-		if(letraDNI(nif) == false) {
+		Boolean b = letraDNI(nif);
+		if(Boolean.FALSE.equals(b)) {
 			throw new IllegalArgumentException("El resto de la division del numero nif entre 23 no coincide con su letra asociada");
 		}
 
@@ -66,7 +89,7 @@ public class Usuario {
 	 * @return nif del usuario
 	 */
 	private Boolean letraDNI(String dni) {
-	
+		Boolean valor = false;
 		int miDNI = Integer.parseInt(dni.substring(0,8));
 		String letra = dni.substring(8);
 		int resto = 0;
@@ -74,11 +97,9 @@ public class Usuario {
 		resto = miDNI % 23;
 		String letraAsociada = asignacionLetra[resto];
 		if(letra.equals(letraAsociada)) {
-			return true;
-		}else {
-			return false;
+			valor = true;
 		}
-
+		return valor;
 	}
 
 	/**
@@ -97,6 +118,13 @@ public class Usuario {
 		return nombre;
 	}
 	
+	/**
+	 * Override de hashCode obligado por override de equals 
+	 */
+	@Override 
+	public int hashCode() {
+		return 0;
+	}
 
 	/**
 	 * Metodo que sobreescribe el metodo equals de la clase objeto para comparar usuarios
@@ -104,13 +132,17 @@ public class Usuario {
 	 */
  	@Override
 	public boolean equals(Object o) {
+ 		Boolean valor = false;
+ 		if (!(o instanceof Usuario)) {
+ 		      return false;
+ 		}
 		Usuario u = (Usuario)o;
-		if(this.nif == u.getNif()) {
-			return true;
+		if(this.nif.equals(u.getNif())) {
+			valor = true;
 		}
-		return false;
+
+		return valor;
 
 	}
-
- 
+ 	
 }

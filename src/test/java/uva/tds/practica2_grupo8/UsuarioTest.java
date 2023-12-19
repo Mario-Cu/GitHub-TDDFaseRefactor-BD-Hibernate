@@ -3,6 +3,7 @@ package uva.tds.practica2_grupo8;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -64,13 +65,18 @@ class UsuarioTest {
 	@Test
 	void testConstructorUsuarioIgualaOtroPorNIF() {
 		Usuario usr2 = new Usuario("33036946E","UsuarioNormal");
-		assertTrue(usrNormal.equals(usr2));
+		assertEquals(usrNormal,usr2);
 	}
 	@Tag("Cobertura")
 	@Test
 	void testConstructorUsuarioNoIgualaOtroPorNIF() {
 		Usuario usr2 = new Usuario("56508732D","UsuarioNormal");
-		assertFalse(usrNormal.equals(usr2));
+		assertNotEquals(usrNormal,usr2);
+	}
+	@Tag("Cobertura")
+	@Test
+	void testConstructorUsuarioNoIgualANull() {
+		assertNotEquals(null,usrNormal);
 	}
 	
 	@Test
