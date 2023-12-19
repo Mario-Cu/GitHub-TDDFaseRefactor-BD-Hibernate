@@ -254,7 +254,7 @@ class SistemaTest {
 		Sistema sistema = new Sistema();
 		LocalDate fechaNueva = LocalDate.of(2002, 7, 19);
 		assertThrows(IllegalArgumentException.class, () ->{
-			sistema.actualizarFechaRecorrido(recorrido1.getId(),fechaNueva);
+			sistema.actualizarFechaRecorrido("1",fechaNueva);
 		});
 		
 	}
@@ -289,7 +289,7 @@ class SistemaTest {
 		Sistema sistema = new Sistema();
 		LocalTime horaNueva = hora = LocalTime.of(13, 00);
 		assertThrows(IllegalArgumentException.class, () ->{
-			sistema.actualizarHoraRecorrido(recorrido1.getId(),horaNueva);
+			sistema.actualizarHoraRecorrido("1",horaNueva);
 		});
 	}
 	@Test

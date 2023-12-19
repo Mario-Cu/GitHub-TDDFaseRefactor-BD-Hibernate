@@ -23,6 +23,8 @@ Practica: Fase REFACTOR con metodologia TDD + Implementacion BD y framework Hibe
 
 - [x] DataBaseManagerTest.java
 - [x] SistemaPersistenciaSinAislamientoTest.java
+- [x] BilleteIdTest.java
+- [x] InfoRecorridoTest.java
 
 ## Code to test Ratio por Clase
 **(Como no estaban en la entrega anterior, añadimos la informacion de todas las clases)** 
@@ -30,38 +32,38 @@ Practica: Fase REFACTOR con metodologia TDD + Implementacion BD y framework Hibe
 
 **Clase Billete**
 * Lineas de codigo no comentadas: **73**
-* Lineas de test no comentadas: **114**
+* Lineas de test no comentadas: **116**
 * Code to test ratio -> **1:1.56 (1 linea de codigo equivale a 1.56 lineas de tests)**
 
 **Clase BilleteId**
-* Lineas de codigo no comentadas: **40**
-* Lineas de test no comentadas: ****
-* Code to test ratio -> **: ( linea de codigo equivale a  lineas de tests)**
+* Lineas de codigo no comentadas: **38**
+* Lineas de test no comentadas: **23**
+* Code to test ratio -> **1:0.6 (1 linea de codigo equivale a 0.6 lineas de tests)**
 
 **Clase DataBaseManager**
-* Lineas de codigo no comentadas: **327**
-* Lineas de test no comentadas: **275**
-* Code to test ratio -> **1:0.84 (1 linea de codigo equivale a 0.84 lineas de tests)**
+* Lineas de codigo no comentadas: **290**
+* Lineas de test no comentadas: **303**
+* Code to test ratio -> **1:1.04 (1 linea de codigo equivale a 1.04 lineas de tests)**
 
 **Clase Recorrido**
-* Lineas de codigo no comentadas: **138**
-* Lineas de test no comentadas: **281**
-* Code to test ratio -> **1:2.04 (1 linea de codigo equivale a 2.04 lineas de tests)**
+* Lineas de codigo no comentadas: **136**
+* Lineas de test no comentadas: **218**
+* Code to test ratio -> **1:1.6 (1 linea de codigo equivale a 1.6 lineas de tests)**
 
 **Clase InfoRecorrido**
-* Lineas de codigo no comentadas: **87**
-* Lineas de test no comentadas: ****
-* Code to test ratio -> **: ( linea de codigo equivale a  lineas de tests)**
+* Lineas de codigo no comentadas: **89**
+* Lineas de test no comentadas: **77**
+* Code to test ratio -> **1:0.86 (1 linea de codigo equivale a 0.86 lineas de tests)**
 
 **Clase Sistema**
-* Lineas de codigo no comentadas: **252**
-* Lineas de test no comentadas: **445**
+* Lineas de codigo no comentadas: **259**
+* Lineas de test no comentadas: **463**
 * Code to test ratio -> **1:1.77 (1 linea de codigo equivale a 1.77 lineas de tests)**
 
 **Clase Usuario**
 * Lineas de codigo no comentadas: **86**
-* Lineas de test no comentadas: **106**
-* Code to test ratio -> **1:1.23 (1 linea de codigo equivale a 1.23 lineas de tests)**
+* Lineas de test no comentadas: **111**
+* Code to test ratio -> **1:1.3 (1 linea de codigo equivale a 1.3 lineas de tests)**
 
 **Clase SistemaPersistencia**
 * Lineas de codigo no comentadas: **94**
@@ -69,7 +71,7 @@ Practica: Fase REFACTOR con metodologia TDD + Implementacion BD y framework Hibe
 * Code to test ratio -> **1:5 (1 linea de codigo equivale a 5 lineas de tests)**
 
 **Clase SistemaPersistenciaSinAislamiento**
-* Lineas de codigo no comentadas: **110**
+* Lineas de codigo no comentadas: **108**
 * Lineas de test no comentadas: **344**
 * Code to test ratio -> **1:3 (1 linea de codigo equivale a 3 lineas de tests)**
 

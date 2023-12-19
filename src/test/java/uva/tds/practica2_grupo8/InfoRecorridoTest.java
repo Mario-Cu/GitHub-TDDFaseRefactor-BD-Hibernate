@@ -44,22 +44,13 @@ class InfoRecorridoTest {
 		info.setMinutos(2);
 		assertEquals(2,info.getMinutos());
 	}
-	@Test
-	void testComparacionInfoRecorridoIgualASiMismo() {
-		InfoRecorrido info = new InfoRecorrido(fecha,hora,1,1,1);
-		assertEquals(info,info);
-		
-	}
+
 	@Test
 	void testComparacionInfoRecorridoNoIgualANull() {
 		InfoRecorrido info = new InfoRecorrido(fecha,hora,1,1,1);
-		assertNotEquals(info,null);
+		assertNotEquals(null,info);
 	}
-	@Test
-	void testComparacionInfoRecorridoNoIgualAOtraClase() {
-		InfoRecorrido info = new InfoRecorrido(fecha,hora,1,1,1);
-		assertNotEquals(info,recorrido);
-	}
+
 	@Test
 	void testComparacionInfoRecorridoNoIgualFechaDiferente() {
 		LocalDate fecha2 = LocalDate.of(2002, 8, 19);

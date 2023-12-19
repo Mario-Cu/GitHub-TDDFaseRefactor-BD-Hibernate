@@ -91,7 +91,7 @@ class BilleteTest {
 	@Test
 	void testComparacionBilleteNoIgualesComparacionConBilleteNulo() {
 		Billete billete = new Billete(id,recorridoNormal,usrNormal);
-		assertNotEquals(billete,null);
+		assertNotEquals(null,billete);
 	}
 
 	@Tag("Cobertura")

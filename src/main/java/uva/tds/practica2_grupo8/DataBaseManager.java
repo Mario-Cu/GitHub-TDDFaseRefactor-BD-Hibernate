@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -40,9 +39,6 @@ public class DataBaseManager implements IDatabaseManager {
 			session.persist(recorrido);
 			session.flush();
 
-		} catch (HibernateException e) {
-			
-			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
@@ -69,10 +65,6 @@ public class DataBaseManager implements IDatabaseManager {
 			
 			session.delete(recorrido);
 			session.flush();
-			
-		}catch (HibernateException e) {
-			
-			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
@@ -129,10 +121,6 @@ public class DataBaseManager implements IDatabaseManager {
 		try {
 			session.beginTransaction();
 			recorrido = session.get(Recorrido.class, idRecorrido);
-
-		} catch (Exception e) {
-			
-			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
@@ -153,13 +141,9 @@ public class DataBaseManager implements IDatabaseManager {
 			List<Recorrido> list = session.createQuery("FROM Recorrido").list();
 			session.flush();
 			return list;
-		} catch (Exception e) {
-			
-			session.getTransaction().rollback();
 		}finally {
 			session.close();
 		}
-		return Collections.emptyList();
 	}
 
 	
@@ -178,14 +162,9 @@ public class DataBaseManager implements IDatabaseManager {
 			if(list.isEmpty())
 				return  Collections.emptyList();
 			return list;
-
-		} catch (Exception e) {
-			
-			session.getTransaction().rollback();
 		}finally {
 			session.close();
 		}
-		return Collections.emptyList();
 	}
 
 	
@@ -208,10 +187,6 @@ public class DataBaseManager implements IDatabaseManager {
 
 			session.persist(usuario);
 			session.flush();
-
-		} catch (HibernateException e) {
-			
-			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
@@ -235,10 +210,7 @@ public class DataBaseManager implements IDatabaseManager {
 			
 			session.delete(usuario);
 			session.flush();
-			
-		}catch (HibernateException e) {
-			
-			session.getTransaction().rollback();
+	
 		} finally {
 			session.close();
 		}
@@ -264,9 +236,6 @@ public class DataBaseManager implements IDatabaseManager {
 			
 			session.saveOrUpdate(usuario);
 			session.flush();
-		}catch (HibernateException e) {
-			
-			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
@@ -290,9 +259,6 @@ public class DataBaseManager implements IDatabaseManager {
 			session.beginTransaction();
 
 			 usuario = session.get(Usuario.class, idUsuario);
-		} catch (Exception e) {
-			
-			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
@@ -316,10 +282,6 @@ public class DataBaseManager implements IDatabaseManager {
 
 			session.persist(billete);
 			session.flush();
-
-		} catch (HibernateException e) {
-			
-			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
@@ -344,9 +306,6 @@ public class DataBaseManager implements IDatabaseManager {
 				
 			session.flush();
 
-		} catch (HibernateException e) {
-			
-			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
@@ -375,9 +334,6 @@ public class DataBaseManager implements IDatabaseManager {
 				.executeUpdate();
 			
 			session.flush();
-		}catch (HibernateException e) {
-			
-			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
@@ -402,13 +358,9 @@ public class DataBaseManager implements IDatabaseManager {
 			if(list.isEmpty())
 				return  Collections.emptyList();
 			return list;
-		} catch (Exception e) {
-			
-			session.getTransaction().rollback();
 		}finally {
 			session.close();
 		}
-		return Collections.emptyList();
 		
 	}
 
@@ -430,14 +382,9 @@ public class DataBaseManager implements IDatabaseManager {
 			if(list.isEmpty())
 				return Collections.emptyList();
 			return list;
-		} catch (Exception e) {
-			
-			session.getTransaction().rollback();
 		}finally {
 			session.close();
-		}
-		return Collections.emptyList();
-		
+		}		
 	}
 
 	/**
@@ -457,13 +404,9 @@ public class DataBaseManager implements IDatabaseManager {
 			if(list.isEmpty())
 				return Collections.emptyList();
 			return list;
-		} catch (Exception e) {
-			
-			session.getTransaction().rollback();
 		}finally {
 			session.close();
 		}
-		return Collections.emptyList();
 	}
 	
 	/**

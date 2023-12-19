@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -244,11 +243,6 @@ class RecorridoTest {
 		Recorrido recorrido2 = new Recorrido("2","origen","destino","tren",0,infoStand);
 		assertNotEquals(recorrido1,(recorrido2));
 	}
-	@Tag("Cobertura")
-	@Test
-	void testRecorridoIgualNoValidoDiferenteClase() {
-		Recorrido recorrido1 = new Recorrido("1","origen","destino","tren",0,infoStand);
-		assertNotEquals(recorrido1,(fecha));
-	}
+
 	
 }

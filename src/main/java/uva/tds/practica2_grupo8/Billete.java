@@ -110,6 +110,15 @@ public class Billete {
 		return this.usuario;
 	}
 	
+	/**
+	 * Override de hashCode obligado por override de equals 
+	 */
+	@Override 
+	public int hashCode() {
+		return 0;
+	}
+	
+	
 	/*
 	 * Override de equals() para comparar dos billetes
 	 * @return boolean que puede ser true o false 

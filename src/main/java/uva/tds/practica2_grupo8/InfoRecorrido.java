@@ -162,7 +162,17 @@ public class InfoRecorrido {
     	return recorrido;
     }
     
-    
+	/**
+	 * Override de hashCode obligado por override de equals 
+	 */
+	@Override 
+	public int hashCode() {
+		return 0;
+	}
+	
+	/**
+	 * Override de equals
+	 */
     @Override
     public boolean equals(Object o) {
     	Boolean valor = true;

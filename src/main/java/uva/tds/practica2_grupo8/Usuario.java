@@ -118,6 +118,13 @@ public class Usuario {
 		return nombre;
 	}
 	
+	/**
+	 * Override de hashCode obligado por override de equals 
+	 */
+	@Override 
+	public int hashCode() {
+		return 0;
+	}
 
 	/**
 	 * Metodo que sobreescribe el metodo equals de la clase objeto para comparar usuarios

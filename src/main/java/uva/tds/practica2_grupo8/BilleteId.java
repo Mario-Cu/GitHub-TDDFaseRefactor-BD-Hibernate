@@ -5,8 +5,6 @@ import java.util.Objects;
 
 import javax.persistence.Embeddable;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 /**
  * @author Mario Dano Ivanov
  * Clase que representa el id de un billete
@@ -58,16 +56,26 @@ public class BilleteId implements Serializable {
 		return numeroBillete;
 	}
 	
-
+	/**
+	 * Override de hashCode obligado por override de equals 
+	 */
+	@Override 
+	public int hashCode() {
+		return 0;
+	}
+	
+	/**
+	 * Override de equals
+	 */
 	@Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if(obj == null || this.getClass() != obj.getClass()) {
+        	return false;
+        }
         BilleteId other = (BilleteId) obj;
-        return Objects.equals(getLocalizador(), other.getLocalizador());
+        String otherloc = other.getLocalizador();
+        return Objects.equals(this.localizador, otherloc);
     }
 }

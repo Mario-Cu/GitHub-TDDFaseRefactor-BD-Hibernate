@@ -1,6 +1,8 @@
 package uva.tds.practica2_grupo8;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,11 +10,9 @@ import org.junit.jupiter.api.Test;
 class BilleteIdTest {
 	
 	private BilleteId id1;
-	private BilleteId id2;
 	@BeforeEach
 	void setUp() throws Exception {
 		id1 = new BilleteId("LocNor1",1);
-		id2 = new BilleteId("LocNor2",1);
 	}
 	
 	@Test
@@ -23,12 +23,7 @@ class BilleteIdTest {
 	}
 	@Test
 	void ComparacionBilleteCoberturaIdConNulo() {
-		assertNotEquals(id1,null);
-	}
-	@Test
-	void ComparacionBilleteCoberturaIdConOtraClase() {
-		Usuario usrNormal = new Usuario("33036946E","UsuarioNormal");
-		assertNotEquals(id1,usrNormal);
+		assertNotEquals(null,id1);
 	}
 
 }

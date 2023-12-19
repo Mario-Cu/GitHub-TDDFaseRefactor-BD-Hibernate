@@ -76,7 +76,7 @@ class UsuarioTest {
 	@Tag("Cobertura")
 	@Test
 	void testConstructorUsuarioNoIgualANull() {
-		assertNotEquals(usrNormal,null);
+		assertNotEquals(null,usrNormal);
 	}
 	
 	@Test

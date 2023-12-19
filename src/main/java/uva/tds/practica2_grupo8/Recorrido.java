@@ -200,7 +200,17 @@ public class Recorrido {
 	 * @return boolean que puede ser true o false 
 	 */
 	
+	/**
+	 * Override de hashCode obligado por override de equals 
+	 */
+	@Override 
+	public int hashCode() {
+		return 0;
+	}
 	
+	/**
+	 * Override de equals
+	 */
 	@Override
 	public boolean equals(Object o) {
 		Boolean valor = true;
