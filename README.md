@@ -4,31 +4,36 @@ Practica: Fase REFACTOR con metodologia TDD + Implementacion BD y framework Hibe
 
 ## Documento Web
 
-* [Doc](https://campusvirtual.uva.es/pluginfile.php/5380747/mod_resource/content/1/tds_23_24_practica2.pdf) - Documento guion de la practica
-
-## Roadmap
+* [Doc](https://campusvirtual.uva.es/pluginfile.php/5433793/mod_resource/content/1/tds_23_24_practica3.pdf) - Documento guion de la practica
 
  
 ## Clases que forman parte de la solucion
 
 - [x] Billete.java
+- [x] BilleteId.java
+- [x] DataBaseManager.java
+- [x] EstadoBillete.java
+- [x] HibernateUtil.java
 - [x] Recorrido.java
+- [x] InfoRecorrido.java
 - [x] Sistema.java
 - [x] Usuario.java
 - [x] IDatabaseManager.java
 - [x] SistemaPersistencia.java
+- [x] SistemaPersistenciaSinAislamiento.java
 
 ##Clases de tests nuevas 
 
-- [] .java
+- [x] DataBaseManagerTest.java
+- [x] SistemaPersistenciaSinAislamientoTest.java
 
 ## Code to test Ratio por Clase
-** Clase 1 **
+**Clase 1**
 * Lineas de codigo no comentadas: **651**
 * Lineas de test no comentadas: **1402**
 * Code to test ratio -> **1:2.15 (1 linea de codigo equivale a 2.15 lineas de tests)**
 
-** Clase 2 **
+**Clase 2**
 * Lineas de codigo no comentadas: **651**
 * Lineas de test no comentadas: **1402**
 * Code to test ratio -> **1:2.15 (1 linea de codigo equivale a 2.15 lineas de tests)**
@@ -36,8 +41,8 @@ Practica: Fase REFACTOR con metodologia TDD + Implementacion BD y framework Hibe
 ## Justificacion de refactorizaciones del catalogo Fowler aplicadas:
 
 * Introduce Parameter Object
-*
-*
+* Extract Method
+* Replace Magic Number with Symbolic Constant
 
 ## Autores
 * **Mario Cobreros del Caz -- Horas Dedicadas: 12h ** - [marcobr](https://gitlab.inf.uva.es/marcobr)
