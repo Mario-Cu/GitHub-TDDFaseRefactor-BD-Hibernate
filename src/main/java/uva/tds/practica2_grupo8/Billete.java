@@ -28,10 +28,17 @@ public class Billete {
 	@ManyToOne()
 	@JoinColumn(name = "NIF_USUARIO",referencedColumnName = "nif")
 	Usuario usuario;
+
+	/**
+	 * Creacion de un billete vacio
+	 */
+	public Billete() {
+		
+	}
+	
 	/**
 	 * Creacion de un billete
-	 * @author marcobr (Mario Cobreros del Caz)
-	 * @param localizador Identificador con el que encontramos el billete
+	 * @param id Identificador con el que encontramos el billete
 	 * @param recorrido	Objeto el cual nos indica el recorrido al que está asociado el billete
 	 * @param usuario Objeto el cual nos indica a que usuario le pertenece el billete
 	 * @throws IllegalArgumentException si la longitud del localizador es menor que 1
@@ -40,9 +47,6 @@ public class Billete {
 	 * @throws IllegalArgumentException si recorrido es nulo
 	 * @throws IllegalArgumentException si usuario es nulo
 	 */
-	public Billete() {
-		
-	}
 	public Billete(BilleteId id, Recorrido recorrido, Usuario usuario) {
 		if(id == null) {
 			throw new IllegalArgumentException("El localizador no puede ser nulo");

@@ -227,10 +227,17 @@ public class SistemaPersistenciaSinAislamiento {
 		return this.databaseManager.getRecorridos(fecha);
 	}
 	
+	/**
+	 * Metodo para añadir un usuario al sistema
+	 * @param usuario Usuario que queremos añadir al sistema
+	 */
 	public void anadirUsario(Usuario usuario) {
 		this.databaseManager.addUsuario(usuario);
 	}
 	
+	/**
+	 * Metodo que limpia la base de datos.
+	 */
 	public void clearDataBase() {
 	 ((DataBaseManager) databaseManager).clearDatabase();
 	}

@@ -23,6 +23,15 @@ public class Usuario {
 	String nombre;
 	@OneToMany(mappedBy = "usuario",fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	List<Billete> billetes; 
+	
+	/**
+	 * Constructor de un usuario vacio
+	 */
+	public Usuario() {
+		
+	}
+	
+	
 	/**
 	 * Creacion de un usuario
 	 * @author marcobr (Mario Cobreros del Caz)
@@ -37,9 +46,6 @@ public class Usuario {
 	 * @throws IllegalArgumentException si nif utiliza las letras I,Ñ,O,U.
 	 * @throws IllegalArgumentException si nif es nulo.
 	 */
-	public Usuario() {
-		
-	}
 	public Usuario(String nif, String nombre) {
 		char[] letrasProhibidas = {'I','Ñ','O','U'};
 		

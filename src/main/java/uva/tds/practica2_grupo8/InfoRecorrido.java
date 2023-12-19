@@ -32,10 +32,13 @@ public class InfoRecorrido {
     @JoinColumn(name = "recorrido_id",referencedColumnName = "id")
     private Recorrido recorrido;
     
-    
+    /**
+     * Constructor vacio de InfoRecorrido
+     */
     public InfoRecorrido() {
     	
     }
+    
     /**
      * Constructor de la clase InfoRecorrido.
      * 
@@ -137,19 +140,29 @@ public class InfoRecorrido {
 
     /**
      * Establece la duración del recorrido en minutos.
-     * 
      * @param minutosNuevos nueva duración del recorrido en minutos
      */
     public void setMinutos(int minutosNuevos) {
         this.minutos = minutosNuevos;
     }
     
+    /**
+     * Establece la duración del recorrido en minutos.
+     * @param recorrido nuevo recorrido
+     */
     public void setRecorrido(Recorrido recorrido) {
     	this.recorrido = recorrido;
     }
+    
+    /**
+     * Obtiene el recorrido solicitado
+     * @return recorrido asociado
+     */
     public Recorrido getRecorrido() {
     	return recorrido;
     }
+    
+    
     @Override
     public boolean equals(Object o) {
     	Boolean valor = true;

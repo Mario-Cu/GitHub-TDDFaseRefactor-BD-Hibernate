@@ -72,7 +72,7 @@
 	
 	<target name="obtenerInformeCobertura" depends="compilar">
 		<exec dir="." executable="${executable}">
-			<arg line="${arglineIni} mvn jacoco:prepare-agent test jacoco:report${arglineEnd}" />
+			<arg line="${arglineIni} mvn jacoco:prepare-agent test jacoco:report ${arglineEnd}" />
 		</exec>
 	</target>
 	

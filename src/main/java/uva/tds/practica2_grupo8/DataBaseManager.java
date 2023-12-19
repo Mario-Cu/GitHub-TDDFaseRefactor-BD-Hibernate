@@ -10,9 +10,18 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+/**
+ * @author Mario Danov Ivanov
+ * Clase que implementa el DatabaseManager con su interfaz
+ */
 public class DataBaseManager implements IDatabaseManager {
 
 	private static final String EX_ID = "El identificador no puede ser nulo";
+	
+	/**
+	 * Metodo que añade un recorrido
+	 * @param recorrido Recorrido a añadir
+	 */
 	@Override
 	public void addRecorrido(Recorrido recorrido) {
 
@@ -40,6 +49,10 @@ public class DataBaseManager implements IDatabaseManager {
 		
 	}
 
+	/**
+	 * Metodo que elimina un recorrido
+	 * @param idRecorrido idRecorrido a eliminar
+	 */
 	@Override
 	public void eliminarRecorrido(String idRecorrido) {
 		
@@ -65,6 +78,11 @@ public class DataBaseManager implements IDatabaseManager {
 		}
 	}
 
+	
+	/**
+	 * Metodo que actualiza un recorrido
+	 * @param recorrido Recorrido a actualizar
+	 */
 	@Override
 	public void actualizarRecorrido(Recorrido recorrido) {
 		
@@ -94,6 +112,11 @@ public class DataBaseManager implements IDatabaseManager {
 		
 	}
 
+	/**
+	 * Metodo que devuelve recorrido por su id
+	 * @param idRecorrido id del recorrido a devolver
+	 * @return Recorrido obtenido
+	 */
 	@Override
 	public Recorrido getRecorrido(String idRecorrido) {
 		
@@ -115,6 +138,10 @@ public class DataBaseManager implements IDatabaseManager {
 
 	}
 
+	/**
+	 * Metodo que devuelve la lista de recorridos
+	 * @return Lista de recorridos
+	 */
 	@Override
 	public List<Recorrido> getRecorridos() {
 		
@@ -134,8 +161,12 @@ public class DataBaseManager implements IDatabaseManager {
 		return Collections.emptyList();
 	}
 
-	@Override
 	
+	/**
+	 * Metodo que devuelve la lista de recorridos en una fecha
+	 * @return Lista de recorridos en una fecha
+	 */
+	@Override
 	public List<Recorrido> getRecorridos(LocalDate fecha) {
 		Session session = getSession();
 		try {
@@ -157,6 +188,10 @@ public class DataBaseManager implements IDatabaseManager {
 		return Collections.emptyList();
 	}
 
+	
+	/**
+	 * Metodo que añade un usuario al sistema
+	 */
 	@Override
 	public void addUsuario(Usuario usuario) {
 		if(usuario == null) {
@@ -183,6 +218,10 @@ public class DataBaseManager implements IDatabaseManager {
 		
 	}
 
+	/**
+	 * Metodo que elimina un usuario del sistema
+	 * @param idUsuario id del usuario a eliminar
+	 */
 	@Override
 	public void eliminarUsuario(String idUsuario) {
 		if(idUsuario == null) {
@@ -206,6 +245,10 @@ public class DataBaseManager implements IDatabaseManager {
 		
 	}
 
+	/**
+	 * Meodo que actualiza un Usuario del sistema
+	 * @param usuario usuario nuevo actualizado
+	 */
 	@Override
 	public void actualizarUsuario(Usuario usuario) {
 		
@@ -230,6 +273,10 @@ public class DataBaseManager implements IDatabaseManager {
 		
 	}
 
+	/**
+	 * Metodo que devuelve el usuario 
+	 * @param idUsuario id del usuario que buscamos
+	 */
 	@Override
 	public Usuario getUsuario(String idUsuario) {
 		
@@ -254,6 +301,10 @@ public class DataBaseManager implements IDatabaseManager {
 		return null;
 	}
 
+	/**
+	 * Metodo que añade billete al sistema
+	 * @param billete Billete que buscamos añadir al sistema
+	 */
 	@Override
 	public void addBillete(Billete billete) {
 		if(billete == null) {
@@ -276,6 +327,10 @@ public class DataBaseManager implements IDatabaseManager {
 		}
 	}
 
+	/**
+	 * Metodo que elimina billete del sistema
+	 * @param localizadorBillete localizador del billetes que buscamos eliminar
+	 */
 	@Override
 	public void eliminarBilletes(String localizadorBillete) {
 		if(localizadorBillete == null) {
@@ -299,6 +354,10 @@ public class DataBaseManager implements IDatabaseManager {
 		}
 	}
 
+	/**
+	 * Metodo que actualiza un billete del sistema
+	 * @param billete Billete del sistema a actualizar
+	 */
 	@Override
 	public void actualizarBilletes(Billete billete) {
 		if(billete == null) {
@@ -327,6 +386,11 @@ public class DataBaseManager implements IDatabaseManager {
 		
 	}
 
+	/**
+	 * Metodo que devuelve una lista de billetes dado un localizador
+	 * @param localizadorBilletes localizador de los billetes que buscamos
+	 * @return lista con los billetes
+	 */
 	@Override
 	public List<Billete> getBilletes(String localizadorBilletes) {
 		
@@ -350,6 +414,11 @@ public class DataBaseManager implements IDatabaseManager {
 		
 	}
 
+	/**
+	 * Metodo que devuelve los billetes de un recorrido
+	 * @param idRecorrido id del recorrido
+	 * @return lista con los billetes de recorrido
+	 */
 	@Override
 	public List<Billete> getBilletesDeRecorrido(String idRecorrido) {
 		
@@ -373,6 +442,11 @@ public class DataBaseManager implements IDatabaseManager {
 		
 	}
 
+	/**
+	 * Metodo que devuelve los billetes de un usuario
+	 * @param idUsuario id del usuario que buscamos
+	 * @return lista con los billetes de usuario
+	 */
 	@Override
 	public List<Billete> getBilletesDeUsuario(String idUsuario) {
 		Usuario usuario = getUsuario(idUsuario);
@@ -394,12 +468,20 @@ public class DataBaseManager implements IDatabaseManager {
 		return Collections.emptyList();
 	}
 	
+	/**
+	 * Metodo que consigue la sesion de la bd
+	 * @return sesion de la bd
+	 */
 	public Session getSession() {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session session;
 		session = factory.getCurrentSession();
 		return session;
 	}
+	
+	/**
+	 * Metodo que limpia la bd
+	 */
 	public void clearDatabase() {
 		Session session = getSession();
 		session.getTransaction().begin();
