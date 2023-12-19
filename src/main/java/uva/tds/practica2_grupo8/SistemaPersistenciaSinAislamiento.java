@@ -61,11 +61,10 @@ public class SistemaPersistenciaSinAislamiento {
 	 * @throws IllegalArgumentException cuando se intenta eliminar un recorrido con identificador nulo
 	 */
 	public void eliminarRecorrido(String id) {
-		for(Billete item : this.databaseManager.getBilletesDeRecorrido(id)) {
-			if((item.getRecorrido().getId()).equals(id)){
+		
+		if(!this.databaseManager.getBilletesDeRecorrido(id).isEmpty()){
 				throw new IllegalStateException("El recorrido que intentas eliminar tiene un billete asociado");
 			}
-		}
 		
 		this.databaseManager.eliminarRecorrido(id);
 	

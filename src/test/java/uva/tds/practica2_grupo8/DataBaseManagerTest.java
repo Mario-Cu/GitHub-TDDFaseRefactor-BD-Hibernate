@@ -3,6 +3,7 @@ package uva.tds.practica2_grupo8;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.security.cert.CollectionCertStoreParameters;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import org.hsqldb.DatabaseManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class DataBaseManagerTest {
@@ -83,6 +85,11 @@ class DataBaseManagerTest {
 		dataBaseManager.addRecorrido(recorrido1);
 		assertEquals(recorrido1,(dataBaseManager.getRecorrido(recorrido1.getId())));
 	}
+	@Tag("Cobertura")
+	@Test
+	void getRecorridoTestCoberturaSinRecorridosEnPersistencia() {
+		assertEquals(null,(dataBaseManager.getRecorrido(recorrido1.getId())));
+	}
 	@Test
 	void getRecorridosTest() {
 		dataBaseManager.addRecorrido(recorrido1);
@@ -123,6 +130,7 @@ class DataBaseManagerTest {
 		dataBaseManager.addUsuario(usuario1);
 		assertEquals(usuario1,(dataBaseManager.getUsuario(usuario1.getNif())));
 	}
+	
 	@Test
 	void addBilleteTest() {
 		dataBaseManager.addRecorrido(recorrido1);
@@ -184,6 +192,20 @@ class DataBaseManagerTest {
 		List<Billete> billetesList = dataBaseManager.getBilletesDeUsuario(usuario1.getNif());
 		Billete billeteBase = billetesList.get(0);
 		assertEquals(billete1,(billeteBase));
+	}
+	@Tag("Cobertura")
+	@Test
+	void getBilletesDeUsuarioBilletesNoEnPersistencia() {
+		dataBaseManager.addRecorrido(recorrido1);
+		dataBaseManager.addUsuario(usuario1);
+		List<Billete> billetesList = dataBaseManager.getBilletesDeUsuario(usuario1.getNif());	
+		assertEquals(Collections.EMPTY_LIST,billetesList);
+	}
+	@Tag("Cobertura")
+	@Test
+	void getRecorridosRecorridosNoEnPersistencia() {
+		List<Recorrido> recorridoList = dataBaseManager.getRecorridos(fecha);	
+		assertEquals(Collections.EMPTY_LIST, recorridoList);
 	}
 	@Test
 	void addRecorridoNoValidoRecorridoNulo() {
@@ -279,6 +301,14 @@ class DataBaseManagerTest {
 		assertThrows(IllegalStateException.class, () ->{
 			dataBaseManager.actualizarBilletes(billete1);
 		});
+	}
+	@Tag("Cobertura")
+	@Test
+	void getUsuarioTestNoValidoNifUsuarioNulo() {
+		assertThrows(IllegalArgumentException.class, () ->{
+			dataBaseManager.getUsuario(null);
+		});
+		
 	}
 	@AfterEach
 	void tearDown() {

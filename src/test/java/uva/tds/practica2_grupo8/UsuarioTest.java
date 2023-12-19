@@ -73,6 +73,11 @@ class UsuarioTest {
 		Usuario usr2 = new Usuario("56508732D","UsuarioNormal");
 		assertNotEquals(usrNormal,usr2);
 	}
+	@Tag("Cobertura")
+	@Test
+	void testConstructorUsuarioNoIgualANull() {
+		assertNotEquals(usrNormal,null);
+	}
 	
 	@Test
 	void testConstructorUsuarioNoValidoNIFNulo() {

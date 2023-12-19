@@ -91,7 +91,7 @@ class BilleteTest {
 	@Test
 	void testComparacionBilleteNoIgualesComparacionConBilleteNulo() {
 		Billete billete = new Billete(id,recorridoNormal,usrNormal);
-		assertNotEquals(null,billete);
+		assertNotEquals(billete,null);
 	}
 
 	@Tag("Cobertura")
@@ -124,8 +124,11 @@ class BilleteTest {
 	@Test
 	void testConstructorBilleteGettersSinCobertura() {
 		Billete billete = new Billete(id,recorridoNormal,usrNormal);
+		billete.setEstado(EstadoBillete.COMPRADO);
 		assertEquals(id,billete.getId());
 		assertEquals(billete.getRecorrido().getId(),recorridoNormal.getId());
 		assertEquals(billete.getUsuario().getNombre(),usrNormal.getNombre());
+		assertEquals(EstadoBillete.COMPRADO,billete.getEstado());
+		
 	}
 }

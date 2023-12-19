@@ -205,20 +205,14 @@ public class Recorrido {
 	public boolean equals(Object o) {
 		Boolean valor = true;
 		
-		if(!(o instanceof Recorrido) || this.getClass() != o.getClass()) {
+		if(!(o instanceof Recorrido)) {
 			return false;
 		}
 		Recorrido r = (Recorrido) o;
-		if( !this.id.equals(r.id) || !this.destino.equals(r.destino) || !this.origen.equals(r.origen)
-			|| !this.medioTransporte.equals(r.medioTransporte) || this.precio != r.precio ||
-			!this.infoRecorrido.equals(r.infoRecorrido)) {
+		if( !this.id.equals(r.id) ) {
 			valor = false;
 		}
 		return valor;
 	}
 	
-	@Override
-	public int hashCode() {
-		return 0;
-	}
 }

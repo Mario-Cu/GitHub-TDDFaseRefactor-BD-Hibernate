@@ -167,21 +167,18 @@ public class InfoRecorrido {
     public boolean equals(Object o) {
     	Boolean valor = true;
 		
-		if(!(o instanceof InfoRecorrido) || this.getClass() != o.getClass()) {
+		if(!(o instanceof InfoRecorrido)) {
 			return false;
 		}
 		InfoRecorrido r = (InfoRecorrido) o;
-		if( !this.fecha.equals(r.fecha) || !this.hora.equals(r.hora)
-			|| this.plazasDisponibles != r.plazasDisponibles || this.plazasTotales != r.plazasTotales ||
-			this.minutos != r.minutos) {
+		if( !this.fecha.equals(r.fecha) 
+			|| !this.hora.equals(r.hora)
+			|| this.plazasDisponibles != r.plazasDisponibles 
+			|| this.plazasTotales != r.plazasTotales 
+			|| this.minutos != r.minutos) {
 			valor = false;
 		}
 		return valor;	
     }
-    
-    @Override
-    public int hashCode() {
-    	return 0;
-    }
-    
+
 }

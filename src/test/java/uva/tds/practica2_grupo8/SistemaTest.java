@@ -248,6 +248,16 @@ class SistemaTest {
 		sistema.actualizarFechaRecorrido(recorrido1.getId(),fechaNueva);
 		assertEquals(fechaNueva,recorrido1.getInfoRecorrido().getFecha());
 	}
+	@Tag("Cobertura")
+	@Test
+	void testActualizarRecorridoFechaNoValidaRecorridoNoEnSistema() {
+		Sistema sistema = new Sistema();
+		LocalDate fechaNueva = LocalDate.of(2002, 7, 19);
+		assertThrows(IllegalArgumentException.class, () ->{
+			sistema.actualizarFechaRecorrido(recorrido1.getId(),fechaNueva);
+		});
+		
+	}
 	@Test
 	void testActualizarRecorridoFechaNoValidaFechaNula() {
 		Sistema sistema = new Sistema();
@@ -261,7 +271,7 @@ class SistemaTest {
 		Sistema sistema = new Sistema();
 		LocalDate fechaNueva = LocalDate.of(2002, 7, 19);
 		sistema.anadirRecorrido(recorrido1);
-		assertThrows(IllegalStateException.class, () ->{
+		assertThrows(IllegalArgumentException.class, () ->{
 			sistema.actualizarFechaRecorrido(null,fechaNueva);
 		});
 	}
@@ -273,7 +283,15 @@ class SistemaTest {
 		sistema.actualizarHoraRecorrido(recorrido1.getId(),horaNueva);
 		assertEquals(horaNueva,recorrido1.getInfoRecorrido().getHora());
 	}
-	
+	@Tag("Cobertura")
+	@Test
+	void testActualizarRecorridoHoraNoValidaRecorridoNoEnSistema() {
+		Sistema sistema = new Sistema();
+		LocalTime horaNueva = hora = LocalTime.of(13, 00);
+		assertThrows(IllegalArgumentException.class, () ->{
+			sistema.actualizarHoraRecorrido(recorrido1.getId(),horaNueva);
+		});
+	}
 	@Test
 	void testActualizarRecorridoHoraNoValidaHoraNula() {
 		Sistema sistema = new Sistema();
@@ -287,7 +305,7 @@ class SistemaTest {
 		Sistema sistema = new Sistema();
 		LocalTime horaNueva = hora = LocalTime.of(13, 00);
 		sistema.anadirRecorrido(recorrido1);
-		assertThrows(IllegalStateException.class, () ->{
+		assertThrows(IllegalArgumentException.class, () ->{
 			sistema.actualizarHoraRecorrido(null,horaNueva);
 		});
 	}

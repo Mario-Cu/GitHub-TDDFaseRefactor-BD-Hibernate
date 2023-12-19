@@ -58,12 +58,7 @@ public class BilleteId implements Serializable {
 		return numeroBillete;
 	}
 	
-	
-	@Override
-	public int hashCode() {
-	    HashCodeBuilder result = new HashCodeBuilder(17, 37).append(localizador).append(numeroBillete);
-		return result.toHashCode();
-	}
+
 	@Override
     public boolean equals(Object obj) {
         if (this == obj)

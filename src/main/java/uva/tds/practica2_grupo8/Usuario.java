@@ -126,7 +126,7 @@ public class Usuario {
  	@Override
 	public boolean equals(Object o) {
  		Boolean valor = false;
- 		if (o == null || this.getClass() != o.getClass()) {
+ 		if (!(o instanceof Usuario)) {
  		      return false;
  		}
 		Usuario u = (Usuario)o;
@@ -138,9 +138,4 @@ public class Usuario {
 
 	}
  	
- 	@Override
- 	public int hashCode() {
- 		return 0;
- 	}
- 
 }

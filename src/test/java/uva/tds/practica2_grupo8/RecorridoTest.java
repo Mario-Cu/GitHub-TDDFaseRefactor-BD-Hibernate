@@ -246,80 +246,9 @@ class RecorridoTest {
 	}
 	@Tag("Cobertura")
 	@Test
-	void testRecorridoIgualNoValidoDiferenteOrigen() {
-		Recorrido recorrido1 = new Recorrido("1","origen1","destino","tren",0,infoStand);
-		Recorrido recorrido2 = new Recorrido("1","origen2","destino","tren",0,infoStand);
-		assertNotEquals(recorrido1,(recorrido2));
-	}
-	@Tag("Cobertura")
-	@Test
-	void testRecorridoIgualNoValidoDiferenteDestino() {
-		Recorrido recorrido1 = new Recorrido("1","origen","destino1","tren",0,infoStand);
-		Recorrido recorrido2 = new Recorrido("1","origen","destino2","tren",0,infoStand);
-		assertNotEquals(recorrido1,(recorrido2));
-
-	}
-	@Tag("Cobertura")
-	@Test
-	void testRecorridoIgualNoValidoDiferenteMedioTransporte() {
+	void testRecorridoIgualNoValidoDiferenteClase() {
 		Recorrido recorrido1 = new Recorrido("1","origen","destino","tren",0,infoStand);
-		Recorrido recorrido2 = new Recorrido("1","origen","destino","autobus",0,infoStand);
-		assertNotEquals(recorrido1,(recorrido2));
-
+		assertNotEquals(recorrido1,(fecha));
 	}
-	@Tag("Cobertura")
-	@Test
-	void testRecorridoIgualNoValidoDiferentePrecio() {
-		Recorrido recorrido1 = new Recorrido("1","origen","destino","tren",0,infoStand);
-		Recorrido recorrido2 = new Recorrido("1","origen","destino","tren",1,infoStand);
-		assertNotEquals(recorrido1,(recorrido2));
-
-	}
-	@Tag("Cobertura")
-	@Test
-	void testRecorridoIgualNoValidoDiferenteFecha() {
-		LocalDate fecha2 = LocalDate.of(2002, 11, 14);
-		InfoRecorrido info2 = new InfoRecorrido(fecha2,hora,1,1,1);
-		Recorrido recorrido1 = new Recorrido("1","origen","destino","tren",0,infoStand);
-		Recorrido recorrido2 = new Recorrido("1","origen","destino","tren",0,info2);
-		assertNotEquals(recorrido1,(recorrido2));
-
-	}
-	@Tag("Cobertura")
-	@Test
-	void testRecorridoIgualNoValidoDiferenteHora() {
-		LocalTime hora2 = LocalTime.of(16, 30);
-		InfoRecorrido info2 = new InfoRecorrido(fecha,hora2,1,1,1);
-
-		Recorrido recorrido1 = new Recorrido("1","origen","destino","tren",0,infoStand);
-		Recorrido recorrido2 = new Recorrido("1","origen","destino","tren",0,info2);
-		assertNotEquals(recorrido1,(recorrido2));
-
-	}
-	@Tag("Cobertura")
-	@Test
-	void testRecorridoIgualNoValidoDiferentePlazasTotales() {
-		InfoRecorrido info2 = new InfoRecorrido(fecha,hora,1,2,1);
-
-		Recorrido recorrido1 = new Recorrido("1","origen","destino","tren",0,infoStand);
-		Recorrido recorrido2 = new Recorrido("1","origen","destino","tren",0,info2);
-		assertNotEquals(recorrido1,(recorrido2));
-
-	}
-	@Tag("Cobertura")
-	@Test
-	void testRecorridoIgualNoValidoDiferenteDuracion() {
-		InfoRecorrido info2 = new InfoRecorrido(fecha,hora,1,1,2);
-
-		Recorrido recorrido1 = new Recorrido("1","origen","destino","tren",0,infoStand);
-		Recorrido recorrido2 = new Recorrido("1","origen","destino","tren",0,info2);
-		assertNotEquals(recorrido1,(recorrido2));
-
-	}
-
-	
-	
-	
-	
 	
 }
