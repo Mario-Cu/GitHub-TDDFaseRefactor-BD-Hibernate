@@ -13,12 +13,16 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 @Embeddable
 public class BilleteId implements Serializable {
-
-	
-	private static final long serialVersionUID = 1L;
-	
+	/**
+	 * Localizador del billete
+	 */
 	private String localizador;
+	/**
+	 * Numero del billete (SERIAL)
+	 */
 	private int numeroBillete;
+	private static final long serialVersionUID = 1L;
+
 	
 	/**
 	 * Metodo constructor de billete vacio
