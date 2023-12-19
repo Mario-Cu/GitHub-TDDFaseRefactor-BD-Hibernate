@@ -56,7 +56,7 @@ class DataBaseManagerTest {
 		dataBaseManager.addRecorrido(recorrido1);
 		List<Recorrido> listaRecorridosBase = dataBaseManager.getRecorridos();
 		assertEquals(1, listaRecorridosBase.size());
-		assertTrue(recorrido1.equals(listaRecorridosBase.get(0)));
+		assertEquals(recorrido1,(listaRecorridosBase.get(0)));
 	}
 	
 	@Test
@@ -76,12 +76,12 @@ class DataBaseManagerTest {
 		info1Nuevo.setRecorrido(recorrido1Nuevo);
 		dataBaseManager.actualizarRecorrido(recorrido1Nuevo);
 		Recorrido recorridoBase = dataBaseManager.getRecorrido(recorrido1Nuevo.getId());
-		assertTrue(recorrido1Nuevo.equals(recorridoBase));	
+		assertEquals(recorrido1Nuevo,(recorridoBase));	
 	}
 	@Test
 	void getRecorridoTest() {
 		dataBaseManager.addRecorrido(recorrido1);
-		assertTrue(recorrido1.equals(dataBaseManager.getRecorrido(recorrido1.getId())));
+		assertEquals(recorrido1,(dataBaseManager.getRecorrido(recorrido1.getId())));
 	}
 	@Test
 	void getRecorridosTest() {
@@ -89,20 +89,20 @@ class DataBaseManagerTest {
 		dataBaseManager.addRecorrido(recorrido2);
 		List<Recorrido> listaRecorridosBase = dataBaseManager.getRecorridos();
 		assertEquals(2, listaRecorridosBase.size());
-		assertTrue(recorrido1.equals(listaRecorridosBase.get(0)));
-		assertTrue(recorrido2.equals(listaRecorridosBase.get(1)));
+		assertEquals(recorrido1,(listaRecorridosBase.get(0)));
+		assertEquals(recorrido2,(listaRecorridosBase.get(1)));
 	}
 	@Test
 	void getRecorridosPorFechaTest() {
 		dataBaseManager.addRecorrido(recorrido1);
 		List<Recorrido> listaRecorridosBase = dataBaseManager.getRecorridos(recorrido1.getInfoRecorrido().getFecha());
-		assertTrue(recorrido1.equals(listaRecorridosBase.get(0)));
+		assertEquals(recorrido1,(listaRecorridosBase.get(0)));
 	}
 	@Test
 	void addUsuarioTest() {
 		dataBaseManager.addUsuario(usuario1);
 		Usuario usuarioBase = dataBaseManager.getUsuario(usuario1.getNif());
-		assertTrue(usuario1.equals(usuarioBase));
+		assertEquals(usuario1,(usuarioBase));
 	}
 	@Test
 	void eliminarUsuario() {
@@ -116,12 +116,12 @@ class DataBaseManagerTest {
 		Usuario usuario1Nuevo = new Usuario("33036946E","UsuarioNuevo"); 
 		dataBaseManager.actualizarUsuario(usuario1Nuevo);
 		Usuario usuarioBase = dataBaseManager.getUsuario(usuario1Nuevo.getNif());
-		assertTrue(usuario1Nuevo.equals(usuarioBase));
+		assertEquals(usuario1Nuevo,(usuarioBase));
 	}
 	@Test
 	void getUsuarioTest() {
 		dataBaseManager.addUsuario(usuario1);
-		assertTrue(usuario1.equals(dataBaseManager.getUsuario(usuario1.getNif())));
+		assertEquals(usuario1,(dataBaseManager.getUsuario(usuario1.getNif())));
 	}
 	@Test
 	void addBilleteTest() {
@@ -130,7 +130,7 @@ class DataBaseManagerTest {
 		dataBaseManager.addBillete(billete1);
 		List<Billete> billetesList = dataBaseManager.getBilletes(billete1.getId().getLocalizador());
 		assertEquals(1,billetesList.size());
-		assertTrue(billete1.equals(billetesList.get(0)));
+		assertEquals(billete1,(billetesList.get(0)));
 	}
 	@Test
 	void eliminarBilleteTest() {
@@ -151,7 +151,7 @@ class DataBaseManagerTest {
 		dataBaseManager.actualizarBilletes(billete1Nuevo);
 		List<Billete> billetesList = dataBaseManager.getBilletes(billete1Nuevo.getId().getLocalizador());
 		Billete billeteBase = billetesList.get(0);
-		assertTrue(billete1Nuevo.equals(billeteBase));
+		assertEquals(billete1Nuevo,(billeteBase));
 	}
 	@Test
 	void getBilletesTest() {
@@ -160,7 +160,7 @@ class DataBaseManagerTest {
 		dataBaseManager.addBillete(billete1);
 		List<Billete> billetesList = dataBaseManager.getBilletes(billete1.getId().getLocalizador());
 		Billete billeteBase = billetesList.get(0);
-		assertTrue(billete1.equals(billeteBase));
+		assertEquals(billete1,(billeteBase));
 	}
 	@Test
 	void getBilletesDeRecorrido() {
@@ -174,7 +174,7 @@ class DataBaseManagerTest {
 		System.out.println(recorrido1.getId());
 		List<Billete> billetesList = dataBaseManager.getBilletesDeRecorrido(recorrido2.getId());
 		Billete billeteBase = (Billete) billetesList.get(0);
-		assertTrue(billete2.equals(billeteBase));
+		assertEquals(billete2,(billeteBase));
 	}
 	@Test
 	void getBilletesDeUsuario() {
@@ -183,7 +183,7 @@ class DataBaseManagerTest {
 		dataBaseManager.addBillete(billete1);
 		List<Billete> billetesList = dataBaseManager.getBilletesDeUsuario(usuario1.getNif());
 		Billete billeteBase = billetesList.get(0);
-		assertTrue(billete1.equals(billeteBase));
+		assertEquals(billete1,(billeteBase));
 	}
 	@Test
 	void addRecorridoNoValidoRecorridoNulo() {
@@ -210,7 +210,7 @@ class DataBaseManagerTest {
 		dataBaseManager.addUsuario(usuario1);
 		dataBaseManager.addBillete(billete1);
 		assertThrows(IllegalStateException.class, () ->{
-			dataBaseManager.eliminarRecorrido(recorrido1.getId());
+			dataBaseManager.eliminarRecorrido("1");
 		});
 	}
 	@Test

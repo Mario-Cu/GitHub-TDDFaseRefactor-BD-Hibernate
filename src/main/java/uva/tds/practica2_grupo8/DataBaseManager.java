@@ -32,7 +32,7 @@ public class DataBaseManager implements IDatabaseManager {
 			session.flush();
 
 		} catch (HibernateException e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
@@ -58,7 +58,7 @@ public class DataBaseManager implements IDatabaseManager {
 			session.flush();
 			
 		}catch (HibernateException e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
@@ -106,7 +106,7 @@ public class DataBaseManager implements IDatabaseManager {
 			return session.get(Recorrido.class, idRecorrido);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
@@ -126,7 +126,7 @@ public class DataBaseManager implements IDatabaseManager {
 			session.flush();
 			return list;
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		}finally {
 			session.close();
@@ -149,7 +149,7 @@ public class DataBaseManager implements IDatabaseManager {
 			return list;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		}finally {
 			session.close();
@@ -175,7 +175,7 @@ public class DataBaseManager implements IDatabaseManager {
 			session.flush();
 
 		} catch (HibernateException e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
@@ -198,7 +198,7 @@ public class DataBaseManager implements IDatabaseManager {
 			session.flush();
 			
 		}catch (HibernateException e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
@@ -222,7 +222,7 @@ public class DataBaseManager implements IDatabaseManager {
 			session.saveOrUpdate(usuario);
 			session.flush();
 		}catch (HibernateException e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
@@ -246,7 +246,7 @@ public class DataBaseManager implements IDatabaseManager {
 			session.flush();
 			return usuario;
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
@@ -269,7 +269,7 @@ public class DataBaseManager implements IDatabaseManager {
 			session.flush();
 
 		} catch (HibernateException e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
@@ -292,7 +292,7 @@ public class DataBaseManager implements IDatabaseManager {
 			session.flush();
 
 		} catch (HibernateException e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
@@ -319,7 +319,7 @@ public class DataBaseManager implements IDatabaseManager {
 			
 			session.flush();
 		}catch (HibernateException e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
@@ -341,7 +341,7 @@ public class DataBaseManager implements IDatabaseManager {
 				return  Collections.emptyList();
 			return list;
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		}finally {
 			session.close();
@@ -364,7 +364,7 @@ public class DataBaseManager implements IDatabaseManager {
 				return Collections.emptyList();
 			return list;
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		}finally {
 			session.close();
@@ -383,10 +383,10 @@ public class DataBaseManager implements IDatabaseManager {
 					.setParameter(1, usuario);
 			List<Billete> list = q.getResultList();
 			if(list.isEmpty())
-				return null;
+				return Collections.emptyList();
 			return list;
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			session.getTransaction().rollback();
 		}finally {
 			session.close();
@@ -397,14 +397,8 @@ public class DataBaseManager implements IDatabaseManager {
 	public Session getSession() {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session session;
-		try {
-			session = factory.getCurrentSession();
-			return session;
-		} catch (HibernateException e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		session = factory.getCurrentSession();
+		return session;
 	}
 	public void clearDatabase() {
 		Session session = getSession();
