@@ -187,12 +187,13 @@ public class Sistema {
 	 * Actualiza la fecha de un recorrido
 	 * @param id identificador del recorrido
 	 * @param fecha fecha nueva del reocorrido
-	 * @throws IllegalStateException cuando localizador es nulo
+	 * @throws IllegalArgumentException cuando el identificador es nulo
 	 * @throws IllegalStateException cuando fecha es nula
+	 * @throws IllegalStateException si el recorrido indicado por el id no se encuentra en el sistema
 	 */
 	public void actualizarFechaRecorrido(String id,LocalDate fecha) {
 		if(id == null) {
-			throw new IllegalStateException(EX_ID);
+			throw new IllegalArgumentException(EX_ID);
 		}
 		if(fecha == null) {
 			throw new IllegalStateException("La fecha no puede ser nulo");
@@ -200,6 +201,9 @@ public class Sistema {
 		Recorrido recorrido = getRecorridoPorId(id);
 		if (recorrido != null)
 			recorrido.getInfoRecorrido().setFecha(fecha);
+		else {
+			throw new IllegalArgumentException("El recorrido indicado por el id no se encuentra en el sistema");
+		}
 
 	}
 	
@@ -208,12 +212,13 @@ public class Sistema {
 	 * Actualiza la hora de un recorrido 
 	 * @param id identificador del recorrido
 	 * @param hora hora nueva del recorrido
-	 * @throws IllegalStateException cuando identificador es nulo
+	 * @throws IllegalArgumentException cuando identificador es nulo
 	 * @throws IllegalStateException cuando hora es nula
+	 * @throws IllegalStateException si el recorrido indicado por el id no se encuentra en el sistema
 	 */
 	public void actualizarHoraRecorrido(String id,LocalTime hora) {
 		if(id == null) {
-			throw new IllegalStateException(EX_ID);
+			throw new IllegalArgumentException(EX_ID);
 		}
 		if(hora == null) {
 			throw new IllegalStateException("La hora no puede ser nulo");
@@ -221,7 +226,9 @@ public class Sistema {
 		Recorrido recorrido = getRecorridoPorId(id);
 		if (recorrido != null)
 			recorrido.getInfoRecorrido().setHora(hora);
-
+		else {
+			throw new IllegalArgumentException("El recorrido indicado por el id no se encuentra en el sistema");
+		}
 	}
 
 	/**

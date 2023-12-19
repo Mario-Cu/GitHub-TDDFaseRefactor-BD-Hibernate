@@ -120,13 +120,15 @@ public class DataBaseManager implements IDatabaseManager {
 	@Override
 	public Recorrido getRecorrido(String idRecorrido) {
 		
+		Recorrido recorrido = null;
+		
 		if(idRecorrido == null) {
 			throw new IllegalArgumentException(EX_ID);
 		}
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			return session.get(Recorrido.class, idRecorrido);
+			recorrido = session.get(Recorrido.class, idRecorrido);
 
 		} catch (Exception e) {
 			
@@ -134,8 +136,7 @@ public class DataBaseManager implements IDatabaseManager {
 		} finally {
 			session.close();
 		}
-		return null;
-
+		return recorrido;
 	}
 
 	/**
@@ -174,7 +175,6 @@ public class DataBaseManager implements IDatabaseManager {
 			Query q = session.createQuery("FROM Recorrido r where r.infoRecorrido.fecha = ?1", Recorrido.class)
 					.setParameter(1, fecha);
 			List<Recorrido> list = q.getResultList();
-			session.flush();
 			if(list.isEmpty())
 				return  Collections.emptyList();
 			return list;
@@ -285,20 +285,18 @@ public class DataBaseManager implements IDatabaseManager {
 		}
 		
 		Session session = getSession();
-		
+		Usuario usuario = null;
 		try {
 			session.beginTransaction();
 
-			Usuario usuario = session.get(Usuario.class, idUsuario);
-			session.flush();
-			return usuario;
+			 usuario = session.get(Usuario.class, idUsuario);
 		} catch (Exception e) {
 			
 			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
-		return null;
+		return usuario;
 	}
 
 	/**

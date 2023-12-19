@@ -118,7 +118,7 @@ public class Billete {
 	public boolean equals(Object o) {
 		Boolean valor = true;
 		
-		if(!(o instanceof Billete) || this.getClass() != o.getClass()) 
+		if(!(o instanceof Billete)) 
 			return false;
 		Billete b = (Billete) o;
 		if( !this.id.equals(b.id) || !this.recorrido.equals(b.recorrido) || !this.usuario.equals(b.usuario))
@@ -126,9 +126,5 @@ public class Billete {
 		
 		return valor;
 	}
-    @Override
-    public int hashCode() {
-		return 0;
-
-    }
+    
 }
