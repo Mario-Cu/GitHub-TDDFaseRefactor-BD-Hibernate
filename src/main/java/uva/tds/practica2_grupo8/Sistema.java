@@ -20,6 +20,7 @@ public class Sistema {
 	private static final  String EX_LOC = "El localizador no puede ser nulo";
 	private static final  String EX_REC = "El recorrido no puede ser nulo";
 	private static final  String EX_ID = "El identificador no puede ser nulo";
+	private static final  double TRAIN_DISCOUNT_CONSTANT = 0.9;
 	/**
 	 * Constructor de la clase sistema
 	 */
@@ -302,7 +303,7 @@ public class Sistema {
 		for(Billete item: billetes) {
 			if((item.getUsuario().getNif()).equals(locUsr)) {
 				if((item.getRecorrido().getMedioTransporte()).equals("tren")) {
-					precioTotal = (float) (precioTotal + (0.9*item.getRecorrido().getPrecio()));
+					precioTotal = (float) (precioTotal + (TRAIN_DISCOUNT_CONSTANT*item.getRecorrido().getPrecio()));
 				}else {
 					precioTotal = precioTotal + item.getRecorrido().getPrecio();
 				}
